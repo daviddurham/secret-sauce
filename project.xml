@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="Secret Sauce" package="com.daviddurhamgames.secretsauce" version="0.1" company="David Durham" />
+	
+	<!-- output -->
+	<app main="com.daviddurhamgames.secretsauce.Main" file="secretsauce" path="bin" />
+	
+	<!-- basic general settings -->
+	<window background="#000000" fps="60" orientation="landscape" antialiasing="0" hardware="true" vsync="true" />
+	
+	<!-- ios settings -->
+	<window width="0" height="0" if="ios" />
+	
+	<!-- windows settings -->
+	<!--<window width="1280" height="720" if="windows" />-->
+	<window width="640" height="360" if="windows" />
+	
+	<!-- all cpp targets (ios and windows) -->
+	<window allow-shaders="true" require-shaders="true" if="cpp"/>
+		
+	<!-- for html5 holder page template -->
+	<template path="Templates/html5/template/index.html" rename="index.html" if="html5" />
+	
+	<!-- classpath -->
+	<source path="Source" />
+	
+	<!-- haxe libs -->
+	<haxelib name="openfl" />
+	<haxelib name="actuate" />
+	<haxelib name="away3d" />
+	
+	<!-- assets -->
+	<assets path="Assets" rename="assets" />
+	
+	<!-- ios icon -->
+	<icon path="assets/icon.png" />
+	<assets path="assets" embed="true" exclude="icon.png|*.swf" />
+	
+	<!-- optimize output -->
+	<haxeflag name="-dce std" if="haxe3" />
+	
+	<!-- ios deployment stuff -->
+	<config:ios deployment="11.0" />
+	<config:ios prerendered-icon="false" />
+	
+	<!-- ios splash images -->
+	<!-- this is a deprecated method now - but still works?-->
+	<launchImage path="splash/Default.png" 							width="320" 	height="480" 	if="ios" />
+	<launchImage path="splash/Default@2x.png" 						width="640" 	height="960" 	if="ios" />
+	<launchImage path="splash/Default-568h@2x.png" 					width="640" 	height="1136" 	if="ios" />
+	<launchImage path="splash/Default-Portrait.png" 				width="768" 	height="1024" 	if="ios" />
+	<launchImage path="splash/Default-Landscape.png" 				width="1024" 	height="768" 	if="ios" />
+	<launchImage path="splash/Default-Portrait@2x.png" 				width="1536" 	height="2048" 	if="ios" />
+	<launchImage path="splash/Default-Landscape@2x.png" 			width="2048" 	height="1536" 	if="ios" />
+	<launchImage path="splash/Default-667h@2x.png" 					width="750" 	height="1334" 	if="ios" />
+	<launchImage path="splash/Default-736h@3x.png" 					width="1242" 	height="2208" 	if="ios" />
+	<launchImage path="splash/Default-Landscape-568h@2x.png" 		width="1136" 	height="640" 	if="ios" />
+	<launchImage path="splash/Default-Landscape-667h@2x.png" 		width="1334" 	height="750" 	if="ios" />
+	<launchImage path="splash/Default-736h-Landscape@3x.png" 		width="2208" 	height="1242" 	if="ios" />
+	<launchImage path="splash/Default-1125-Portrait-2436h@3x.png" 	width="1125" 	height="2436" 	if="ios" />
+	<launchImage path="splash/Default-1125-Landscape-2436h@3x.png" 	width="2436" 	height="1125" 	if="ios" />
+
+	<!-- android deployment stuff -->
+	<config:android target-sdk-version="28" />
+	
+</project>

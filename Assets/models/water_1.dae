@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+    <asset>
+        <contributor>
+            <authoring_tool>MilkShape 3D 1.8.4</authoring_tool>
+            <source_data>file://C:/Users/david/Documents/Projects/Steamcats 3D/art/water_1.ms3d</source_data>
+        </contributor>
+        <created>2007-05-21T20:10:16Z</created>
+        <modified>2007-05-21T20:10:16Z</modified>
+        <unit meter="1.000000" name="meter" />
+        <up_axis>Y_UP</up_axis>
+    </asset>
+    <library_images>
+        <image id="Material01-image" name="Material01-image">
+            <init_from>water.png</init_from>
+        </image>
+        <image id="Material02-image" name="Material02-image">
+            <init_from>tile_grass.png</init_from>
+        </image>
+        <image id="Material03-image" name="Material03-image">
+            <init_from>dirt.png</init_from>
+        </image>
+    </library_images>
+    <library_materials>
+        <material id="Material01" name="Material01">
+            <instance_effect url="#Material01-effect" />
+        </material>
+        <material id="Material02" name="Material02">
+            <instance_effect url="#Material02-effect" />
+        </material>
+        <material id="Material03" name="Material03">
+            <instance_effect url="#Material03-effect" />
+        </material>
+    </library_materials>
+    <library_effects>
+        <effect id="Material01-effect" name="Material01-effect">
+            <profile_COMMON>
+                <newparam sid="Material01-image-surface">
+                    <surface type="2D">
+                        <init_from>Material01-image</init_from>
+                        <format>A8R8G8B8</format>
+                    </surface>
+                </newparam>
+                <newparam sid="Material01-image-sampler">
+                    <sampler2D>
+                        <source>Material01-image-surface</source>
+                        <minfilter>LINEAR_MIPMAP_LINEAR</minfilter>
+                        <magfilter>LINEAR</magfilter>
+                    </sampler2D>
+                </newparam>
+                <technique sid="common">
+                    <phong>
+                        <emission>
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </emission>
+                        <ambient>
+                            <color>0.200000 0.200000 0.200000 1.000000</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="Material01-image-sampler" texcoord="" />
+                        </diffuse>
+                        <specular>
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </specular>
+                        <shininess>
+                            <float>0.000000</float>
+                        </shininess>
+                        <reflective>
+                            <color>1.000000 1.000000 1.000000 1.000000</color>
+                        </reflective>
+                        <reflectivity>
+                            <float>1.000000</float>
+                        </reflectivity>
+                        <transparent opaque="A_ONE">
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </transparent>
+                        <transparency>
+                            <float>1.000000</float>
+                        </transparency>
+                        <index_of_refraction>
+                            <float>0.000000</float>
+                        </index_of_refraction>
+                    </phong>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="Material02-effect" name="Material02-effect">
+            <profile_COMMON>
+                <newparam sid="Material02-image-surface">
+                    <surface type="2D">
+                        <init_from>Material02-image</init_from>
+                        <format>A8R8G8B8</format>
+                    </surface>
+                </newparam>
+                <newparam sid="Material02-image-sampler">
+                    <sampler2D>
+                        <source>Material02-image-surface</source>
+                        <minfilter>LINEAR_MIPMAP_LINEAR</minfilter>
+                        <magfilter>LINEAR</magfilter>
+                    </sampler2D>
+                </newparam>
+                <technique sid="common">
+                    <phong>
+                        <emission>
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </emission>
+                        <ambient>
+                            <color>0.200000 0.200000 0.200000 1.000000</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="Material02-image-sampler" texcoord="" />
+                        </diffuse>
+                        <specular>
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </specular>
+                        <shininess>
+                            <float>0.000000</float>
+                        </shininess>
+                        <reflective>
+                            <color>1.000000 1.000000 1.000000 1.000000</color>
+                        </reflective>
+                        <reflectivity>
+                            <float>1.000000</float>
+                        </reflectivity>
+                        <transparent opaque="A_ONE">
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </transparent>
+                        <transparency>
+                            <float>1.000000</float>
+                        </transparency>
+                        <index_of_refraction>
+                            <float>0.000000</float>
+                        </index_of_refraction>
+                    </phong>
+                </technique>
+            </profile_COMMON>
+        </effect>
+        <effect id="Material03-effect" name="Material03-effect">
+            <profile_COMMON>
+                <newparam sid="Material03-image-surface">
+                    <surface type="2D">
+                        <init_from>Material03-image</init_from>
+                        <format>A8R8G8B8</format>
+                    </surface>
+                </newparam>
+                <newparam sid="Material03-image-sampler">
+                    <sampler2D>
+                        <source>Material03-image-surface</source>
+                        <minfilter>LINEAR_MIPMAP_LINEAR</minfilter>
+                        <magfilter>LINEAR</magfilter>
+                    </sampler2D>
+                </newparam>
+                <technique sid="common">
+                    <phong>
+                        <emission>
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </emission>
+                        <ambient>
+                            <color>0.200000 0.200000 0.200000 1.000000</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="Material03-image-sampler" texcoord="" />
+                        </diffuse>
+                        <specular>
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </specular>
+                        <shininess>
+                            <float>0.000000</float>
+                        </shininess>
+                        <reflective>
+                            <color>1.000000 1.000000 1.000000 1.000000</color>
+                        </reflective>
+                        <reflectivity>
+                            <float>1.000000</float>
+                        </reflectivity>
+                        <transparent opaque="A_ONE">
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </transparent>
+                        <transparency>
+                            <float>1.000000</float>
+                        </transparency>
+                        <index_of_refraction>
+                            <float>0.000000</float>
+                        </index_of_refraction>
+                    </phong>
+                </technique>
+            </profile_COMMON>
+        </effect>
+    </library_effects>
+    <library_geometries>
+        <geometry id="Regroup06-geometry" name="Regroup06-geometry">
+            <mesh>
+                <source id="Regroup06-positions" name="position">
+                    <float_array id="Regroup06-positions-array" count="30">-4 -1 -4 -7.45057 -1 -6 -7.98438 -1 -4 -5.99219 -1 -7.4641 -4 -1 -8 -4 -1 8 -7.98438 -1 8 7.98438 -1 -4 7.98438 -1 -8 7.98438 -1 8</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup06-positions-array" count="10" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup06-normals" name="normal">
+                    <float_array id="Regroup06-normals-array" count="3">0 1 0</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup06-normals-array" count="1" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup06-texcoords" name="texcoord">
+                    <float_array id="Regroup06-texcoords-array" count="20">0.499022 0.5 0.0668562 0.75 0 0.5 0.249511 0.933013 0.499022 1 0.499022 -1 0 -1 2 0.5 2 1 2 -1</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup06-texcoords-array" count="10" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Regroup06-geometry-vertices">
+                    <input semantic="POSITION" source="#Regroup06-positions" />
+                </vertices>
+                <triangles material="Material01" count="9">
+                    <input semantic="VERTEX" source="#Regroup06-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Regroup06-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Regroup06-texcoords" offset="2" />
+                    <p>0 0 0 1 0 1 2 0 2 0 0 0 3 0 3 1 0 1 0 0 0 4 0 4 3 0 3 5 0 5 2 0 2 6 0 6 5 0 5 0 0 0 2 0 2 7 0 7 4 0 4 0 0 0 7 0 7 8 0 8 4 0 4 9 0 9 0 0 0 5 0 5 9 0 9 7 0 7 0 0 0</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="Regroup07-geometry" name="Regroup07-geometry">
+            <mesh>
+                <source id="Regroup07-positions" name="position">
+                    <float_array id="Regroup07-positions-array" count="48">-7.45057 -0.333333 -6 -7.98438 -0.333333 -4 -7.98438 -0.997305 -4 -7.45057 -0.997305 -6 -5.99219 -0.997305 -7.4641 -5.99219 -0.333333 -7.4641 -4 -0.333333 -8 -4 -0.997305 -8 -7.98438 -1 -4 -7.98438 -0.342618 -3.99943 -7.98438 -1 8 -7.98438 -0.342618 8.00057 7.98409 -1 -7.99972 -4.00028 -1 -7.99972 7.98466 -0.342618 -7.99972 -3.99972 -0.342618 -7.99972</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup07-positions-array" count="16" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup07-normals" name="normal">
+                    <float_array id="Regroup07-normals-array" count="24">0.866025 -9.88426e-017 0.5 0.965926 -3.81898e-016 0.258819 0.965926 -1.90949e-016 0.258819 0.866025 0 0.5 0.5 0 0.866025 0.5 0 0.866025 0 0 1 1 0 0</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup07-normals-array" count="8" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup07-texcoords" name="texcoord">
+                    <float_array id="Regroup07-texcoords-array" count="40">0.0669849 1 0 1 0 0.0040428 0.0669849 0.0040428 0.249991 0.0040428 0.249991 1 0.499982 1 0.499982 0.0040428 0 0 0 0.986074 0 0.986074 0 0.986074 0 0.986074 0 0.986074 0 0.986074 0.999929 0 0.499947 0 1 0.986074 1 0.986074 0.500018 0.986074</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup07-texcoords-array" count="20" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Regroup07-geometry-vertices">
+                    <input semantic="POSITION" source="#Regroup07-positions" />
+                </vertices>
+                <triangles material="Material03" count="12">
+                    <input semantic="VERTEX" source="#Regroup07-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Regroup07-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Regroup07-texcoords" offset="2" />
+                    <p>0 0 0 1 1 1 2 2 2 3 3 3 0 0 0 2 2 2 4 4 4 0 0 0 3 3 3 4 4 4 5 5 5 0 0 0 6 6 6 5 5 5 4 4 4 7 6 7 6 6 6 4 4 4 8 7 8 8 7 8 9 7 9 9 7 10 8 7 8 9 7 11 10 7 8 8 7 8 11 7 12 11 7 13 8 7 8 9 7 14 12 7 15 13 7 16 14 7 17 14 7 18 13 7 16 15 7 19</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="Regroup10-geometry" name="Regroup10-geometry">
+            <mesh>
+                <source id="Regroup10-positions" name="position">
+                    <float_array id="Regroup10-positions-array" count="45">-7.45057 -0.333333 -6 -7.45081 0 -6 -7.98438 0 -4 -5.99219 -0.333333 -7.4641 -5.99079 0 -7.46368 -7.98438 -0.333333 -4 -4 -0.333333 -8 -4 0 -8 -7.98438 -0.342618 -3.99943 -7.98438 0 8 -7.98438 -0.342618 8.00057 7.98409 0 -7.99972 -3.99972 -0.342618 -7.99972 -4.00028 0 -7.99972 7.98466 -0.342618 -7.99972</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup10-positions-array" count="15" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup10-normals" name="normal">
+                    <float_array id="Regroup10-normals-array" count="27">0.865951 -0.00138586 0.500126 0.865876 0.00123245 0.500256 0.96594 0.000687449 0.258766 0.499988 -0.00639357 0.866009 0.499925 -0.00293628 0.866064 0.965926 0 0.258819 9.22394e-005 -0.00119488 0.999999 0.000185918 0 1 1 0 0</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup10-normals-array" count="9" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup10-texcoords" name="texcoord">
+                    <float_array id="Regroup10-texcoords-array" count="26">0.0669849 0.027098 0.0669553 1 0 1 0.249991 0.027098 0.250166 1 0 0.027098 0.499982 0.027098 0.499982 1 0 0 0.999929 1 0.500018 0 0.499947 1 1 0</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup10-texcoords-array" count="13" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Regroup10-geometry-vertices">
+                    <input semantic="POSITION" source="#Regroup10-positions" />
+                </vertices>
+                <triangles material="Material02" count="12">
+                    <input semantic="VERTEX" source="#Regroup10-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Regroup10-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Regroup10-texcoords" offset="2" />
+                    <p>0 0 0 1 1 1 2 2 2 3 3 3 4 4 4 0 0 0 0 0 0 2 2 2 5 5 5 4 4 4 1 1 1 0 0 0 6 6 6 4 4 4 3 3 3 6 6 6 7 7 7 4 4 4 2 8 2 8 8 8 2 8 2 2 8 2 8 8 8 8 8 8 9 8 2 8 8 8 2 8 2 9 8 2 10 8 8 8 8 8 11 8 9 12 8 10 13 8 11 11 8 9 14 8 12 12 8 10</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="Regroup11-geometry" name="Regroup11-geometry">
+            <mesh>
+                <source id="Regroup11-positions" name="position">
+                    <float_array id="Regroup11-positions-array" count="21">-6.65461 0 -8 -6.65625 0 -8 -7.45081 0 -6 -4 0 -8 -5.99079 0 -7.46368 -7.98438 0 -8 -7.98438 0 -4</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup11-positions-array" count="7" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup11-normals" name="normal">
+                    <float_array id="Regroup11-normals-array" count="3">0 1 0</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup11-normals-array" count="1" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup11-texcoords" name="texcoord">
+                    <float_array id="Regroup11-texcoords-array" count="14">0.333746 1 0.333333 1 0.133915 0.5 1 1 0.500351 0.86592 0 1 0 0</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup11-texcoords-array" count="7" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Regroup11-geometry-vertices">
+                    <input semantic="POSITION" source="#Regroup11-positions" />
+                </vertices>
+                <triangles material="Material02" count="5">
+                    <input semantic="VERTEX" source="#Regroup11-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Regroup11-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Regroup11-texcoords" offset="2" />
+                    <p>0 0 0 1 0 1 2 0 2 3 0 3 0 0 0 4 0 4 0 0 0 2 0 2 4 0 4 2 0 2 1 0 1 5 0 5 2 0 2 5 0 5 6 0 6</p>
+                </triangles>
+            </mesh>
+        </geometry>
+    </library_geometries>
+    <library_visual_scenes>
+        <visual_scene id="SceneRoot" name="SceneRoot">
+            <node id="Regroup06" name="Regroup06" type="NODE">
+                <instance_geometry url="#Regroup06-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material01" target="#Material01" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="Regroup07" name="Regroup07" type="NODE">
+                <instance_geometry url="#Regroup07-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material03" target="#Material03" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="Regroup10" name="Regroup10" type="NODE">
+                <instance_geometry url="#Regroup10-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material02" target="#Material02" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="Regroup11" name="Regroup11" type="NODE">
+                <instance_geometry url="#Regroup11-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material02" target="#Material02" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+        </visual_scene>
+    </library_visual_scenes>
+    <scene>
+        <instance_visual_scene url="#SceneRoot" />
+    </scene>
+</COLLADA>
