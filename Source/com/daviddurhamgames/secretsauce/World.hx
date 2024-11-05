@@ -6,14 +6,9 @@ import away3d.containers.ObjectContainer3D;
 import away3d.containers.Scene3D;
 import com.daviddurhamgames.secretsauce.LevelTile;
 
-import openfl.display.Tilemap;
-import openfl.display.Tileset;
 import openfl.display.Sprite;
-import openfl.geom.Rectangle;
-import openfl.Assets;
 
 import com.piratejuice.vfx.ScreenShake;
-import com.piratejuice.Collisions;
 
 class World {
 	

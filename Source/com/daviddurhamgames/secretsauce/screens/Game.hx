@@ -149,9 +149,9 @@ class Game extends Sprite {
 	private var pointerCurrent:Vector2D;
 
 	private var map:Array<Array<Int>> = [	[0, 0, 0, 0, 0],
-											[0, 3, 1, 4, 0],
-											[0,11, 0, 2, 0],
-											[0, 6, 1, 5, 0],
+											[0, 0, 0, 0, 0],
+											[0, 0, 0, 0, 0],
+											[1, 1, 1, 1, 1],
 											[0, 0, 0, 0, 0]	];
 
 	private var ingredients:Array<Ingredient> = [];
@@ -186,17 +186,27 @@ class Game extends Sprite {
 		transition.graphics.endFill();
 		addChild(transition);
 		
+
 		// keyboard controls
 		input = new InputManager(stage);
-		input.addKey("left", 37);
-		input.addKey("right", 39);
+		input.addKey("left", Main.KEY_LEFT);
+		input.addKey("right", Main.KEY_RIGHT);
+		input.addKey("up", Main.KEY_UP);
+		input.addKey("down", Main.KEY_DOWN);
+
+		input.addKey("a", Main.KEY_A);
+		input.addKey("b", Main.KEY_B);
+
 		input.addKey("pause", 80);
 		input.addKey("restart", 82);
 		
-		// alt. keyboard controls
-		input.addKey("alt_left", 65);	//a
-		input.addKey("alt_right", 68);	//d
-				
+		// on key events
+		input.onKey("a", "a_pressed");
+		input.addEventListener("a_pressed", onAPressed, false, 0, true);
+
+		input.onKey("b", "b_pressed");
+		input.addEventListener("b_pressed", onBPressed, false, 0, true);
+		
 		// on key events		
 		input.onKey("pause", "pause_key_pressed");
 		input.addEventListener("pause_key_pressed", onPauseKeyPressed, false, 0, true);
@@ -224,7 +234,7 @@ class Game extends Sprite {
         mainLight.ambientColor = 0x60657b;
         mainLight.diffuse = 2.2;
         mainLight.specular = 0.8;
-		view.scene.addChild(mainLight);
+		//view.scene.addChild(mainLight);
 		
 		lightPicker = new StaticLightPicker([ mainLight ]);
 
@@ -261,10 +271,7 @@ class Game extends Sprite {
 		// load 3D models
 		// first setup url maps for textures in the DAE files
 		assetLoaderContext = new AssetLoaderContext();
-		assetLoaderContext.mapUrlToData("car_test_2.png", Assets.getBitmapData("assets/car_test_red.png"));
-		assetLoaderContext.mapUrlToData("water.png", Assets.getBitmapData("assets/tiles/" + skin + "/tile_water.png"));
-		assetLoaderContext.mapUrlToData("tile_grass.png", Assets.getBitmapData("assets/tiles/" + skin + "/tile_grass.png"));
-		assetLoaderContext.mapUrlToData("dirt.png", Assets.getBitmapData("assets/dirt.png"));
+		assetLoaderContext.mapUrlToData("robochef.png", Assets.getBitmapData("assets/robochef.png"));
 		assetLoaderContext.mapUrlToData("tree.png", Assets.getBitmapData("assets/tree.png"));
 		assetLoaderContext.mapUrlToData("shadow_circle.png", Assets.getBitmapData("assets/shadow_circle.png"));
 		assetLoaderContext.mapUrlToData("cone.png", Assets.getBitmapData("assets/cone.png"));
@@ -274,11 +281,11 @@ class Game extends Sprite {
 
 		// need to load models sequentially
 		loadedModels = [];
-		modelsToLoad = ["assets/models/steamcar.dae", "assets/models/water_0a.dae", "assets/models/water_1a.dae", "assets/models/water_2a.dae", "assets/models/water_4a.dae", "assets/models/tree.dae", "assets/models/cone.dae"];
-		meshCounts = [18, 1, 4, 4, 4, 4, 2];
+		modelsToLoad = ["assets/models/robochef.dae", "assets/models/tree.dae", "assets/models/cone.dae"];
+		meshCounts = [12, 4, 2];
 
 		// some models shouldn't receive shadows
-		shadows = [true, true, true, true, true, false, false];
+		shadows = [true, false, false];
 		currentModelLoading = -1;
 		loadNextModel();
 				
@@ -348,7 +355,7 @@ class Game extends Sprite {
 		players = new Array<Player>();
 		
 		// zero players means P1 is an AI
-		p1 = new Player(1, cast(loadedModels[0]/*.clone()*/, ObjectContainer3D), view.camera/*, p1Code*/);		
+		p1 = new Player(1, cast(loadedModels[0], ObjectContainer3D), view.camera/*, p1Code*/);		
 		world.add(p1);
 		players.push(p1);
 
@@ -474,6 +481,22 @@ class Game extends Sprite {
 			hud.pauseMenu.hide();
 		}
 	}
+
+	private function onAPressed(event:Event):Void {
+		
+		if (isRunning) {
+			
+			
+		}
+	}
+	
+	private function onBPressed(event:Event):Void {
+		
+		if (isRunning) {
+			
+			
+		}
+	}
 	
 	private function onMouseDown(event:MouseEvent):Void {
 		
@@ -489,17 +512,46 @@ class Game extends Sprite {
 
 	private function updateInput():Void {
 		
-		p1.isLeftDown = false;
-		p1.isRightDown = false;
+		p1.isLeft = false;
+		p1.isRight = false;
 
-		// get data from game device
-		if (input.keyDown("left") || input.keyDown("alt_left") || controller.isP1LeftDown) {
+		if (input.keyDown("left")) {
 			
-			p1.isLeftDown = true;
+			p1.isLeft = true;
 		}
-		else if (input.keyDown("right") || input.keyDown("alt_right") || controller.isP1RightDown) {
+		else if (input.keyDown("right")) {
 			
-			p1.isRightDown = true;
+			p1.isRight = true;
+		}
+		
+		p1.isUp = false;
+		p1.isDown = false;
+
+        if (input.keyDown("up")) {
+			
+			p1.isUp = true;	
+		}
+		else if (input.keyDown("down")) {
+			
+			p1.isDown = true;
+		}
+		
+		if (input.keyDown("a")) {
+
+			//isShooting = true;
+		}
+		else {
+
+			//isShooting = false;
+		}
+
+		if (input.keyDown("b")) {
+
+			//isThrusting = true;
+		}
+		else {
+
+			//isThrusting = false;
 		}
 	}
 
@@ -557,6 +609,8 @@ class Game extends Sprite {
 		// clean up the input manager
 		input.cleanUp();
 		input.removeEventListener("pause_key_pressed", onPauseKeyPressed);
+		input.removeEventListener("a_pressed", onAPressed);
+		input.removeEventListener("b_pressed", onBPressed);
 		input = null;	
 		
 		/*
@@ -726,8 +780,8 @@ class Game extends Sprite {
 			}
 
 			view.camera.x = p1.x;
-			view.camera.y = 200 * zoom;
-			view.camera.z = p1.z - (200 * zoom);
+			view.camera.y = 150 * zoom;
+			view.camera.z = p1.z - (150 * zoom);
 			view.camera.lookAt(new Vector3D(p1.x, p1.z, 0));
 		}
 	}

@@ -9,8 +9,8 @@ import away3d.materials.TextureMaterial;
 
 class LevelTile extends ObjectContainer3D {
 	
-	public static var WIDTH:Int = 64;
-	public static var HEIGHT:Int = 64;
+	public static var WIDTH:Int = 16;
+	public static var HEIGHT:Int = 16;
 	
 	private var mesh:Mesh;
 	

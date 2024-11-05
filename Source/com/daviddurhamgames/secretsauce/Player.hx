@@ -34,8 +34,10 @@ class Player extends ObjectContainer3D {
 	public var velY:Float = 0;
 	public var velRot:Float = 0.1;
 	
-	public var isLeftDown:Bool = false;
-	public var isRightDown:Bool = false;
+	public var isLeft:Bool = false;
+	public var isRight:Bool = false;
+	public var isUp:Bool = false;
+	public var isDown:Bool = false;
 	
 	public var acc:Vector2D;
 	public var vel:Vector2D;
@@ -54,6 +56,8 @@ class Player extends ObjectContainer3D {
 
 	public var cat:Mesh;
 
+	private var xSpeed:Float = 0;
+	private var zSpeed:Float = 0;
 	
 	public function new(_id:Int, _model:ObjectContainer3D, _cam:Camera3D = null, code:String = "0000"):Void {
 		
@@ -77,10 +81,10 @@ class Player extends ObjectContainer3D {
 		// draw car 
 		model = new ObjectContainer3D();
 		model.y = 0;
-		model.scaleX = model.scaleY = model.scaleZ = 0.333;
+		model.scaleX = model.scaleY = model.scaleZ = 1.25;//0.333;
 		holder.addChild(model);
 
-		newMaterial = new TextureMaterial(_id == 1 ? Cast.bitmapTexture("assets/car_test_blue.png") : Cast.bitmapTexture("assets/car_test_red.png"), false);
+		newMaterial = new TextureMaterial(_id == 1 ? Cast.bitmapTexture("assets/robochef.png") : Cast.bitmapTexture("assets/robochef.png"), false);
 		//newMaterial.alphaThreshold = 1;
 		//newMaterial.lightPicker = lightPicker;
 		newMaterial.mipmap = false;
@@ -97,7 +101,7 @@ class Player extends ObjectContainer3D {
 		cat.y = 18;
 		cat.z = -3;
 		cat.rotationX = -90;
-		model.addChild(cat);
+		//model.addChild(cat);
 	}
 
 	private function updateMaterials(m:ObjectContainer3D, object:ObjectContainer3D, material:TextureMaterial):Void {
@@ -169,8 +173,111 @@ class Player extends ObjectContainer3D {
 		
 		if (isActive) {
 		
-			//x += 0.1;
-			//z -= 0.1;
+			var xSlowdown:Float = 1;
+			var zSlowdown:Float = 1;
+
+			if (isDown) {
+
+				dir.y = -1;
+
+				if (zSpeed > -0.5) {
+
+					zSpeed -= 0.03;
+				}
+				else {
+					
+					zSpeed = -0.5;
+				}
+			}
+			else if (isUp) {
+
+				dir.y = 1;
+
+				if (zSpeed < 0.5) {
+
+					zSpeed += 0.03;
+				}
+				else {
+					
+					zSpeed = 0.5;
+				}
+			}
+			else {
+
+				if (zSpeed != 0) {
+
+					zSpeed *= 0.8;
+				}
+				
+				if (Math.abs(zSpeed) < 0.05) {
+
+					zSpeed = 0;
+				}
+			}
+
+			if (isLeft) {
+
+				dir.x = 1;
+
+				if (xSpeed > -0.5) {
+
+					xSpeed -= 0.03;
+				}
+				else {
+					
+					xSpeed = -0.5;
+				}
+			}
+			else if (isRight) {
+
+				dir.x = -1;
+
+				if (xSpeed < 0.5) {
+
+					xSpeed += 0.03;
+				}
+				else {
+					
+					xSpeed = 0.5;
+				}
+			}
+			else {
+
+				if (xSpeed != 0) {
+
+					xSpeed *= 0.8;
+				}
+				
+				if (Math.abs(xSpeed) < 0.05) {
+
+					xSpeed = 0;
+				}
+			}
+
+			var multiplier:Float = 1;
+			
+			if (xSpeed != 0 && zSpeed != 0) {
+
+				multiplier = 0.7;
+			}
+
+			x += xSpeed * multiplier;
+			z += zSpeed * multiplier;
+			
+			if ((isRight || isLeft) && (!isUp && !isDown)) {
+
+				dir.y = 0;
+			}
+
+			if ((!isRight && !isLeft) && (isUp || isDown)) {
+
+				dir.x = 0;
+			}
+
+			//model.rotationY = dir.angle();
+			var targetAngle:Float = dir.angle();
+			
+			model.rotationY += D180_OVER_PI * Math.atan2((Math.cos(model.rotationY * PI_OVER_180) * Math.sin(targetAngle * PI_OVER_180) - Math.sin(model.rotationY * PI_OVER_180) * Math.cos(targetAngle * PI_OVER_180)), (Math.sin(model.rotationY * PI_OVER_180) * Math.sin(targetAngle * PI_OVER_180) + Math.cos(model.rotationY * PI_OVER_180) * Math.cos(targetAngle * PI_OVER_180))) / 8;
 		}
 	}
 }

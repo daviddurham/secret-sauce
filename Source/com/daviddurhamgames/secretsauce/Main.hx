@@ -83,6 +83,18 @@ class Main extends Sprite {
 	public static var mode:String = "";
 	public static var numberOfPlayers = 1;
 	public static var level:String = "";
+
+	// control keys
+	public static var KEY_UP:Int = 38;
+	public static var KEY_DOWN:Int = 40;
+	public static var KEY_LEFT:Int = 37;
+	public static var KEY_RIGHT:Int = 39;
+
+	public static var KEY_A:Int = 88;	// x
+	public static var KEY_B:Int = 90;	// z
+
+	public static var KEY_START:Int = 13;	// enter
+	public static var KEY_SELECT:Int = 8;	// backspace
 	
 	public function new() {
 		
