@@ -43,21 +43,18 @@ class Player extends ObjectContainer3D {
 	public var vel:Vector2D;
 	public var dir:Vector2D;	
 	
-	public var speed:Float = 0;
-	public var maxSpeed:Float = 1.8;//12;
-	
 	private var cameraVector:Vector2D;
 	
 	private var control:Float = 1;
 
-	public var radius:Int = 3;
+	public var radius:Int = 6;
 
 	public var camera:Camera3D;
 
 	public var cat:Mesh;
 
-	private var xSpeed:Float = 0;
-	private var zSpeed:Float = 0;
+	public var xSpeed:Float = 0;
+	public var zSpeed:Float = 0;
 	
 	public function new(_id:Int, _model:ObjectContainer3D, _cam:Camera3D = null, code:String = "0000"):Void {
 		
@@ -148,9 +145,6 @@ class Player extends ObjectContainer3D {
 		
 		velY = 0;
 		y = 0;
-		
-		speed = 0;
-		//accel = 0.001;
 		
 		dir.x = dir.y = 0;
 		acc.x = acc.y = 0;
@@ -274,10 +268,11 @@ class Player extends ObjectContainer3D {
 				dir.x = 0;
 			}
 
-			//model.rotationY = dir.angle();
 			var targetAngle:Float = dir.angle();
 			
-			model.rotationY += D180_OVER_PI * Math.atan2((Math.cos(model.rotationY * PI_OVER_180) * Math.sin(targetAngle * PI_OVER_180) - Math.sin(model.rotationY * PI_OVER_180) * Math.cos(targetAngle * PI_OVER_180)), (Math.sin(model.rotationY * PI_OVER_180) * Math.sin(targetAngle * PI_OVER_180) + Math.cos(model.rotationY * PI_OVER_180) * Math.cos(targetAngle * PI_OVER_180))) / 8;
+			model.rotationX = Math.max(Math.abs(xSpeed), Math.abs(zSpeed)) * 15;
+			holder.rotationY += D180_OVER_PI * Math.atan2((Math.cos(holder.rotationY * PI_OVER_180) * Math.sin(targetAngle * PI_OVER_180) - Math.sin(holder.rotationY * PI_OVER_180) * Math.cos(targetAngle * PI_OVER_180)), (Math.sin(holder.rotationY * PI_OVER_180) * Math.sin(targetAngle * PI_OVER_180) + Math.cos(holder.rotationY * PI_OVER_180) * Math.cos(targetAngle * PI_OVER_180))) / 8;
+	
 		}
 	}
 }

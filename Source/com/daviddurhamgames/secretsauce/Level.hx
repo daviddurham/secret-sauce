@@ -27,22 +27,28 @@ class Level {
 	private var rectangleShadowTexture:TextureMaterial;
 	
 	private var _tileData:Array<TileData> = [	new TileData(0, "kitchen_floor", 0, []),	//blank
-												new TileData(1, "straight_horizontal", 0, [new ObjectData(0, 0, 0), new ObjectData(0, 128, 0), new ObjectData(0, 256, 0), new ObjectData(0, -128, 0),    new ObjectData(1, 475, 432), new ObjectData(1, 402, 432), new ObjectData(1, 329, 432), new ObjectData(1, 256, 432), new ObjectData(1, 183, 432), new ObjectData(1, 110, 432), new ObjectData(1, 36, 432), new ObjectData(1, 475, 80), new ObjectData(1, 402, 80), new ObjectData(1, 329, 80), new ObjectData(1, 256, 80), new ObjectData(1, 183, 80), new ObjectData(1, 110, 80), new ObjectData(1, 36, 80), new ObjectData(2, 256, 72), new ObjectData(2, 256, 440), new ObjectData(7, 256, 168), new ObjectData(7, 256, 344)]), //straight H
-												new TileData(2, "straight_horizontal", 1, [new ObjectData(0, 0, 0), new ObjectData(0, 0, 128), new ObjectData(0, 0, 256), new ObjectData(0, 0, -128),    new ObjectData(1, 80, 475), new ObjectData(1, 80, 402), new ObjectData(1, 80, 329), new ObjectData(1, 79, 256), new ObjectData(1, 79, 183), new ObjectData(1, 79, 110), new ObjectData(1, 79, 36), new ObjectData(1, 432, 475), new ObjectData(1, 432, 402), new ObjectData(1, 432, 329), new ObjectData(1, 431, 256), new ObjectData(1, 431, 183), new ObjectData(1, 431, 110), new ObjectData(1, 431, 36), new ObjectData(2, 440, 256), new ObjectData(2, 72, 256), new ObjectData(7, 168, 256), new ObjectData(7, 344, 256)]), //straight V
+												new TileData(1, "straight_horizontal", 0, [new ObjectData(1, 475, 432), new ObjectData(1, 402, 432), new ObjectData(1, 329, 432), new ObjectData(1, 256, 432), new ObjectData(1, 183, 432), new ObjectData(1, 110, 432), new ObjectData(1, 36, 432), new ObjectData(1, 475, 80), new ObjectData(1, 402, 80), new ObjectData(1, 329, 80), new ObjectData(1, 256, 80), new ObjectData(1, 183, 80), new ObjectData(1, 110, 80), new ObjectData(1, 36, 80) ]), //straight H
+												new TileData(2, "straight_horizontal", 1, [new ObjectData(1, 80, 475), new ObjectData(1, 80, 402), new ObjectData(1, 80, 329), new ObjectData(1, 79, 256), new ObjectData(1, 79, 183), new ObjectData(1, 79, 110), new ObjectData(1, 79, 36), new ObjectData(1, 432, 475), new ObjectData(1, 432, 402), new ObjectData(1, 432, 329), new ObjectData(1, 431, 256), new ObjectData(1, 431, 183), new ObjectData(1, 431, 110), new ObjectData(1, 431, 36) ]), //straight V
 												
 												// basic corners (br, bl, tl, tr)
-												new TileData(3, "corner_tl", 0, [new ObjectData(0, 0, -256), new ObjectData(0, 16, -162), new ObjectData(0, 74, -74), new ObjectData(0, 162, -16), new ObjectData(0, 256, 0),     new ObjectData(1, 432, 479), new ObjectData(1, 183, 236), new ObjectData(1, 139, 296), new ObjectData(1, 110, 356), new ObjectData(1, 91, 418), new ObjectData(1, 81, 480), new ObjectData(1, 480, 431), new ObjectData(1, 480, 81), new ObjectData(1, 418, 90), new ObjectData(1, 354, 112), new ObjectData(1, 292, 143), new ObjectData(1, 232, 186), new ObjectData(2, 474, 474), new ObjectData(2, 190, 190), new ObjectData(7, 384, 384), new ObjectData(7, 240, 240)]),	//corner (r)
-												new TileData(4, "corner_tl", 1, [new ObjectData(0, 0, -256), new ObjectData(0, -16, -162), new ObjectData(0, -74, -74), new ObjectData(0, -162, -16), new ObjectData(0, -256, 0),     new ObjectData(1, 32, 432), new ObjectData(1, 275, 183), new ObjectData(1, 215, 139), new ObjectData(1, 155, 110), new ObjectData(1, 93, 91), new ObjectData(1, 31, 81), new ObjectData(1, 80, 480), new ObjectData(1, 430, 480), new ObjectData(1, 421, 418), new ObjectData(1, 399, 354), new ObjectData(1, 368, 292), new ObjectData(1, 325, 232), new ObjectData(2, 38, 474), new ObjectData(2, 322, 190), new ObjectData(7, 128, 384), new ObjectData(7, 272, 240)]),
-												new TileData(5, "corner_tl", 2, [new ObjectData(0, 0, 256), new ObjectData(0, -16, 162), new ObjectData(0, -74, 74), new ObjectData(0, -162, 16), new ObjectData(0, -256, 0),        new ObjectData(1, 79, 32), new ObjectData(1, 328, 275), new ObjectData(1, 372, 215), new ObjectData(1, 401, 155), new ObjectData(1, 420, 93), new ObjectData(1, 430, 31), new ObjectData(1, 31, 80), new ObjectData(1, 31, 430), new ObjectData(1, 93, 421), new ObjectData(1, 157, 399), new ObjectData(1, 219, 368), new ObjectData(1, 279, 325), new ObjectData(2, 37, 38), new ObjectData(2, 322, 322)]),	//(j)
-												new TileData(6, "corner_tl", 3, [new ObjectData(0, 0, 256), new ObjectData(0, 16, 162), new ObjectData(0, 74, 74), new ObjectData(0, 162, 16), new ObjectData(0, 256, 0),       new ObjectData(1, 479, 79), new ObjectData(1, 236, 328), new ObjectData(1, 296, 372), new ObjectData(1, 356, 401), new ObjectData(1, 418, 420), new ObjectData(1, 480, 430), new ObjectData(1, 431, 31), new ObjectData(1, 81, 31), new ObjectData(1, 90, 93), new ObjectData(1, 112, 157), new ObjectData(1, 143, 219), new ObjectData(1, 186, 279), new ObjectData(2, 473, 37), new ObjectData(2, 190, 322)]),	//(L)												
+												new TileData(3, "corner_tl", 0, []),
+												new TileData(4, "corner_tl", 1, []),
+												new TileData(5, "corner_tl", 2, []),
+												new TileData(6, "corner_tl", 3, []),
+												
+												// wall
+												new TileData(7, "kitchen_floor", 0, [new ObjectData(2, 0, 0)]),
+												
+												// counter
+												new TileData(8, "kitchen_floor", 0, [new ObjectData(3, 0, 0)])
 											];
 																	
 	// default level map data
-	private var _levelMap:Array<Array<Int>> = [	[0, 0, 0, 0, 0],
-												[0, 3, 1, 4, 0],
-												[0, 2, 0, 2, 0],
-												[0, 6, 1, 5, 0],
-												[0, 0, 0, 0, 0]	];
+	private var _levelMap:Array<Array<Int>> = [	[7, 7, 7, 7, 7],
+												[7, 8, 8, 8, 0],
+												[7, 8, 0, 0, 0],
+												[7, 8, 1, 0, 0],
+												[7, 7, 0, 0, 0]	];
 												
 												
 	private var _levelOrder:Array<Array<Int>>;
@@ -168,21 +174,44 @@ class Level {
 					
 					switch(obj.id) {
 							
-						// bollard / cone
+						// cone
 						case 1:
 							
-							if (!isOverview) {
+							var object:GameObject = new GameObject("", cast(_models[2].clone(), ObjectContainer3D));
+							object.x = (TILE_WIDTH * i) + obj.pos.x - (TILE_WIDTH / 2);
+							object.y = 1;
+							object.z = (-TILE_HEIGHT * j) - obj.pos.y + (TILE_HEIGHT / 2);
 
-								var object:GameObject = new GameObject("", cast(_models[2].clone(), ObjectContainer3D));
-								object.x = (TILE_WIDTH * i) + obj.pos.x - (TILE_WIDTH / 2);
-								object.y = 1;
-								object.z = (-TILE_HEIGHT * j) - obj.pos.y + (TILE_HEIGHT / 2);
+							object.scaleX = object.scaleY = object.scaleZ = 0.6;
 
-								object.scaleX = object.scaleY = object.scaleZ = 0.6;
+							object.setCollisionType("circle", 0.3);
+							_world.addCone(object);
 
-								object.setCollisionType("circle", 0.3);
-								_world.addCone(object);
-							}
+						// wall
+						case 2:
+							
+							var object:GameObject = new GameObject("wall", cast(_models[3].clone(), ObjectContainer3D));
+							object.x = (TILE_WIDTH * i) + obj.pos.x;// - (TILE_WIDTH / 2);
+							object.y = 0;
+							object.z = (-TILE_HEIGHT * j) - obj.pos.y;// + (TILE_HEIGHT / 2);
+
+							object.scaleX = object.scaleY = object.scaleZ = 4;
+
+							object.setCollisionType("aabb", TILE_WIDTH, TILE_HEIGHT);
+							_world.addObstacle(object);
+
+						// counter
+						case 3:
+							
+							var object:GameObject = new GameObject("counter", cast(_models[4].clone(), ObjectContainer3D));
+							object.x = (TILE_WIDTH * i) + obj.pos.x;// - (TILE_WIDTH / 2);
+							object.y = 0;
+							object.z = (-TILE_HEIGHT * j) - obj.pos.y;// + (TILE_HEIGHT / 2);
+
+							object.scaleX = object.scaleY = object.scaleZ = 4;
+
+							object.setCollisionType("aabb", TILE_WIDTH, TILE_HEIGHT);
+							_world.addObstacle(object);
 					}
 				}
 				

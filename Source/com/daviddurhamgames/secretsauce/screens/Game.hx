@@ -148,11 +148,23 @@ class Game extends Sprite {
 	private var pointerStart:Vector2D;
 	private var pointerCurrent:Vector2D;
 
-	private var map:Array<Array<Int>> = [	[0, 0, 0, 0, 0],
-											[0, 0, 0, 0, 0],
-											[0, 0, 0, 0, 0],
-											[1, 1, 1, 1, 1],
-											[0, 0, 0, 0, 0]	];
+	private var map:Array<Array<Int>> = [	[7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+											[7, 0, 8, 8, 8, 8, 8, 8, 0, 7],
+											[7, 0, 0, 0, 0, 0, 0, 0, 0, 7],
+											[7, 0, 0, 0, 0, 0, 0, 0, 0, 7],
+											[7, 0, 8, 8, 8, 8, 8, 8, 0, 7],
+											[7, 0, 0, 0, 0, 0, 0, 0, 0, 7],
+											[7, 0, 0, 0, 0, 0, 0, 0, 0, 7],
+											[7, 0, 0, 0, 0, 0, 0, 0, 0, 7],
+											[7, 7, 7, 7, 7, 7, 0, 7, 7, 7],
+											[7, 8, 8, 8, 8, 8, 0, 8, 8, 7],
+											[7, 8, 0, 0, 0, 0, 0, 0, 0, 7],
+											[7, 8, 0, 0, 0, 0, 0, 0, 0, 7],
+											[7, 8, 0, 0, 0, 0, 0, 0, 8, 7],
+											[7, 8, 0, 0, 0, 0, 0, 0, 8, 7],
+											[7, 8, 0, 0, 0, 0, 0, 0, 8, 7],
+											[7, 8, 0, 0, 0, 0, 0, 0, 8, 7],
+											[7, 7, 7, 7, 7, 7, 7, 7, 7, 7]	];
 
 	private var ingredients:Array<Ingredient> = [];
 
@@ -228,13 +240,14 @@ class Game extends Sprite {
 
 		// create main light
 		mainLight = new DirectionalLight();
-		mainLight.color = 0xcccccc;//0x808080;
-        mainLight.direction = new Vector3D(0.4, -0.8, -0.4);
-        mainLight.ambient = 0.8;
-        mainLight.ambientColor = 0x60657b;
-        mainLight.diffuse = 2.2;
-        mainLight.specular = 0.8;
-		//view.scene.addChild(mainLight);
+		mainLight.castsShadows = false;
+		mainLight.color = 0xeedddd;
+        mainLight.direction = new Vector3D(0, -1, 0);
+        mainLight.ambient = 0.5;
+        mainLight.ambientColor = 0xaaaaaa;
+        mainLight.diffuse = 0.5;
+        mainLight.specular = 0;
+		view.scene.addChild(mainLight);
 		
 		lightPicker = new StaticLightPicker([ mainLight ]);
 
@@ -281,11 +294,11 @@ class Game extends Sprite {
 
 		// need to load models sequentially
 		loadedModels = [];
-		modelsToLoad = ["assets/models/robochef.dae", "assets/models/tree.dae", "assets/models/cone.dae"];
-		meshCounts = [12, 4, 2];
+		modelsToLoad = ["assets/models/robochef.dae", "assets/models/tree.dae", "assets/models/cone.dae", "assets/models/wall.dae", "assets/models/counter.dae"];
+		meshCounts = [12, 4, 2, 1, 1];
 
 		// some models shouldn't receive shadows
-		shadows = [true, false, false];
+		shadows = [true, false, false, true, true];
 		currentModelLoading = -1;
 		loadNextModel();
 				
@@ -362,8 +375,8 @@ class Game extends Sprite {
 		p1.setLightPicker(lightPicker);
 		view.scene.addChild(p1);
 		
-		p1.x = 0;
-		p1.z = 0;
+		p1.x = 64;
+		p1.z = -64;
 		
 		// initial camera position
 		view.camera.x = p1.x;
@@ -737,10 +750,20 @@ class Game extends Sprite {
 							var cd:Vector2D = new Vector2D(object.x - player.x, object.z - player.z);
 							cd.normalize();
 							
-							player.vel.x -= (cd.x * 1);
-							player.vel.y += (cd.y * 1);
+							player.xSpeed = 0;
+							player.zSpeed = 0;
+						}
+					}
+
+					else if (object.collisionType == "aabb") {
+
+						if (Collisions.isAABBCollision(player.x, player.z, player.radius * 2, player.radius * 2, object.x, object.z, object.cWidth, object.cHeight)) {
 							
-							player.speed = 0;
+							var cd:Vector2D = Collisions.AABBCollision(player.x, player.z, player.radius * 2, player.radius * 2, object.x, object.z, object.cWidth, object.cHeight);
+							cd.normalize();
+							
+							player.xSpeed = 0;
+							player.zSpeed = 0;
 						}
 					}
 				}
@@ -755,8 +778,6 @@ class Game extends Sprite {
 							
 						cone.vel.x += (cd.x * 1);
 						cone.vel.y -= (cd.y * 1);
-						
-						player.speed *= 0.9;
 					}
 				}
 				
