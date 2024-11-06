@@ -375,8 +375,8 @@ class Game extends Sprite {
 		p1.setLightPicker(lightPicker);
 		view.scene.addChild(p1);
 		
-		p1.x = 64;
-		p1.z = -64;
+		p1.x = 96;
+		p1.z = -224;
 		
 		// initial camera position
 		view.camera.x = p1.x;
@@ -749,9 +749,6 @@ class Game extends Sprite {
 							
 							var cd:Vector2D = new Vector2D(object.x - player.x, object.z - player.z);
 							cd.normalize();
-							
-							player.xSpeed = 0;
-							player.zSpeed = 0;
 						}
 					}
 
@@ -760,10 +757,9 @@ class Game extends Sprite {
 						if (Collisions.isAABBCollision(player.x, player.z, player.radius * 2, player.radius * 2, object.x, object.z, object.cWidth, object.cHeight)) {
 							
 							var cd:Vector2D = Collisions.AABBCollision(player.x, player.z, player.radius * 2, player.radius * 2, object.x, object.z, object.cWidth, object.cHeight);
-							cd.normalize();
 							
-							player.xSpeed = 0;
-							player.zSpeed = 0;
+							player.x += (cd.x * 1.1);
+							player.z += (cd.y * 1.1);
 						}
 					}
 				}

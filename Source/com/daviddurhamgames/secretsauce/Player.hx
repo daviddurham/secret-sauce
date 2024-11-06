@@ -47,7 +47,7 @@ class Player extends ObjectContainer3D {
 	
 	private var control:Float = 1;
 
-	public var radius:Int = 6;
+	public var radius:Int = 5;
 
 	public var camera:Camera3D;
 
