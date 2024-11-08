@@ -15,7 +15,7 @@ class ObjectData {
 
 		// NOTE: converting original 512px tile positions
 		// to new 64px tile position by dividing by 8
-        pos = new Point(posX / 8, posY / 8);
+        pos = new Point(posX, posY);
 
 		// optional radius
 		radius = r;

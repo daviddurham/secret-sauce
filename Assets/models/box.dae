@@ -3,7 +3,7 @@
     <asset>
         <contributor>
             <authoring_tool>MilkShape 3D 1.8.4</authoring_tool>
-            <source_data>file://C:/Users/david/Desktop/counter.ms3d</source_data>
+            <source_data>file://C:/Users/david/Desktop/box.ms3d</source_data>
         </contributor>
         <created>2007-05-21T20:10:16Z</created>
         <modified>2007-05-21T20:10:16Z</modified>
@@ -77,7 +77,7 @@
         <geometry id="Regroup01-geometry" name="Regroup01-geometry">
             <mesh>
                 <source id="Regroup01-positions" name="position">
-                    <float_array id="Regroup01-positions-array" count="18">-2 2 -2 -2 2 1.8 2 2 -2 2 2 1.8 2 2 2 -2 2 2</float_array>
+                    <float_array id="Regroup01-positions-array" count="18">-2 2 -1.5 -2 2 1.3 2 2 -1.5 2 2 1.3 2 2 1.5 -2 2 1.5</float_array>
                     <technique_common>
                         <accessor source="#Regroup01-positions-array" count="6" stride="3">
                             <param name="X" type="float" />
@@ -119,7 +119,7 @@
         <geometry id="Regroup02-geometry" name="Regroup02-geometry">
             <mesh>
                 <source id="Regroup02-positions" name="position">
-                    <float_array id="Regroup02-positions-array" count="12">-2 2 2 -2 1.5 2 2 1.5 2 2 2 2</float_array>
+                    <float_array id="Regroup02-positions-array" count="12">-2 2 1.5 -2 1.5 1.5 2 1.5 1.5 2 2 1.5</float_array>
                     <technique_common>
                         <accessor source="#Regroup02-positions-array" count="4" stride="3">
                             <param name="X" type="float" />
@@ -161,7 +161,7 @@
         <geometry id="Regroup04-geometry" name="Regroup04-geometry">
             <mesh>
                 <source id="Regroup04-positions" name="position">
-                    <float_array id="Regroup04-positions-array" count="12">-2 1.5 1.8 -2 0 1.8 2 1.5 1.8 2 0 1.8</float_array>
+                    <float_array id="Regroup04-positions-array" count="12">-2 1.5 1.3 -2 0 1.3 2 1.5 1.3 2 0 1.3</float_array>
                     <technique_common>
                         <accessor source="#Regroup04-positions-array" count="4" stride="3">
                             <param name="X" type="float" />
@@ -203,7 +203,7 @@
         <geometry id="Regroup06-geometry" name="Regroup06-geometry">
             <mesh>
                 <source id="Regroup06-positions" name="position">
-                    <float_array id="Regroup06-positions-array" count="36">-2 2 2 -2 2 1.8 -2 1.5 1.8 -2 1.5 2 2 1.5 2 2 1.5 1.8 2 2 1.8 2 2 2 -2 2 -2 -2 1.5 -2 2 1.5 -2 2 2 -2</float_array>
+                    <float_array id="Regroup06-positions-array" count="36">-2 2 1.5 -2 2 1.3 -2 1.5 1.3 -2 1.5 1.5 2 1.5 1.5 2 1.5 1.3 2 2 1.3 2 2 1.5 -2 2 -1.5 -2 1.5 -1.5 2 1.5 -1.5 2 2 -1.5</float_array>
                     <technique_common>
                         <accessor source="#Regroup06-positions-array" count="12" stride="3">
                             <param name="X" type="float" />
@@ -245,7 +245,7 @@
         <geometry id="Regroup07-geometry" name="Regroup07-geometry">
             <mesh>
                 <source id="Regroup07-positions" name="position">
-                    <float_array id="Regroup07-positions-array" count="24">2 1.5 1.8 2 0 1.8 2 1.5 -2 2 0 -2 -2 1.5 -2 -2 0 -2 -2 1.5 1.8 -2 0 1.8</float_array>
+                    <float_array id="Regroup07-positions-array" count="24">2 1.5 1.3 2 0 1.3 2 1.5 -1.5 2 0 -1.5 -2 1.5 -1.5 -2 0 -1.5 -2 1.5 1.3 -2 0 1.3</float_array>
                     <technique_common>
                         <accessor source="#Regroup07-positions-array" count="8" stride="3">
                             <param name="X" type="float" />
@@ -287,7 +287,7 @@
         <geometry id="Regroup08-geometry" name="Regroup08-geometry">
             <mesh>
                 <source id="Regroup08-positions" name="position">
-                    <float_array id="Regroup08-positions-array" count="12">-2 1.5 2 -2 1.5 1.8 2 1.5 1.8 2 1.5 2</float_array>
+                    <float_array id="Regroup08-positions-array" count="12">-2 1.5 1.5 -2 1.5 1.3 2 1.5 1.3 2 1.5 1.5</float_array>
                     <technique_common>
                         <accessor source="#Regroup08-positions-array" count="4" stride="3">
                             <param name="X" type="float" />
@@ -323,6 +323,48 @@
                     <input semantic="NORMAL" source="#Regroup08-normals" offset="1" />
                     <input semantic="TEXCOORD" source="#Regroup08-texcoords" offset="2" />
                     <p>0 0 0 1 0 1 2 0 2 0 0 0 2 0 2 3 0 3</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="Box03-geometry" name="Box03-geometry">
+            <mesh>
+                <source id="Box03-positions" name="position">
+                    <float_array id="Box03-positions-array" count="24">-1 4 1 -1 2 1 1 4 1 1 2 1 1 4 -1 1 2 -1 -1 4 -1 -1 2 -1</float_array>
+                    <technique_common>
+                        <accessor source="#Box03-positions-array" count="8" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Box03-normals" name="normal">
+                    <float_array id="Box03-normals-array" count="15">0 0 1 1 0 0 0 0 -1 -1 0 0 0 1 0</float_array>
+                    <technique_common>
+                        <accessor source="#Box03-normals-array" count="5" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Box03-texcoords" name="texcoord">
+                    <float_array id="Box03-texcoords-array" count="34">0.612947 0.571452 0.903723 0.571452 0.903723 0.859116 0.903723 0.859116 0.903723 0.859116 0.903723 0.859116 0.903723 0.859116 0.612947 0.859116 0.903723 0.859116 0.612947 0.859116 0.612947 0.859116 0.612947 0.859116 0.612947 0.859116 0.612947 0.859116 0.612947 0.859116 0.903723 0.859116 0.903723 0.859116</float_array>
+                    <technique_common>
+                        <accessor source="#Box03-texcoords-array" count="17" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Box03-geometry-vertices">
+                    <input semantic="POSITION" source="#Box03-positions" />
+                </vertices>
+                <triangles material="Material01" count="10">
+                    <input semantic="VERTEX" source="#Box03-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Box03-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Box03-texcoords" offset="2" />
+                    <p>0 0 0 1 0 0 2 0 1 1 0 0 3 0 1 2 0 1 2 1 1 3 1 1 4 1 2 3 1 1 5 1 3 4 1 4 4 2 5 5 2 6 6 2 7 5 2 8 7 2 9 6 2 10 6 3 11 7 3 12 0 3 0 7 3 13 1 3 0 0 3 0 6 4 14 0 4 0 4 4 15 0 4 0 2 4 1 4 4 16</p>
                 </triangles>
             </mesh>
         </geometry>
@@ -376,6 +418,15 @@
             </node>
             <node id="Regroup08" name="Regroup08" type="NODE">
                 <instance_geometry url="#Regroup08-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material01" target="#Material01" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="Box03" name="Box03" type="NODE">
+                <instance_geometry url="#Box03-geometry">
                     <bind_material>
                         <technique_common>
                             <instance_material symbol="Material01" target="#Material01" />

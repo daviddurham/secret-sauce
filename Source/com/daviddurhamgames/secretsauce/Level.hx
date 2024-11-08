@@ -26,21 +26,31 @@ class Level {
 	private var circleShadowTexture:TextureMaterial;
 	private var rectangleShadowTexture:TextureMaterial;
 	
-	private var _tileData:Array<TileData> = [	new TileData(0, "kitchen_floor", 0, []),	//blank
-												new TileData(1, "straight_horizontal", 0, [new ObjectData(1, 475, 432), new ObjectData(1, 402, 432), new ObjectData(1, 329, 432), new ObjectData(1, 256, 432), new ObjectData(1, 183, 432), new ObjectData(1, 110, 432), new ObjectData(1, 36, 432), new ObjectData(1, 475, 80), new ObjectData(1, 402, 80), new ObjectData(1, 329, 80), new ObjectData(1, 256, 80), new ObjectData(1, 183, 80), new ObjectData(1, 110, 80), new ObjectData(1, 36, 80) ]), //straight H
-												new TileData(2, "straight_horizontal", 1, [new ObjectData(1, 80, 475), new ObjectData(1, 80, 402), new ObjectData(1, 80, 329), new ObjectData(1, 79, 256), new ObjectData(1, 79, 183), new ObjectData(1, 79, 110), new ObjectData(1, 79, 36), new ObjectData(1, 432, 475), new ObjectData(1, 432, 402), new ObjectData(1, 432, 329), new ObjectData(1, 431, 256), new ObjectData(1, 431, 183), new ObjectData(1, 431, 110), new ObjectData(1, 431, 36) ]), //straight V
+	private var _tileData:Array<TileData> = [	new TileData(0, "kitchen_floor", 0, []),
+
+												new TileData(1, "tile_grass", 0, []),
+												new TileData(2, "tile_grass", 0, []),
+												new TileData(3, "straight_horizontal", 0, []),
 												
-												// basic corners (br, bl, tl, tr)
-												new TileData(3, "corner_tl", 0, []),
-												new TileData(4, "corner_tl", 1, []),
-												new TileData(5, "corner_tl", 2, []),
-												new TileData(6, "corner_tl", 3, []),
+												
+												new TileData(4, "kitchen_floor", 1, []),
+												new TileData(5, "kitchen_floor", 2, []),
+												new TileData(6, "kitchen_floor", 3, []),
 												
 												// wall
 												new TileData(7, "kitchen_floor", 0, [new ObjectData(2, 0, 0)]),
 												
 												// counter
-												new TileData(8, "kitchen_floor", 0, [new ObjectData(3, 0, 0)])
+												new TileData(8, "kitchen_floor", 0, [new ObjectData(3, 0, 0)]),
+
+												// pot
+												new TileData(9, "kitchen_floor", 0, [new ObjectData(4, 0, 0)]),
+
+												// grill
+												new TileData(10, "kitchen_floor", 0, [new ObjectData(5, 0, 0)]),
+
+												// box
+												new TileData(11, "kitchen_floor", 0, [new ObjectData(6, 0, 2)])
 											];
 																	
 	// default level map data
@@ -54,10 +64,10 @@ class Level {
 	private var _levelOrder:Array<Array<Int>>;
 	
 	// tree positions within a tile
-	private var trees:Array<Array<Array<Float>>> = [ [	[0.3, 0.5], [0.8, 0.7]	],
-												 	 [	[0.4, 0.4], [0.6, 0.7]	],
-												  	 [	[0.1, 0.3], [0.6, 0.9], [0.9, 0.5], [0.2, 0.8]	],
-												  	 [	[0.2, 0.9], [0.8, 0.8]	],
+	private var trees:Array<Array<Array<Float>>> = [ [	[0.3, 0.5]	],
+												 	 [ 	[0.6, 0.7]	],
+												  	 [	[0.9, 0.5]	],
+												  	 [	[0.8, 0.8]	],
 												  	 []	];
  
 	private var _codeString:String = "";
@@ -72,7 +82,7 @@ class Level {
 
 			new TileTexture("kitchen_floor", _skin),
 			new TileTexture("straight_horizontal", _skin),
-			new TileTexture("corner_tl", _skin)
+			new TileTexture("tile_grass", _skin)
 		];
 		
 		circleShadowTexture = new TextureMaterial(Cast.bitmapTexture("assets/shadow_circle.png"), false, false, false);
@@ -138,9 +148,8 @@ class Level {
 					_world.addTile(tile);
 				}
 				
-				/*
 				// trees and stuff on blank tiles
-				if (tileData.id == 0) {
+				if (tileData.id == 1) {
 					
 					var treePattern:Int = Math.floor(Math.random() * trees.length);
 					var len:Int = trees[treePattern].length;
@@ -153,21 +162,13 @@ class Level {
 
 						tree.rotationY = 360 * Math.random();
 						
-						var treeSize:Float = (4 + Math.floor(Math.random() * 2));
-						
-						// larger 'non-realistic' trees on overview
-						if (isOverview) {
-							
-							treeSize = treeSize * 2;
-						}
-						
+						var treeSize:Float = 4 + Math.floor(Math.random() * 2);
 						tree.scaleX = tree.scaleY = tree.scaleZ = treeSize;
 						tree.setCollisionType("circle", treeSize);
 						
 						_world.addObstacle(tree);
 					}
 				}
-				*/
 
 				for (obj in tileData.objects) {
 					
@@ -180,7 +181,7 @@ class Level {
 							var object:GameObject = new GameObject("", cast(_models[2].clone(), ObjectContainer3D));
 							object.x = (TILE_WIDTH * i) + obj.pos.x - (TILE_WIDTH / 2);
 							object.y = 1;
-							object.z = (-TILE_HEIGHT * j) - obj.pos.y + (TILE_HEIGHT / 2);
+							object.z = (-TILE_HEIGHT * j) + obj.pos.y + (TILE_HEIGHT / 2);
 
 							object.scaleX = object.scaleY = object.scaleZ = 0.6;
 
@@ -191,9 +192,9 @@ class Level {
 						case 2:
 							
 							var object:GameObject = new GameObject("wall", cast(_models[3].clone(), ObjectContainer3D));
-							object.x = (TILE_WIDTH * i) + obj.pos.x;// - (TILE_WIDTH / 2);
+							object.x = (TILE_WIDTH * i) + obj.pos.x;
 							object.y = 0;
-							object.z = (-TILE_HEIGHT * j) - obj.pos.y;// + (TILE_HEIGHT / 2);
+							object.z = (-TILE_HEIGHT * j) + obj.pos.y;
 
 							object.scaleX = object.scaleY = object.scaleZ = 4;
 
@@ -204,13 +205,52 @@ class Level {
 						case 3:
 							
 							var object:GameObject = new GameObject("counter", cast(_models[4].clone(), ObjectContainer3D));
-							object.x = (TILE_WIDTH * i) + obj.pos.x;// - (TILE_WIDTH / 2);
+							object.x = (TILE_WIDTH * i) + obj.pos.x;
 							object.y = 0;
-							object.z = (-TILE_HEIGHT * j) - obj.pos.y;// + (TILE_HEIGHT / 2);
+							object.z = (-TILE_HEIGHT * j) + obj.pos.y;
 
 							object.scaleX = object.scaleY = object.scaleZ = 4;
 
 							object.setCollisionType("aabb", TILE_WIDTH, TILE_HEIGHT);
+							_world.addObstacle(object);
+
+						// pot
+						case 4:
+							
+							var object:GameObject = new GameObject("pot", cast(_models[5].clone(), ObjectContainer3D));
+							object.x = (TILE_WIDTH * i) + obj.pos.x;
+							object.y = 0;
+							object.z = (-TILE_HEIGHT * j) + obj.pos.y;
+
+							object.scaleX = object.scaleY = object.scaleZ = 4;
+
+							object.setCollisionType("aabb", TILE_WIDTH, TILE_HEIGHT);
+							_world.addObstacle(object);
+
+						// grill
+						case 5:
+							
+							var object:GameObject = new GameObject("grill", cast(_models[6].clone(), ObjectContainer3D));
+							object.x = (TILE_WIDTH * i) + obj.pos.x;
+							object.y = 0;
+							object.z = (-TILE_HEIGHT * j) + obj.pos.y;
+
+							object.scaleX = object.scaleY = object.scaleZ = 4;
+
+							object.setCollisionType("aabb", TILE_WIDTH, TILE_HEIGHT);
+							_world.addObstacle(object);
+
+						// box
+						case 6:
+							
+							var object:GameObject = new GameObject("box", cast(_models[7].clone(), ObjectContainer3D));
+							object.x = (TILE_WIDTH * i) + obj.pos.x;
+							object.y = 0;
+							object.z = (-TILE_HEIGHT * j) + obj.pos.y;
+
+							object.scaleX = object.scaleY = object.scaleZ = 4;
+
+							object.setCollisionType("aabb", TILE_WIDTH, TILE_HEIGHT * 0.75);
 							_world.addObstacle(object);
 					}
 				}

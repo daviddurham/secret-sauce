@@ -39,8 +39,6 @@ class Player extends ObjectContainer3D {
 	public var isUp:Bool = false;
 	public var isDown:Bool = false;
 	
-	public var acc:Vector2D;
-	public var vel:Vector2D;
 	public var dir:Vector2D;	
 	
 	private var cameraVector:Vector2D;
@@ -67,13 +65,12 @@ class Player extends ObjectContainer3D {
 		PI_OVER_180 = Math.PI / 180;
 		D180_OVER_PI = 180 / Math.PI;
 				
-		dir = new Vector2D();
-		acc = new Vector2D();
-		vel = new Vector2D();
-
+		dir = new Vector2D(0, -1);
+		
 		// hold model in another container to make rotations work
 		holder = new ObjectContainer3D();
-		addChild(holder); 
+		holder.rotationY = dir.angle();
+		addChild(holder);
 
 		// draw car 
 		model = new ObjectContainer3D();
@@ -146,9 +143,10 @@ class Player extends ObjectContainer3D {
 		velY = 0;
 		y = 0;
 		
-		dir.x = dir.y = 0;
-		acc.x = acc.y = 0;
-		vel.x = vel.y = 0;
+		dir.x = 0;
+		dir.y = -1;
+
+		holder.rotationY = dir.angle();
 	}
 	
 	public function jump():Void {

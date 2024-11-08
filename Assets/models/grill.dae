@@ -3,7 +3,7 @@
     <asset>
         <contributor>
             <authoring_tool>MilkShape 3D 1.8.4</authoring_tool>
-            <source_data>file://C:/Users/david/Desktop/counter.ms3d</source_data>
+            <source_data>file://C:/Users/DavidDurham/Downloads/grill.ms3d</source_data>
         </contributor>
         <created>2007-05-21T20:10:16Z</created>
         <modified>2007-05-21T20:10:16Z</modified>
@@ -97,7 +97,7 @@
                     </technique_common>
                 </source>
                 <source id="Regroup01-texcoords" name="texcoord">
-                    <float_array id="Regroup01-texcoords-array" count="12">0.915625 0.478125 0.915625 0.28843 0.958276 0.478125 0.958276 0.28843 0.958276 0.278946 0.915625 0.278946</float_array>
+                    <float_array id="Regroup01-texcoords-array" count="12">0.509455 0.49672 0.509455 0.268714 0.864723 0.49672 0.864723 0.268714 0.864723 0.25733 0.509455 0.25733</float_array>
                     <technique_common>
                         <accessor source="#Regroup01-texcoords-array" count="6" stride="2">
                             <param name="S" type="float" />
@@ -139,7 +139,7 @@
                     </technique_common>
                 </source>
                 <source id="Regroup02-texcoords" name="texcoord">
-                    <float_array id="Regroup02-texcoords-array" count="8">0.914162 0.481377 0.914162 0.293054 0.968927 0.293054 0.968927 0.481377</float_array>
+                    <float_array id="Regroup02-texcoords-array" count="8">0.846418 0.466539 0.846418 0.288257 0.871072 0.288257 0.871072 0.466539</float_array>
                     <technique_common>
                         <accessor source="#Regroup02-texcoords-array" count="4" stride="2">
                             <param name="S" type="float" />
@@ -181,7 +181,7 @@
                     </technique_common>
                 </source>
                 <source id="Regroup04-texcoords" name="texcoord">
-                    <float_array id="Regroup04-texcoords-array" count="8">0.901589 0.168605 0.901589 0.00251371 0.969667 0.168605 0.969667 0.00251371</float_array>
+                    <float_array id="Regroup04-texcoords-array" count="8">0.784402 0.168605 0.784402 0.00251371 0.85248 0.168605 0.85248 0.00251371</float_array>
                     <technique_common>
                         <accessor source="#Regroup04-texcoords-array" count="4" stride="2">
                             <param name="S" type="float" />
@@ -223,7 +223,7 @@
                     </technique_common>
                 </source>
                 <source id="Regroup06-texcoords" name="texcoord">
-                    <float_array id="Regroup06-texcoords-array" count="12">0.98844 0.404137 0.983667 0.404137 0.983667 0.286066 0.98844 0.286066 0.888222 0.404137 0.888222 0.286066</float_array>
+                    <float_array id="Regroup06-texcoords-array" count="12">0.866272 0.422643 0.865124 0.422643 0.865124 0.295262 0.866272 0.295262 0.842153 0.422643 0.842153 0.295262</float_array>
                     <technique_common>
                         <accessor source="#Regroup06-texcoords-array" count="6" stride="2">
                             <param name="S" type="float" />
@@ -265,7 +265,7 @@
                     </technique_common>
                 </source>
                 <source id="Regroup07-texcoords" name="texcoord">
-                    <float_array id="Regroup07-texcoords-array" count="8">0.9667 0.240047 0.9667 0.182094 0.907217 0.240047 0.907217 0.182094</float_array>
+                    <float_array id="Regroup07-texcoords-array" count="8">0.849513 0.242 0.849513 0.184047 0.790029 0.242 0.790029 0.184047</float_array>
                     <technique_common>
                         <accessor source="#Regroup07-texcoords-array" count="4" stride="2">
                             <param name="S" type="float" />
@@ -307,7 +307,7 @@
                     </technique_common>
                 </source>
                 <source id="Regroup08-texcoords" name="texcoord">
-                    <float_array id="Regroup08-texcoords-array" count="8">0.902812 0.188116 0.902812 0.245136 0.960652 0.245136 0.960652 0.188116</float_array>
+                    <float_array id="Regroup08-texcoords-array" count="8">0.791484 0.18421 0.791484 0.24123 0.849324 0.24123 0.849324 0.18421</float_array>
                     <technique_common>
                         <accessor source="#Regroup08-texcoords-array" count="4" stride="2">
                             <param name="S" type="float" />

@@ -78,7 +78,7 @@ class Main extends Sprite {
 
 	// some globals (move these)
 	// height and width of each tile
-	public static var TILE_SIZE:Int = 40;
+	public static var TILE_SIZE:Int = 16;
 
 	public static var mode:String = "";
 	public static var numberOfPlayers = 1;

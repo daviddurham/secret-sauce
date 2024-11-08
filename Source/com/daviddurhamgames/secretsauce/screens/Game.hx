@@ -148,29 +148,30 @@ class Game extends Sprite {
 	private var pointerStart:Vector2D;
 	private var pointerCurrent:Vector2D;
 
-	private var map:Array<Array<Int>> = [	[7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
-											[7, 0, 8, 8, 8, 8, 8, 8, 0, 7],
-											[7, 0, 0, 0, 0, 0, 0, 0, 0, 7],
-											[7, 0, 0, 0, 0, 0, 0, 0, 0, 7],
-											[7, 0, 8, 8, 8, 8, 8, 8, 0, 7],
-											[7, 0, 0, 0, 0, 0, 0, 0, 0, 7],
-											[7, 0, 0, 0, 0, 0, 0, 0, 0, 7],
-											[7, 0, 0, 0, 0, 0, 0, 0, 0, 7],
-											[7, 7, 7, 7, 7, 7, 0, 7, 7, 7],
-											[7, 8, 8, 8, 8, 8, 0, 8, 8, 7],
-											[7, 8, 0, 0, 0, 0, 0, 0, 0, 7],
-											[7, 8, 0, 0, 0, 0, 0, 0, 0, 7],
-											[7, 8, 0, 0, 0, 0, 0, 0, 8, 7],
-											[7, 8, 0, 0, 0, 0, 0, 0, 8, 7],
-											[7, 8, 0, 0, 0, 0, 0, 0, 8, 7],
-											[7, 8, 0, 0, 0, 0, 0, 0, 8, 7],
-											[7, 7, 7, 7, 7, 7, 7, 7, 7, 7]	];
+	private var map:Array<Array<Int>> = [	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
+											[1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 7, 7, 7, 7, 7, 7, 7, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7,11,11,11, 0,11,11,11, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7,11,11,11, 0,11,11,11, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 7, 7, 7, 7, 0, 7, 7, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 8, 9,10,10, 0, 8, 8, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 0, 7, 2, 2, 2, 2 ],
+											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
+											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 2, 2, 2, 2 ],
+											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 7, 7, 7, 7, 7, 7, 7, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1 ],
+											[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]	];
 
 	private var ingredients:Array<Ingredient> = [];
 
 	private var currentRecipe:Array<Int> = [ 1, 1, 1, 2, 2, 2, 3, 3, 4, 5 ];
 
-	public function new(mode:String = "quick_race", players:Int = 1, code:String = "") {
+	public function new(mode:String = "default", players:Int = 1, code:String = "") {
 		
 		super();
 
@@ -294,11 +295,11 @@ class Game extends Sprite {
 
 		// need to load models sequentially
 		loadedModels = [];
-		modelsToLoad = ["assets/models/robochef.dae", "assets/models/tree.dae", "assets/models/cone.dae", "assets/models/wall.dae", "assets/models/counter.dae"];
-		meshCounts = [12, 4, 2, 1, 1];
+		modelsToLoad = ["assets/models/robochef.dae", "assets/models/tree.dae", "assets/models/cone.dae", "assets/models/wall.dae", "assets/models/counter.dae", "assets/models/pot.dae", "assets/models/grill.dae", "assets/models/box.dae"];
+		meshCounts = [12, 4, 2, 1, 6, 8, 6, 7];
 
 		// some models shouldn't receive shadows
-		shadows = [true, false, false, true, true];
+		shadows = [true, false, false, true, true, true, true, true];
 		currentModelLoading = -1;
 		loadNextModel();
 				
@@ -375,8 +376,8 @@ class Game extends Sprite {
 		p1.setLightPicker(lightPicker);
 		view.scene.addChild(p1);
 		
-		p1.x = 96;
-		p1.z = -224;
+		p1.x = Main.TILE_SIZE * 9;
+		p1.z = Main.TILE_SIZE * -11;
 		
 		// initial camera position
 		view.camera.x = p1.x;
@@ -785,12 +786,6 @@ class Game extends Sprite {
 							
 							var cd:Vector2D = new Vector2D(otherPlayer.x - player.x, otherPlayer.z - player.z);
 							cd.normalize();
-							
-							player.vel.x -= (cd.x * 0.5);
-							player.vel.y += (cd.y * 0.5);
-							
-							otherPlayer.vel.x += (cd.x * 0.5);
-							otherPlayer.vel.y -= (cd.y * 0.5);
 						}
 					}
 				}
