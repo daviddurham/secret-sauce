@@ -145,8 +145,8 @@ class Main extends Sprite {
 
 		//if (Main.isDebug) {
 			
-			_fps = new FPS(4, 4, 0xffffff);
-			addChild(_fps);
+			//_fps = new FPS(4, 4, 0xffffff);
+			//addChild(_fps);
 		//}
 				
 		var guide:Bitmap = new Bitmap(Assets.getBitmapData("assets/guide.png"));

@@ -28,13 +28,6 @@ class ConfirmPanel extends Sprite {
 		
         createPanel(450, 350);
 
-        var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/reset_title.png"));
-        title.smoothing = true;
-		title.scaleX = title.scaleY = 0.5;
-        title.x = -title.width / 2;
-        title.y = -175;
-        addChild(title);
-
         buttonConfirm = createButton("assets/button_yes.png", 0, 0, 0.8);
         buttonConfirm.addEventListener(MouseEvent.CLICK, onConfirmClicked);
 

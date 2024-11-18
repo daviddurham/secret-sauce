@@ -22,14 +22,15 @@ class Player extends ObjectContainer3D {
 
 	public var holder:ObjectContainer3D;
 	public var model:ObjectContainer3D;
-	public var material:TextureMaterial;
 	public var newMaterial:TextureMaterial;
 
 	// states
-	public var isGo:Bool = true;
 	public var isActive:Bool = true;
 	public var isJumping:Bool = false;
-	public var isFalling:Bool = false;
+
+	public var holding = null;
+	public var holdingObjectMaterial:TextureMaterial;
+	public var holdingObject:Mesh;	
 
 	public var velY:Float = 0;
 	public var velRot:Float = 0.1;
@@ -39,22 +40,22 @@ class Player extends ObjectContainer3D {
 	public var isUp:Bool = false;
 	public var isDown:Bool = false;
 	
+	public var xSpeed:Float = 0;
+	public var zSpeed:Float = 0;
+	public var maxSpeed:Float = 0.5;
+
 	public var dir:Vector2D;	
-	
-	private var cameraVector:Vector2D;
-	
-	private var control:Float = 1;
 
 	public var radius:Int = 5;
 
 	public var camera:Camera3D;
 
-	public var cat:Mesh;
-
-	public var xSpeed:Float = 0;
-	public var zSpeed:Float = 0;
+	public var isMovingTo:Bool = false;
+	public var targetPositionX:Float;
+	public var targetPositionZ:Float;
+	public var moveCallback = null;
 	
-	public function new(_id:Int, _model:ObjectContainer3D, _cam:Camera3D = null, code:String = "0000"):Void {
+	public function new(_id:Int, _model:ObjectContainer3D, _cam:Camera3D = null):Void {
 		
 		super();
 
@@ -72,30 +73,33 @@ class Player extends ObjectContainer3D {
 		holder.rotationY = dir.angle();
 		addChild(holder);
 
-		// draw car 
+		// draw character
+		var scale:Float = _id == 1 ? 1.1 : 1.4;
+
 		model = new ObjectContainer3D();
 		model.y = 0;
-		model.scaleX = model.scaleY = model.scaleZ = 1.25;//0.333;
+		model.scaleX = model.scaleY = model.scaleZ = scale;//1.25;
 		holder.addChild(model);
 
-		newMaterial = new TextureMaterial(_id == 1 ? Cast.bitmapTexture("assets/robochef.png") : Cast.bitmapTexture("assets/robochef.png"), false);
+		newMaterial = new TextureMaterial(_id == 1 ? Cast.bitmapTexture("assets/robochef.png") : Cast.bitmapTexture("assets/robodad.png"), false);
 		//newMaterial.alphaThreshold = 1;
 		//newMaterial.lightPicker = lightPicker;
 		newMaterial.mipmap = false;
 		updateMaterials(model, _model, newMaterial);
 
-		material = new TextureMaterial(Cast.bitmapTexture("assets/cat.png"), false);
-		material.alphaThreshold = 1;
-		//material.lightPicker = lightPicker;
-		material.mipmap = false;
-		material.bothSides = false;
+		holdingObjectMaterial = new TextureMaterial(Cast.bitmapTexture("assets/ingredient1.png"), false);
+		holdingObjectMaterial.alphaThreshold = 1;
+		//holdingObjectMaterial.lightPicker = lightPicker;
+		holdingObjectMaterial.mipmap = false;
+		holdingObjectMaterial.bothSides = true;
 
-		cat = new Mesh(new PlaneGeometry(9, 12), material);
-		cat.x = 0;
-		cat.y = 18;
-		cat.z = -3;
-		cat.rotationX = -90;
-		//model.addChild(cat);
+		holdingObject = new Mesh(new PlaneGeometry(4, 4), holdingObjectMaterial);
+		holdingObject.x = 0;
+		holdingObject.y = 11.6;
+		holdingObject.z = 0;
+		holdingObject.rotationX = -90;
+		holdingObject.visible = false;
+		model.addChild(holdingObject);
 	}
 
 	private function updateMaterials(m:ObjectContainer3D, object:ObjectContainer3D, material:TextureMaterial):Void {
@@ -120,7 +124,7 @@ class Player extends ObjectContainer3D {
 	public function setLightPicker(lightPicker:StaticLightPicker):Void {
 
 		newMaterial.lightPicker = lightPicker;
-		material.lightPicker = lightPicker;
+		holdingObjectMaterial.lightPicker = lightPicker;
 	}
 	
 	public function setActive(flag:Bool):Void {
@@ -134,12 +138,7 @@ class Player extends ObjectContainer3D {
 		
 		model.rotationX = 0;
 		model.rotationZ = 0;
-
-		setControl(1);
-		
-		isJumping = false;
-		isFalling = false;
-		
+				
 		velY = 0;
 		y = 0;
 		
@@ -148,50 +147,139 @@ class Player extends ObjectContainer3D {
 
 		holder.rotationY = dir.angle();
 	}
+
+	public function setRotation(dirX:Float, dirZ:Float):Void {
+
+		dir.x = dirX;
+		dir.y = dirZ;
+
+		holder.rotationY = dir.angle();
+	}
 	
+	public function setMaxSpeed(max:Float = 0.5):Void {
+
+		maxSpeed = max;
+	}
+
+	public function collectIngredient(ingredient:Ingredient):Void {
+
+		holding = ingredient;
+
+		holdingObjectMaterial.texture = Cast.bitmapTexture(ingredient.image/*"assets/leaf.png"*/);
+		holdingObject.material = holdingObjectMaterial;
+
+		holdingObject.visible = true;
+	}
+
+	public function dropIngredient():Void {
+
+		holdingObject.visible = false;
+		holding = null;
+	}
+
+	public function moveToPosition(px:Float, pz:Float, callback):Void {
+
+		isUp = false;
+		isDown = false;
+		isLeft = false;
+		isRight = false;
+
+		if (px < x) {
+
+			isLeft = true;
+		}
+		else if (px > x) {
+
+			isRight = true;
+		}
+
+		if (pz < z) {
+		
+			isDown = true;
+		}
+		else if (pz > z) {
+		
+			isUp = true;
+		}
+
+		targetPositionX = px;
+		targetPositionZ = pz;
+
+		isMovingTo = true;
+
+		if (callback != null) {
+		
+			moveCallback = callback;
+		}
+		else {
+
+			moveCallback = null;
+		}
+	}
+
 	public function jump():Void {
 		
 		velY = -6;
 		isJumping = true;
-		setControl(0.5);
-	}
-	
-	public function setControl(c:Float = 1):Void {
-		
-		control = c;
 	}
 	
 	public function update():Void {
 		
 		if (isActive) {
-		
-			var xSlowdown:Float = 1;
-			var zSlowdown:Float = 1;
 
+			// for npcs...
+			if (isMovingTo) {
+
+				if (x > targetPositionX - 1 && x < targetPositionX + 1) {
+
+					isLeft = false;
+					isRight = false;
+				}
+
+				if (z > targetPositionZ - 1 && z < targetPositionZ + 1) {
+
+					isUp = false;
+					isDown = false;
+				}
+
+				// target reached
+				if (x > targetPositionX - 1 && x < targetPositionX + 1 &&
+					z > targetPositionZ - 1 && z < targetPositionZ + 1) {
+
+					isMovingTo = false;
+
+					// target reached
+					if (moveCallback != null) {
+						
+						moveCallback();
+					}
+				}
+			}
+		
 			if (isDown) {
 
 				dir.y = -1;
 
-				if (zSpeed > -0.5) {
+				if (zSpeed > -maxSpeed) {
 
 					zSpeed -= 0.03;
 				}
 				else {
 					
-					zSpeed = -0.5;
+					zSpeed = -maxSpeed;
 				}
 			}
 			else if (isUp) {
 
 				dir.y = 1;
 
-				if (zSpeed < 0.5) {
+				if (zSpeed < maxSpeed) {
 
 					zSpeed += 0.03;
 				}
 				else {
 					
-					zSpeed = 0.5;
+					zSpeed = maxSpeed;
 				}
 			}
 			else {
@@ -211,26 +299,26 @@ class Player extends ObjectContainer3D {
 
 				dir.x = 1;
 
-				if (xSpeed > -0.5) {
+				if (xSpeed > -maxSpeed) {
 
 					xSpeed -= 0.03;
 				}
 				else {
 					
-					xSpeed = -0.5;
+					xSpeed = -maxSpeed;
 				}
 			}
 			else if (isRight) {
 
 				dir.x = -1;
 
-				if (xSpeed < 0.5) {
+				if (xSpeed < maxSpeed) {
 
 					xSpeed += 0.03;
 				}
 				else {
 					
-					xSpeed = 0.5;
+					xSpeed = maxSpeed;
 				}
 			}
 			else {
@@ -271,6 +359,7 @@ class Player extends ObjectContainer3D {
 			model.rotationX = Math.max(Math.abs(xSpeed), Math.abs(zSpeed)) * 15;
 			holder.rotationY += D180_OVER_PI * Math.atan2((Math.cos(holder.rotationY * PI_OVER_180) * Math.sin(targetAngle * PI_OVER_180) - Math.sin(holder.rotationY * PI_OVER_180) * Math.cos(targetAngle * PI_OVER_180)), (Math.sin(holder.rotationY * PI_OVER_180) * Math.sin(targetAngle * PI_OVER_180) + Math.cos(holder.rotationY * PI_OVER_180) * Math.cos(targetAngle * PI_OVER_180))) / 8;
 	
+			holdingObject.rotationY = -holder.rotationY;
 		}
 	}
 }

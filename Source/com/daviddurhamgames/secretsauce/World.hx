@@ -1,13 +1,13 @@
 ﻿package com.daviddurhamgames.secretsauce;
 
+import openfl.display.Sprite;
+
 import away3d.materials.methods.ShadowMapMethodBase;
 import away3d.materials.lightpickers.StaticLightPicker;
 import away3d.containers.ObjectContainer3D;
 import away3d.containers.Scene3D;
+
 import com.daviddurhamgames.secretsauce.LevelTile;
-
-import openfl.display.Sprite;
-
 import com.piratejuice.vfx.ScreenShake;
 
 class World {
@@ -28,7 +28,7 @@ class World {
 	// object lists
 	public var tiles:Array<LevelTile>;
 	public var objects:Array<ObjectContainer3D>;
-	public var props:Array<GameObject>;
+	public var hotspots:Array<GameObject>;
 	public var obstacles:Array<GameObject>;
 	public var cones:Array<GameObject>;
 	
@@ -37,9 +37,6 @@ class World {
 	
 	// vfx
 	private var _shake:ScreenShake;
-	
-	// sorting list
-	private var sorted:Array<GameObject>;
 	
 	var rect:Sprite;
 	
@@ -67,15 +64,13 @@ class World {
 		
 		tiles = new Array<LevelTile>();
 		objects = new Array<ObjectContainer3D>();
-		props = new Array<GameObject>();
+		hotspots = new Array<GameObject>();
 
 		obstacles = new Array<GameObject>();
 		cones = new Array<GameObject>();
 		
 		_shake = new ScreenShake();
 		_shake.setReduction(0.8);
-		
-		sorted = new Array<GameObject>();
 	}
 	
 	public function add(obj:ObjectContainer3D):Void {
@@ -136,7 +131,30 @@ class World {
 		remove(obstacle);
 	}
 
+	// hotspots are interactive zones
+	public function addHotspot(hotspot:GameObject):Void {
+		
+		add(hotspot);		
+		hotspots.push(hotspot);
+	}
 	
+	public function removeHotspot(hotspot:GameObject):Void {
+		
+		var len:Int = hotspots.length;
+		
+		for (i in 0...len) {
+			
+			if (hotspots[i] == hotspot) {
+				
+				hotspots.splice(i, 1);
+				break;
+			}
+		}
+		
+		remove(hotspot);
+	}
+
+
 	// cones are any object that can be knocked around
 	public function addCone(cone:GameObject):Void {
 		
@@ -228,19 +246,20 @@ class World {
 			
 			cone.rotationX += cone.vel.x * 5;
 			cone.rotationZ += cone.vel.y * 5;
+			
 			// reduce vel
 			cone.vel.scale(0.96);
+		}
+
+		for (hotspot in hotspots) {
+			
+			hotspot.update();
 		}
 
 		/*
 		for (obstacle in obstacles) {
 			
 			obstacle.update();
-		}
-		
-		for (prop in props) {
-			
-			prop.update();
 		}
 		
 		_shake.update();

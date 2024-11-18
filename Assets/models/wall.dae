@@ -87,9 +87,9 @@
                     </technique_common>
                 </source>
                 <source id="Box02-normals" name="normal">
-                    <float_array id="Box02-normals-array" count="18">0 0 1 1 0 0 0 0 -1 -1 0 0 0 1 0 0 -1 0</float_array>
+                    <float_array id="Box02-normals-array" count="15">0 0 1 1 0 0 0 0 -1 -1 0 0 0 1 0</float_array>
                     <technique_common>
-                        <accessor source="#Box02-normals-array" count="6" stride="3">
+                        <accessor source="#Box02-normals-array" count="5" stride="3">
                             <param name="X" type="float" />
                             <param name="Y" type="float" />
                             <param name="Z" type="float" />
@@ -97,9 +97,9 @@
                     </technique_common>
                 </source>
                 <source id="Box02-texcoords" name="texcoord">
-                    <float_array id="Box02-texcoords-array" count="72">0.591899 0.60523 0.591899 0.60523 0.907159 0.60523 0.591899 0.60523 0.907159 0.60523 0.907159 0.60523 0.907159 0.60523 0.907159 0.60523 0.907159 0.926211 0.907159 0.60523 0.907159 0.926211 0.907159 0.926211 0.907159 0.926211 0.907159 0.926211 0.591899 0.926211 0.907159 0.926211 0.591899 0.926211 0.591899 0.926211 0.591899 0.926211 0.591899 0.926211 0.591899 0.60523 0.591899 0.926211 0.591899 0.60523 0.591899 0.60523 0.591899 0.926211 0.591899 0.60523 0.907159 0.926211 0.591899 0.60523 0.907159 0.60523 0.907159 0.926211 0.591899 0.60523 0.591899 0.926211 0.907159 0.60523 0.591899 0.926211 0.907159 0.926211 0.907159 0.60523</float_array>
+                    <float_array id="Box02-texcoords-array" count="8">0.509375 0.0625001 0.509375 0.00823075 0.554264 0.0625001 0.554264 0.00823075</float_array>
                     <technique_common>
-                        <accessor source="#Box02-texcoords-array" count="36" stride="2">
+                        <accessor source="#Box02-texcoords-array" count="4" stride="2">
                             <param name="S" type="float" />
                             <param name="T" type="float" />
                         </accessor>
@@ -108,11 +108,11 @@
                 <vertices id="Box02-geometry-vertices">
                     <input semantic="POSITION" source="#Box02-positions" />
                 </vertices>
-                <triangles material="Material01" count="12">
+                <triangles material="Material01" count="10">
                     <input semantic="VERTEX" source="#Box02-geometry-vertices" offset="0" />
                     <input semantic="NORMAL" source="#Box02-normals" offset="1" />
                     <input semantic="TEXCOORD" source="#Box02-texcoords" offset="2" />
-                    <p>0 0 0 1 0 1 2 0 2 1 0 3 3 0 4 2 0 5 2 1 6 3 1 7 4 1 8 3 1 9 5 1 10 4 1 11 4 2 12 5 2 13 6 2 14 5 2 15 7 2 16 6 2 17 6 3 18 7 3 19 0 3 20 7 3 21 1 3 22 0 3 23 6 4 24 0 4 25 4 4 26 0 4 27 2 4 28 4 4 29 1 5 30 7 5 31 3 5 32 7 5 33 5 5 34 3 5 35</p>
+                    <p>0 0 0 1 0 1 2 0 2 1 0 1 3 0 3 2 0 2 2 1 2 3 1 3 4 1 2 3 1 3 5 1 3 4 1 2 4 2 2 5 2 3 6 2 0 5 2 3 7 2 1 6 2 0 6 3 0 7 3 1 0 3 0 7 3 1 1 3 1 0 3 0 6 4 0 0 4 0 4 4 2 0 4 0 2 4 2 4 4 2</p>
                 </triangles>
             </mesh>
         </geometry>

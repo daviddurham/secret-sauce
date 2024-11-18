@@ -123,16 +123,21 @@ class Game extends Sprite {
 
 	// winning player
 	private var winner:Int = 0;
-
-	// wait after point win
-	private var wait:Int = 0;
-	private var resetAt:Int = -1;
 	
 	// player
 	private var p1:Player;
 	
+	// boss
+	private var enemy:Player;
+
 	// other players
 	private var players:Array<Player>;
+
+	// current ingredient the player is next to
+	private var currentHotspot = 0;
+
+	private var timeLimit:Int = 90;
+	private var currentTime:Float = 0;
 
 	// keyboard input manager
 	private var input:InputManager;
@@ -151,25 +156,57 @@ class Game extends Sprite {
 	private var map:Array<Array<Int>> = [	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
 											[1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 7, 7, 7, 7, 7, 7, 7, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7,11,11,11, 0,11,11,11, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 0,11,12, 0,13,14, 0, 7, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7,11,11,11, 0,11,11,11, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 0,15,16, 0,17,18, 0, 7, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 7, 7, 7, 7, 0, 7, 7, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 8, 9,10,10, 0, 8, 8, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 8, 8,10,10, 0, 6, 5, 7, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 0, 7, 2, 2, 2, 2 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
-											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 2, 2, 2, 2 ],
-											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 7, 7, 7, 7, 7, 7, 7, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
+											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
+											[1, 1, 1, 2, 7, 7, 7, 0, 7, 7, 7, 7, 7, 2, 2, 2, 2 ],
+											[1, 1, 1, 2, 7, 8, 8, 0, 9, 8, 7, 2, 2, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 7, 7, 7, 7, 7, 7, 2, 7, 1, 1, 1, 1 ],
 											[1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1 ],
 											[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]	];
 
-	private var ingredients:Array<Ingredient> = [];
+	private var ingredients:Array<Ingredient> = [
 
-	private var currentRecipe:Array<Int> = [ 1, 1, 1, 2, 2, 2, 3, 3, 4, 5 ];
+		new Ingredient(1, "white", 	3, 0, 1, 0, "assets/ingredient1.png"),
+		new Ingredient(2, "blue",	2, 0, 0, 1, "assets/ingredient2.png"),
+
+		new Ingredient(3, "pink", 	0, 3, 0, 1, "assets/ingredient3.png"),
+		new Ingredient(4, "brown",	1, 2, 0, 0, "assets/ingredient4.png"),
+		
+		new Ingredient(5, "red", 	0, 1, 3, 0, "assets/ingredient5.png"),
+		new Ingredient(6, "orange",	1, 0, 2, 0, "assets/ingredient6.png"),
+		
+		new Ingredient(7, "green", 	0, 0, 1, 3, "assets/ingredient7.png"),
+		new Ingredient(8, "purple",	0, 1, 0, 2, "assets/ingredient8.png")
+	];
+
+	// tweak this for difficulty
+	private var recipeLength:Int = 5;
+
+	// TODO: generate a target secret recipe each time
+	// the ingredients don't have to match - just the flavour levels
+	private var targetRecipe:Array<Int> = [ 1, 3, 6 ];
+
+	// TODO: randomize starting recipe each time
+	private var currentRecipe:Array<Int> = [ 2, 1, 7 ];
+	private var potContents:Array<Int> = [];
+
+	private var currentDay:Int = 0;
+
+	private var reviews:Array<String> = [];
+	private var recipe:Array<String> = [];
 
 	public function new(mode:String = "default", players:Int = 1, code:String = "") {
 		
@@ -289,6 +326,7 @@ class Game extends Sprite {
 		assetLoaderContext.mapUrlToData("tree.png", Assets.getBitmapData("assets/tree.png"));
 		assetLoaderContext.mapUrlToData("shadow_circle.png", Assets.getBitmapData("assets/shadow_circle.png"));
 		assetLoaderContext.mapUrlToData("cone.png", Assets.getBitmapData("assets/cone.png"));
+		assetLoaderContext.mapUrlToData("box.png", Assets.getBitmapData("assets/box.png"));
 
 		Asset3DLibrary.enableParser(DAEParser);
 		Asset3DLibrary.addEventListener(Asset3DEvent.ASSET_COMPLETE, onAssetComplete);
@@ -296,7 +334,7 @@ class Game extends Sprite {
 		// need to load models sequentially
 		loadedModels = [];
 		modelsToLoad = ["assets/models/robochef.dae", "assets/models/tree.dae", "assets/models/cone.dae", "assets/models/wall.dae", "assets/models/counter.dae", "assets/models/pot.dae", "assets/models/grill.dae", "assets/models/box.dae"];
-		meshCounts = [12, 4, 2, 1, 6, 8, 6, 7];
+		meshCounts = [12, 4, 2, 1, 6, 8, 6, 9];
 
 		// some models shouldn't receive shadows
 		shadows = [true, false, false, true, true, true, true, true];
@@ -368,22 +406,21 @@ class Game extends Sprite {
 		
 		players = new Array<Player>();
 		
-		// zero players means P1 is an AI
-		p1 = new Player(1, cast(loadedModels[0], ObjectContainer3D), view.camera/*, p1Code*/);		
+		// player character
+		p1 = new Player(1, cast(loadedModels[0], ObjectContainer3D), view.camera);		
 		world.add(p1);
 		players.push(p1);
 
 		p1.setLightPicker(lightPicker);
 		view.scene.addChild(p1);
-		
-		p1.x = Main.TILE_SIZE * 9;
-		p1.z = Main.TILE_SIZE * -11;
-		
-		// initial camera position
-		view.camera.x = p1.x;
-		view.camera.y = 400;
-		view.camera.z = p1.z - 400;
-		view.camera.lookAt(new Vector3D(p1.x, p1.z, 0));
+
+		// enemy / boss
+		enemy = new Player(2, cast(loadedModels[0], ObjectContainer3D), view.camera);
+		world.add(enemy);
+		players.push(enemy);
+
+		enemy.setLightPicker(lightPicker);
+		view.scene.addChild(enemy);
 
 		//deltaTime = (getTimer() / 1000);
 		//oldTime = (getTimer() / 1000);
@@ -395,10 +432,10 @@ class Game extends Sprite {
 		removeChild(loadingMessage);
 		loadingMessage = null;
 
+		reset();
+
 		// transition in
 		Actuate.tween(transition, 0.5, { alpha: 0 }).delay(0).onComplete(onTransitionIn).ease(Quad.easeInOut);
-
-		trace("all models loaded");
 	}
 
 	private function onAssetComplete (event:Asset3DEvent) {
@@ -435,10 +472,191 @@ class Game extends Sprite {
 	private function onTransitionIn():Void {
 		
 		removeChild(transition);
+
+		// start the day
+		startNextDay();
 	}
 	
-	
 	/* Game Functions */
+
+	private function startNextDay():Void {
+
+		reset();
+
+		currentDay++;
+		hud.setDay(currentDay);
+		
+		currentTime = timeLimit;
+		hud.setTime(Math.floor(currentTime));
+
+		// set current recipe
+		recipe = [];
+
+		for (i in 0...currentRecipe.length) {
+
+			for (ingredient in ingredients) {
+			
+				if (ingredient.id == currentRecipe[i]) {
+
+					recipe[i] = ingredient.image;		
+					break;
+				}
+			}			
+		}
+
+		// reset reviews
+		reviews = [];
+
+		// no reviews on first day
+		if (/*currentDay > 1*/currentRecipe.length != 0) {
+
+			var targetSalt:Int = 0;
+			var targetSweet:Int = 0;
+			var targetSpicy:Int = 0;
+			var targetSour:Int = 0;
+
+			var currentSalt:Int = 0;
+			var currentSweet:Int = 0;
+			var currentSpicy:Int = 0;
+			var currentSour:Int = 0;
+
+			var diffSalt:Int = 0;
+			var diffSweet:Int = 0;
+			var diffSpicy:Int = 0;
+			var diffSour:Int = 0;			
+
+			// compare current recipe with target
+			for (i in 0...targetRecipe.length) {
+
+				for (ingredient in ingredients) {
+			
+					if (ingredient.id == targetRecipe[i]) {
+
+						targetSalt += ingredient.salt;
+						targetSweet += ingredient.sweet;
+						targetSpicy += ingredient.spicy;
+						targetSour += ingredient.sour;
+						break;
+					}
+				}
+			}
+
+			for (i in 0...currentRecipe.length) {
+
+				for (ingredient in ingredients) {
+			
+					if (ingredient.id == currentRecipe[i]) {
+
+						currentSalt += ingredient.salt;
+						currentSweet += ingredient.sweet;
+						currentSpicy += ingredient.spicy;
+						currentSour += ingredient.sour;
+						break;
+					}
+				}
+			}
+
+			diffSalt = currentSalt - targetSalt;
+			diffSweet = currentSweet - targetSweet;
+			diffSpicy = currentSpicy - targetSpicy;
+			diffSour = currentSour - targetSour;
+
+			if (diffSalt != 0) {
+
+				var reviewSalt:String = diffSalt > 0 ? "TOO SALTY" : "NOT SALTY ENOUGH";
+				reviewSalt += " (" + diffSalt + ")";
+
+				reviews.push(reviewSalt);
+			}
+
+			if (diffSweet != 0) {
+
+				var reviewSweet:String = diffSweet > 0 ? "TOO SWEET" : "NOT SWEET ENOUGH";
+				reviewSweet += " (" + diffSweet + ")";
+
+				reviews.push(reviewSweet);
+			}
+
+			if (diffSpicy != 0) {
+
+				var reviewSpicy:String = diffSpicy > 0 ? "TOO SPICY" : "NOT SPICY ENOUGH";
+				reviewSpicy += " (" + diffSpicy + ")";
+
+				reviews.push(reviewSpicy);
+			}
+
+			if (diffSour != 0) {
+
+				var reviewSour:String = diffSour > 0 ? "TOO SOUR" : "NOT SOUR ENOUGH";
+				reviewSour += " (" + diffSour + ")";
+
+				reviews.push(reviewSour);
+			}
+
+			hud.showReviewsPanel(reviews);
+		}
+
+		hud.showRecipePanel(recipe);
+	}
+
+	private function endDay():Void {
+
+		startNextDay();
+	}
+
+	private function startEnemyRoutine():Void {
+
+		Actuate.timer(5).onComplete(function() {
+		
+				enemy.moveToPosition(Main.TILE_SIZE * 6, Main.TILE_SIZE * -13, function() {
+
+					Actuate.timer(3).onComplete(function() {
+
+						enemy.moveToPosition(Main.TILE_SIZE * 8, Main.TILE_SIZE * -13, function() {
+
+							Actuate.timer(3).onComplete(function() {
+
+								enemy.moveToPosition(Main.TILE_SIZE * 8, Main.TILE_SIZE * -10, function() {
+
+									Actuate.timer(3).onComplete(function() {
+
+										enemy.moveToPosition(Main.TILE_SIZE * 6, Main.TILE_SIZE * -10, function() {
+		
+											startEnemyRoutine();
+										});
+									});
+								});
+							});
+						});
+					});
+				});
+			}
+		);
+	}
+
+	private function onEnemyMoveComplete():Void {
+
+		
+	}
+
+	private function reset():Void {
+
+		p1.x = Main.TILE_SIZE * 9;
+		p1.z = Main.TILE_SIZE * -12;
+
+		enemy.x = Main.TILE_SIZE * 6;
+		enemy.z = Main.TILE_SIZE * -10;
+		enemy.setMaxSpeed(0.3);
+		enemy.setRotation(0, 1);
+
+		startEnemyRoutine();
+
+		// initial camera position
+		view.camera.x = p1.x;
+		view.camera.y = 400;
+		view.camera.z = p1.z - 400;
+		view.camera.lookAt(new Vector3D(p1.x, p1.z, 0));
+	}
 
 	private function start():Void {
 
@@ -500,7 +718,47 @@ class Game extends Sprite {
 		
 		if (isRunning) {
 			
-			
+			// not holding anything?
+			if (p1.holding == null) { 
+				
+				// ingredients 1 - 10
+				if (currentHotspot > 0 && currentHotspot <= 10) {
+
+					p1.collectIngredient(ingredients[currentHotspot - 1]);
+				}
+			}
+			// try to drop the thing being held
+			else {
+
+				// ingredients 1 - 10
+				if (currentHotspot > 10) {
+
+					// can drop here?
+					// 11 is the pot (make sure pot is not full)
+					if (currentHotspot == 11 && potContents.length < 8) {
+				
+						var id:Int = p1.holding.id;
+						p1.dropIngredient();
+
+						potContents.push(id);
+						trace(potContents);
+
+						// completed new recipe
+						if (potContents.length >= currentRecipe.length) {
+
+							currentRecipe = [];
+
+							for (i in 0...potContents.length) {
+
+								currentRecipe.push(potContents[i]);
+							}
+
+							potContents = [];
+							endDay();
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -691,8 +949,6 @@ class Game extends Sprite {
 			}
 			*/
 
-
-
 			var currentTime:Float = getTimer() / 1000;
         	var elapsedTime:Float = currentTime - previousTime;
         	previousTime = currentTime;
@@ -701,7 +957,7 @@ class Game extends Sprite {
 	
         	while (accumulator >= upperTimeStep) {
 	        
-				update();
+				update(elapsedTime);
             	accumulator -= lowerTimeStep;
 
 				if (accumulator < 0) {
@@ -710,9 +966,6 @@ class Game extends Sprite {
 				}
         	}
 
-
-
-
 			// render
 			render();
 		}
@@ -720,17 +973,25 @@ class Game extends Sprite {
 
 	/* Game Loop */
 
-	private function update(event:Event = null):Void {
+	private function update(dt:Float):Void {
 		
 		if (isRunning && !isQuitting) {
 
-			trace("update");
+			if (currentTime > 0) {
+			
+				//currentTime -= dt;
 
-			if (wait > 0) {
-				
-				wait--;
-				return;
+				if (currentTime <= 0) {
+
+					endDay();
+				}
 			}
+			else {
+
+				currentTime = 0;
+			}
+
+			hud.setTime(Math.floor(currentTime));
 
 			updateInput();
 
@@ -765,6 +1026,41 @@ class Game extends Sprite {
 					}
 				}
 
+				// just for player
+				if (player == p1) {
+
+					// collisions with interactive hotspots (e.g ingredients)
+					hud.hideIngredientPanel();
+					hud.hideReviewsPanel();
+					//hud.hideRecipePanel();
+
+					currentHotspot = 0;
+
+					for (hotspot in world.hotspots) {
+
+						// for hotspots use a smaller player radius to avoid overlaps
+						if (Collisions.sphereCollision(player.x, player.y, player.z, player.radius / 2, hotspot.x, hotspot.y, hotspot.z, hotspot.cRadius)) {
+							
+							currentHotspot = hotspot.objectID;
+
+							if (currentHotspot <= 10) {
+							
+								hud.showIngredientPanel(ingredients[hotspot.objectID - 1]);
+							}
+							else if (currentHotspot == 12) {
+
+								// show recipe
+								hud.showReviewsPanel(reviews);
+							}
+							else if (currentHotspot == 13) {
+
+								// show reviews
+								//hud.showRecipePanel(recipe);
+							}
+						}
+					}
+				}
+
 				// collisions with moveable obstacles (e.g cones)
 				for (cone in world.cones) {
 
@@ -778,14 +1074,19 @@ class Game extends Sprite {
 					}
 				}
 				
-				for (otherPlayer in players) {
-					
-					if (otherPlayer != player) {
+				if (player == p1) {
+
+					for (otherPlayer in players) {
 						
-						if (Collisions.sphereCollision(player.x, player.y, player.z, player.radius, otherPlayer.x, otherPlayer.y, otherPlayer.z, otherPlayer.radius)) {
+						if (otherPlayer != player) {
 							
-							var cd:Vector2D = new Vector2D(otherPlayer.x - player.x, otherPlayer.z - player.z);
-							cd.normalize();
+							if (Collisions.isAABBCollision(player.x, player.z, player.radius * 2, player.radius * 2, otherPlayer.x, otherPlayer.z, otherPlayer.radius * 2, otherPlayer.radius * 2)) {
+							
+								var cd:Vector2D = Collisions.AABBCollision(player.x, player.z, player.radius * 2, player.radius * 2, otherPlayer.x, otherPlayer.z, otherPlayer.radius * 2, otherPlayer.radius * 2);
+								
+								player.x += (cd.x * 1.1);
+								player.z += (cd.y * 1.1);
+							}
 						}
 					}
 				}

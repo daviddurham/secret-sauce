@@ -15,17 +15,12 @@ class OptionsMenu extends Sprite {
 	
     public var buttonMusic:BasicButton;
     public var buttonSFX:BasicButton;
-
-    public var buttonControls:BasicButton;
     public var buttonReset:BasicButton;
-
     public var buttonCredits:BasicButton;
-
     public var buttonBack:BasicButton;
 
     private var musicOptions:Array<Bitmap>;
     private var sfxOptions:Array<Bitmap>;
-    private var controlOptions:Array<Bitmap>;
 
     private var confirmMessage:ConfirmPanel;
 
@@ -82,22 +77,6 @@ class OptionsMenu extends Sprite {
 
         setSFXVolume();
 
-        buttonControls = new BasicButton("assets/button_rounded.png", "assets/button_rounded_over.png", "assets/button_rounded_over.png");
-        buttonControls.addEventListener(MouseEvent.CLICK, onControlsClicked);
-		buttonControls.x = -90;
-		buttonControls.y = 50;
-        addChild(buttonControls);
-
-        label = addLabel("assets/controls_button.png", buttonControls);
-
-        controlOptions = [
-            
-            addSetting("assets/option_hide.png", buttonControls, label),
-            addSetting("assets/option_show.png", buttonControls, label)
-        ];
-
-        setControls();
-
         buttonReset = new BasicButton("assets/button_rounded.png", "assets/button_rounded_over.png", "assets/button_rounded_over.png");
         buttonReset.addEventListener(MouseEvent.CLICK, onResetClicked);
 		buttonReset.x = 90;
@@ -130,7 +109,7 @@ class OptionsMenu extends Sprite {
 
         //create button list
 		currButton = 0;
-		buttonList = [buttonMusic, buttonSFX, buttonReset, buttonControls, buttonCredits, buttonBack];
+		buttonList = [buttonMusic, buttonSFX, buttonReset, buttonCredits, buttonBack];
 
         visible = false;
 	}
@@ -197,14 +176,6 @@ class OptionsMenu extends Sprite {
         dispatchEvent(new Event("sfx_volume"));
     }
 
-    private function onControlsClicked(event:MouseEvent = null):Void {
-        
-        Main.showControls = Main.showControls == 0 ? 1 : 0;
-
-        setControls();
-		Main.savedData.save("screen_controls", Std.string(Main.showControls));
-    }
-
     private function onResetClicked(event:MouseEvent = null):Void {
         
         for (button in buttonList) {
@@ -249,14 +220,6 @@ class OptionsMenu extends Sprite {
     private function onBackClicked(event:MouseEvent = null):Void {
         
         dispatchEvent(new Event("back"));
-    }
-
-    private function setControls():Void {
-
-        for (i in 0...controlOptions.length) {
-
-            controlOptions[i].visible = (i == Main.showControls);
-        }
     }
 
     private function setMusicVolume():Void {

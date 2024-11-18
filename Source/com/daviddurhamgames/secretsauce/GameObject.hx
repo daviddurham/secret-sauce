@@ -8,8 +8,6 @@ import away3d.entities.Mesh;
 import away3d.containers.ObjectContainer3D;
 import away3d.materials.TextureMaterial;
 import openfl.display.Bitmap;
-import openfl.display.Sprite;
-import openfl.display.PixelSnapping;
 import openfl.Assets;
 import flash.Lib;
 
@@ -18,10 +16,7 @@ import com.piratejuice.Vector2D;
 class GameObject extends ObjectContainer3D {
 	
 	public var objectID:Int = 0;
-	
-	// optional graphical content
-	public var sprite:Bitmap;
-	
+		
 	// collision dimensions
 	public var cWidth:Float = 0;
 	public var cHeight:Float = 0;
@@ -30,35 +25,23 @@ class GameObject extends ObjectContainer3D {
 
 	public var vel:Vector2D;
 	
-	public function new(type:String = "", model:ObjectContainer3D = null, r:Int = 16):Void {
+	public function new(type:String = "", model:ObjectContainer3D = null, id:Int = 0):Void {
 		
 		super();
 		
+		objectID = id;
 		vel = new Vector2D();
 		
-		/*
-		if (type == "waypoint") {
+		if (type == "hotspot") {
 			
 			// for debug...
 			var mat = new ColorMaterial(0xff00ff);
 			mat.bothSides = true;
 						
-			var wp = new Mesh(new CylinderGeometry(8, 8, 2, 8, 1, false, false), mat);
-			wp.y = 1;
-			addChild(wp);
-		}
-		else if (type == "track") {
-
-			// for debug...
-			var mat = new ColorMaterial(0x00ffff);
-			mat.bothSides = true;
-						
-			var tr = new Mesh(new CylinderGeometry(r, r, 2, 8, 1, false, false), mat);
-			tr.y = 1;
-			addChild(tr);
-		}
-		*/
-		
+			var h = new Mesh(new CylinderGeometry(Main.TILE_SIZE / 2, Main.TILE_SIZE / 2, 2, 8, 1, false, false), mat);
+			h.y = 1;
+			addChild(h);
+		}		
 
 		if (model != null) {
 

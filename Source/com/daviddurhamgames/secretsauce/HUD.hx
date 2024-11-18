@@ -6,11 +6,17 @@ import openfl.display.Shape;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
+import openfl.text.TextField;
+import openfl.text.TextFormat;
+import openfl.text.TextFieldAutoSize;
 import openfl.Assets;
 import openfl.Lib;
 
 import com.daviddurhamgames.secretsauce.PausePanel;
 import com.daviddurhamgames.secretsauce.CompletePanel;
+import com.daviddurhamgames.secretsauce.IngredientPanel;
+import com.daviddurhamgames.secretsauce.Ingredient;
+import com.piratejuice.BitmapText;
 import com.piratejuice.Audio;
 
 class HUD extends Sprite {
@@ -20,6 +26,9 @@ class HUD extends Sprite {
     public var pauseMenu:PausePanel;
     public var completeMessage:CompletePanel;
     public var failedMessage:FailedPanel;
+    public var ingredientPanel:IngredientPanel;
+    public var reviewsPanel:ReviewsPanel;
+    public var recipePanel:RecipePanel;
     
     private var tutorial:Sprite;
     private var tutorialStep:Int;
@@ -29,6 +38,9 @@ class HUD extends Sprite {
 
     // sfx
 	private var eventSFXAudio:Audio;
+
+    private var dayText:BitmapText;
+    private var timeText:BitmapText;
 
     public function new():Void {
         
@@ -43,6 +55,33 @@ class HUD extends Sprite {
 		pauseButton.x = (Main.maxWidth - Main.offsetX) - 30;
 		pauseButton.y = (Main.offsetY) + 30;
         addChild(pauseButton);
+
+        var format:TextFormat = new TextFormat("_sans", 18, 0xffffff, true);
+
+        /*
+        dayText = new TextField();
+		dayText.defaultTextFormat = format;
+
+		dayText.textColor = 0xffffff;
+		dayText.selectable = false;
+		dayText.autoSize = TextFieldAutoSize.LEFT;
+        dayText.x = Main.offsetX + 5;
+        dayText.y = Main.offsetY + 5;
+		addChild(dayText);
+        */
+
+        dayText = new BitmapText(128, 64, "assets/font_1.png");
+		dayText.printText("");
+		dayText.x = Main.offsetX + 5;
+		dayText.y = Main.offsetY + 10;
+        dayText.scaleX = dayText.scaleY = 0.5;
+        addChild(dayText);
+
+        timeText = new BitmapText(64, 64, "assets/font_1.png");
+		timeText.printText("");
+		timeText.x = centerX - 32;
+		timeText.y = Main.offsetY + 10;
+        //addChild(timeText);
 
         pauseMenu = new PausePanel();
         pauseMenu.x = centerX;
@@ -60,7 +99,22 @@ class HUD extends Sprite {
         failedMessage = new FailedPanel();
         failedMessage.x = centerX;
 		failedMessage.y = centerY;
-		addChild(failedMessage);
+        addChild(failedMessage);
+
+        ingredientPanel = new IngredientPanel();
+		ingredientPanel.x = (Main.maxWidth - Main.offsetX) - 70;
+		ingredientPanel.y = (Main.maxHeight - Main.offsetY) - 50;
+        addChild(ingredientPanel);
+
+        reviewsPanel = new ReviewsPanel();
+        reviewsPanel.x = centerX;
+        reviewsPanel.y = centerY;
+		addChild(reviewsPanel);
+
+        recipePanel = new RecipePanel();
+        recipePanel.x = Main.offsetX + 95;
+        recipePanel.y = (Main.maxHeight - Main.offsetY) - 40;
+		addChild(recipePanel);
 
         maskAnim = new Shape();
         maskAnim.graphics.beginFill(0x00ff00);
@@ -77,6 +131,16 @@ class HUD extends Sprite {
 		//eventSFXAudio.setVolume(Global.sfxVolume);
     }
     
+    public function setDay(day:Int):Void {
+
+        dayText.printText("DAY " + day);
+    }
+
+    public function setTime(time:Int):Void {
+
+        timeText.printText(Std.string(time));
+    }
+
     public function enableButtons():Void {
         
         pauseButton.mouseEnabled = true;
@@ -108,16 +172,6 @@ class HUD extends Sprite {
     }
 
     /* Pause Menu Events */
-
-    private function helpClicked(event:Event):Void {
-
-        eventSFXAudio.setSound("assets/audio/button_click" + "." + Main.audioFormat);
-		eventSFXAudio.play();
-        
-        disableButtons();
-        dispatchEvent(new Event("pause"));
-        //helpMenu.show();
-    }
     
     private function quitConfirm(event:Event):Void {
         
@@ -136,17 +190,6 @@ class HUD extends Sprite {
         
         pauseMenu.hide();
         dispatchEvent(new Event("restart"));
-    }
-    
-    
-    /* Help Menu Events */
-    
-    private function helpCancel(event:Event):Void {
-        
-        enableButtons();
-        
-        //helpMenu.hide();
-        dispatchEvent(new Event("resume"));
     }
     
     
@@ -224,8 +267,35 @@ class HUD extends Sprite {
         }
     }
     
+    public function showIngredientPanel(ingredient:Ingredient):Void {
+        
+        ingredientPanel.show(ingredient);
+    }
     
-    /* Success / Failure Messages */
+    public function hideIngredientPanel():Void {
+        
+        ingredientPanel.hide();
+    }
+    
+    public function showReviewsPanel(reviews:Array<String>):Void {
+        
+        reviewsPanel.show(reviews);
+    }
+    
+    public function hideReviewsPanel():Void {
+        
+        reviewsPanel.hide();
+    }
+
+    public function showRecipePanel(recipe:Array<String>):Void {
+        
+        recipePanel.show(recipe);
+    }
+    
+    public function hideRecipePanel():Void {
+        
+        recipePanel.hide();
+    }
     
     public function showCompleteMessage():Void {
         

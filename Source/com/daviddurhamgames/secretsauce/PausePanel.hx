@@ -32,9 +32,7 @@ class PausePanel extends Sprite {
         createPanel(230, 200);
 
         var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/paused_title.png"));
-		title.scaleX = 0.25;
-        title.scaleY = 0.25;
-        title.x = -title.width / 2;
+		title.x = -title.width / 2;
         title.y = -100;
         addChild(title);
 

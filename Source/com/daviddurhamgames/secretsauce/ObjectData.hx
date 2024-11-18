@@ -7,9 +7,9 @@ class ObjectData {
 	public var id:Int;
 	public var pos:Point;
 	
-	public var radius:Int;
+	public var type:Int;
 
-	public function new(objId:Int, posX:Float, posY:Float, r:Int = 128) {
+	public function new(objId:Int, posX:Float, posY:Float, t:Int = 0) {
 		
 		id = objId;
 
@@ -17,7 +17,7 @@ class ObjectData {
 		// to new 64px tile position by dividing by 8
         pos = new Point(posX, posY);
 
-		// optional radius
-		radius = r;
+		// optional sub-type
+		type = t;
     }
 }
