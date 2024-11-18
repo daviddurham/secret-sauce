@@ -9,7 +9,7 @@ import away3d.containers.ObjectContainer3D;
 import away3d.materials.TextureMaterial;
 import openfl.display.Bitmap;
 import openfl.Assets;
-import flash.Lib;
+import openfl.Lib;
 
 import com.piratejuice.Vector2D;
 

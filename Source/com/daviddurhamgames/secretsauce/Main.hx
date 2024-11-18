@@ -195,10 +195,12 @@ class Main extends Sprite {
 
 		if (_game != null) {
 		
+			_game.cleanUp();
 			removeChild(_game);
+			
 			_game.removeEventListener("init_menu", initMenu);
 			_game.removeEventListener("quit", initMenu);
-			_game.cleanUp();
+			
 			_game = null;
 		}
 		

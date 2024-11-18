@@ -1,12 +1,12 @@
 package com.piratejuice.debug;
 
-import flash.events.Event;
-import flash.display.Sprite;
-import flash.system.System;
-import flash.text.TextField;
-import flash.text.TextFormat;
-import flash.text.TextFieldAutoSize;
-import flash.Lib;
+import openfl.events.Event;
+import openfl.display.Sprite;
+import openfl.system.System;
+import openfl.text.TextField;
+import openfl.text.TextFormat;
+import openfl.text.TextFieldAutoSize;
+import openfl.Lib;
 
 /**
  * Framerate counter shows FPS as text

@@ -1,6 +1,6 @@
 ﻿package com.piratejuice.vfx;
 
-import flash.display.Sprite;
+import openfl.display.Sprite;
 
 class ScreenShake {
 

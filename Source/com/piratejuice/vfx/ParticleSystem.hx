@@ -5,7 +5,7 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.geom.Point;
 import openfl.geom.ColorTransform;
-import flash.Lib;
+import openfl.Lib;
 
 import com.piratejuice.vfx.Particle;
 

@@ -9,20 +9,15 @@ import openfl.events.MouseEvent;
 import openfl.Assets;
 
 import com.daviddurhamgames.secretsauce.BasicButton;
-import com.daviddurhamgames.secretsauce.ConfirmPanel;
 
 class OptionsMenu extends Sprite {
 	
     public var buttonMusic:BasicButton;
     public var buttonSFX:BasicButton;
-    public var buttonReset:BasicButton;
-    public var buttonCredits:BasicButton;
     public var buttonBack:BasicButton;
 
     private var musicOptions:Array<Bitmap>;
     private var sfxOptions:Array<Bitmap>;
-
-    private var confirmMessage:ConfirmPanel;
 
     // selector
     public var selector:MovieClip;
@@ -77,39 +72,15 @@ class OptionsMenu extends Sprite {
 
         setSFXVolume();
 
-        buttonReset = new BasicButton("assets/button_rounded.png", "assets/button_rounded_over.png", "assets/button_rounded_over.png");
-        buttonReset.addEventListener(MouseEvent.CLICK, onResetClicked);
-		buttonReset.x = 90;
-		buttonReset.y = -30;
-        addChild(buttonReset);
-
-        addLabel("assets/reset_button.png", buttonReset);
-
-        buttonCredits = new BasicButton("assets/button_rounded.png", "assets/button_rounded_over.png", "assets/button_rounded_over.png");
-        buttonCredits.addEventListener(MouseEvent.CLICK, onCreditsClicked);
-		buttonCredits.x = 90;
-		buttonCredits.y = 10;
-        addChild(buttonCredits);
-
-        addLabel("assets/credits_button.png", buttonCredits);
-
         buttonBack = new BasicButton("assets/back_button.png", "assets/back_button.png", "assets/back_button.png");
         buttonBack.addEventListener(MouseEvent.CLICK, onBackClicked);
 		buttonBack.x = 0;
 		buttonBack.y = 90;
         addChild(buttonBack);
 
-        // confirm reset data
-        confirmMessage = new ConfirmPanel();
-        confirmMessage.x = 0;
-		confirmMessage.y = 0;
-        confirmMessage.addEventListener("confirm", onConfirmReset);
-		confirmMessage.addEventListener("cancel", onCancelReset);
-		addChild(confirmMessage);
-
         //create button list
 		currButton = 0;
-		buttonList = [buttonMusic, buttonSFX, buttonReset, buttonCredits, buttonBack];
+		buttonList = [buttonMusic, buttonSFX, buttonBack];
 
         visible = false;
 	}
@@ -174,47 +145,6 @@ class OptionsMenu extends Sprite {
         setSFXVolume();		
 		Main.savedData.save("sfx_volume", Std.string(Main.sfxVolume));
         dispatchEvent(new Event("sfx_volume"));
-    }
-
-    private function onResetClicked(event:MouseEvent = null):Void {
-        
-        for (button in buttonList) {
-
-            button.setEnabled(false);
-        }
-
-        confirmMessage.show();
-    }
-
-    private function onConfirmReset(event:Event = null):Void {
-
-        // clear all progress
-        Main.savedData.save("progress_1", "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1");
-		Main.savedData.save("progress_2", "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1");
-
-        //Main.savedData.clear();
-
-        for (button in buttonList) {
-
-            button.setEnabled(true);
-        }
-
-        confirmMessage.hide();
-    }
-
-    private function onCancelReset(event:Event = null):Void {
-
-        for (button in buttonList) {
-
-            button.setEnabled(true);
-        }
-
-        confirmMessage.hide();
-    }
-
-    private function onCreditsClicked(event:MouseEvent = null):Void {
-        
-        dispatchEvent(new Event("credits"));
     }
 
     private function onBackClicked(event:MouseEvent = null):Void {

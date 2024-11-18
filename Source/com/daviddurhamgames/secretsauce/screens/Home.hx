@@ -1,17 +1,13 @@
 package com.daviddurhamgames.secretsauce.screens;
 
 import com.piratejuice.Audio;
-import com.piratejuice.Ticker;
-import com.piratejuice.events.TickerEvent;
-import com.piratejuice.vfx.ScreenShake;
-import com.piratejuice.vfx.ParticleSystem;
 import com.piratejuice.InputManager;
 
 import openfl.display.*;
 import openfl.events.*;
 import openfl.Assets;
 import openfl.geom.ColorTransform;
-import openfl.Lib;
+import openfl.Lib.getTimer;
 
 import motion.Actuate;
 import motion.easing.Quad;
@@ -58,14 +54,16 @@ class Home extends Sprite {
 
 	// menus
 	private var optionsMenu:OptionsMenu;
-    private var creditsMenu:CreditsMenu;
-	private var newGameMenu:NewGameMenu;
+    private var newGameMenu:NewGameMenu;
 	
 	// flag when quit is initiated
 	private var isQuitting = false;
 
-    // update ticker
-	private var ticker:Ticker;
+	private var accumulator:Float = 0;
+    private var previousTime:Float = 0;
+
+	private var upperTimeStep:Float = 1 / 62.0;
+	private var lowerTimeStep:Float = 1 / 60.0;
 
 	// whether we should fade in or use the normal transition
 	private var isFadeIn:Bool;
@@ -141,15 +139,8 @@ class Home extends Sprite {
 		optionsMenu.addEventListener("toggle_filter", onToggleFilter, false, 0, true);
 		optionsMenu.addEventListener("music_volume", onMusicVolume, false, 0, true);
 		optionsMenu.addEventListener("sfx_volume", onSFXVolume, false, 0, true);
-		optionsMenu.addEventListener("credits", onCreditsSelected, false, 0, true);
 		optionsMenu.addEventListener("back", onOptionsBack, false, 0, true);
 		holder.addChild(optionsMenu);
-
-		creditsMenu = new CreditsMenu();
-		creditsMenu.x = Main.maxWidth / 2;
-		creditsMenu.y = Main.maxHeight / 2;
-		creditsMenu.addEventListener("back", onCreditsBack, false, 0, true);
-		holder.addChild(creditsMenu);
 
 		newGameMenu = new NewGameMenu();
 		newGameMenu.x = Main.maxWidth / 2;
@@ -189,12 +180,11 @@ class Home extends Sprite {
 		// ensure we have focus
 		stage.focus = stage;
 		
-		// update loop - 150% speed of the original game feels nice
-		ticker = new Ticker((1000 / Main.fps) * 1.5);
-		addChild(ticker);
-		
-		ticker.addEventListener(TickerEvent.TICK, update);
-		ticker.start();
+		// initialize frame loop
+		previousTime = getTimer() / 1000;
+		accumulator = 0;
+
+		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true);
 
 		fadeIn = new Shape();
 		fadeIn.x = Main.maxWidth / 2;
@@ -223,7 +213,7 @@ class Home extends Sprite {
 	public function cleanUp():Void {
 		
 		// clear update loop
-		ticker.removeEventListener(TickerEvent.TICK, update);
+		stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 	}
 
 	private function onFadeIn():Void {
@@ -279,18 +269,6 @@ class Home extends Sprite {
 		eventSFXAudio.setVolume(Main.sfxVolume);
 	}
 
-	private function onCreditsSelected(event:Event):Void {
-
-		creditsMenu.visible = true;
-		optionsMenu.visible = false;
-	}
-	
-	private function onCreditsBack(event:Event):Void {
-
-		creditsMenu.visible = false;
-		optionsMenu.visible = true;
-	}
-
 	private function onNewGameButtonClicked(event:Event):Void {
 
 		eventSFXAudio.play();
@@ -328,7 +306,27 @@ class Home extends Sprite {
 		buttonHolder.y = (Main.maxHeight * 0.75) - (Main.offsetY / 2);
     }
 	
-	private function update(event:Event):Void {
+	private function onEnterFrame(event:Event):Void {
+
+		var currentTime:Float = getTimer() / 1000;
+		var elapsedTime:Float = currentTime - previousTime;
+		previousTime = currentTime;
+	
+		accumulator += elapsedTime;
+
+		while (accumulator >= upperTimeStep) {
+		
+			update(elapsedTime);
+			accumulator -= lowerTimeStep;
+
+			if (accumulator < 0) {
+				
+				accumulator = 0;
+			}
+		}
+	}
+
+	private function update(dt:Float):Void {
 		
 		if (isRunning) {
 		
