@@ -99,14 +99,14 @@ class Home extends Sprite {
 		holder.addChild(scene);
 
 		var bg:Bitmap = new Bitmap(Assets.getBitmapData("assets/title_screen_bg.png"));
-        bg.scaleX = 590;
+        bg.scaleX = Main.maxWidth;
 		bg.x = 0;
         bg.y = 0;
         scene.addChild(bg);
 
-		var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/title.png"));
+		var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/title.png"), null, true);
 		title.x = Std.int((Main.maxWidth / 2) - (title.width / 2));
-        title.y = Std.int((Main.maxHeight / 2) - (title.height / 2) - 80);
+        title.y = Std.int((Main.maxHeight / 2) - (title.height / 2) - 240);
         scene.addChild(title);
 
 		// background for menus
@@ -123,13 +123,13 @@ class Home extends Sprite {
 		buttonHolder = new Sprite();
 		holder.addChild(buttonHolder);
 
-		newGameButton = createButton("assets/home_newgame_button.png", (Main.maxWidth / 2) + 90, -80, 1);
-		newGameButton.addEventListener(MouseEvent.CLICK, onNewGameButtonClicked);
-
-		continueButton = createButton("assets/home_continue_button.png", (Main.maxWidth / 2) + 90, -30, 1);
+		continueButton = createButton("assets/home_continue_button.png", "assets/home_continue_button_over.png", (Main.maxWidth / 2) + 220, -220, 0.75);
 		continueButton.addEventListener(MouseEvent.CLICK, onContinueButtonClicked);
 
-		optionsButton = createButton("assets/home_settings_button.png", (Main.maxWidth / 2) + 90, 20, 1);
+		newGameButton = createButton("assets/home_newgame_button.png", "assets/home_newgame_button_over.png", (Main.maxWidth / 2) + 220, -100, 0.75);
+		newGameButton.addEventListener(MouseEvent.CLICK, onNewGameButtonClicked);
+
+		optionsButton = createButton("assets/home_settings_button.png", "assets/home_settings_button_over.png", (Main.maxWidth / 2) + 220, 20, 0.75);
 		optionsButton.addEventListener(MouseEvent.CLICK, onOptionsButtonClicked);
 
 		// menus
@@ -199,9 +199,9 @@ class Home extends Sprite {
 		onResize();
 	}
 
-	private function createButton(labelBitmap:String, x:Float = 0, y:Float = 0, scale:Float = 1):BasicButton {
+	private function createButton(idle:String, over:String, x:Float = 0, y:Float = 0, scale:Float = 1):BasicButton {
 
-        var button:BasicButton = new BasicButton(labelBitmap, labelBitmap, labelBitmap);
+        var button:BasicButton = new BasicButton(idle, over, over);
 		button.x = x;
 		button.y = y;
         button.scaleX = button.scaleY = scale;

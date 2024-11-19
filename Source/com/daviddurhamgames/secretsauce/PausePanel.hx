@@ -29,25 +29,26 @@ class PausePanel extends Sprite {
 		
 		super();
 		
-        createPanel(230, 200);
+        //createPanel(230, 200);
+        var panel:Bitmap = new Bitmap(Assets.getBitmapData("assets/paused_panel.png"));
+		panel.x = -panel.width / 2;
+        panel.y = -panel.height / 2;
+        addChild(panel);
 
         var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/paused_title.png"));
 		title.x = -title.width / 2;
-        title.y = -100;
+        title.y = -190;
         addChild(title);
 
-        buttonBack = createButton("assets/resume_button.png", 0, -35);
+        buttonBack = createButton("assets/home_continue_button.png", "assets/home_continue_button_over.png", 0, -40, 0.75);
         buttonBack.addEventListener(MouseEvent.CLICK, onBackClicked);
 
-        buttonRestart = createButton("assets/restart_button.png", 0, 10);
-        buttonRestart.addEventListener(MouseEvent.CLICK, onRestartClicked);
-
-        buttonQuit = createButton("assets/quit_button.png", 0, 55);
+        buttonQuit = createButton("assets/quit_button.png", "assets/quit_button_over.png", 0, 80, 0.75);
         buttonQuit.addEventListener(MouseEvent.CLICK, onQuitClicked);
 		
         //create button list
 		currButton = 0;
-		buttonList = [buttonQuit, buttonRestart, buttonBack];
+		buttonList = [buttonQuit, buttonBack];
 
         visible = false;
 	}
@@ -66,21 +67,13 @@ class PausePanel extends Sprite {
         return panel;
     }
 
-    private function createButton(labelBitmap:String, x:Float = 0, y:Float = 0, scale:Float = 1):BasicButton {
+    private function createButton(idle:String, over:String, x:Float = 0, y:Float = 0, scale:Float = 1):BasicButton {
 
-        var button:BasicButton = new BasicButton("assets/button_rect.png", "assets/button_rect.png", "assets/button_rect.png");
+        var button:BasicButton = new BasicButton(idle, over, over);
 		button.x = x;
 		button.y = y;
         button.scaleX = button.scaleY = scale;
         addChild(button);
-
-		var icon:Sprite = new Sprite();
-		var label:Bitmap = new Bitmap(Assets.getBitmapData(labelBitmap));
-		label.x = 10 - (label.width / 2);
-		label.y = 5 - (label.height / 2);
-        label.scaleX = label.scaleY = 0.75;
-        icon.addChild(label);
-		button.addIcon(icon, 0, 0);
 
         return button;
     }

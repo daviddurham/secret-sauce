@@ -13,8 +13,8 @@
 	<window width="0" height="0" if="ios" />
 	
 	<!-- windows settings -->
-	<!--<window width="1280" height="720" if="windows" />-->
-	<window width="640" height="360" if="windows" />
+	<window width="1280" height="720" if="windows" />
+	<!--<window width="640" height="360" if="windows" />-->
 	
 	<!-- all cpp targets (ios and windows) -->
 	<window allow-shaders="true" require-shaders="true" if="cpp"/>

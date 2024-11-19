@@ -51,7 +51,7 @@ class Game extends Sprite {
 	private var isButtonDown:Bool = false;
 
 	// pixelated mode
-	private var isRetroMode:Bool = true;
+	private var isRetroMode:Bool = false;//true;
 	
 	// update loop
 	//private var deltaTime:Float;

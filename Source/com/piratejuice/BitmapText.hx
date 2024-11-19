@@ -10,10 +10,10 @@ import openfl.Assets;
 
 class BitmapText extends Sprite {
 	
-	private var charSize:Int = 32;
+	private var charSize:Int = 64;
 	
-	public var letterSpacing:Int = 20;
-	private var lineSpacing:Int = 40;
+	public var letterSpacing:Int = 42;
+	private var lineSpacing:Int = 80;
 	
 	// the font spritesheet
 	public var font:BitmapData;
@@ -24,15 +24,19 @@ class BitmapText extends Sprite {
 	// current string
 	public var content:String;
 	
-	public function new(w:Int, h:Int, fontBmp:String = "assets/font_1.png"):Void {
+	public function new(w:Int, h:Int, fontBmp:String = "assets/font_1.png", size:Int = 64, spacing:Int = 42, leading:Int = 80):Void {
 		
 		super();
 		
+		charSize = size;
+		letterSpacing = spacing;
+		lineSpacing = leading;
+
 		mouseEnabled = mouseChildren = false;
 		
 		font = Assets.getBitmapData(fontBmp);
 		//bmp = new Bitmap(Assets.getBitmapData(font), PixelSnapping.ALWAYS);
-		page = new Bitmap(new BitmapData(w, h, true, 0x00ffffff), PixelSnapping.ALWAYS);
+		page = new Bitmap(new BitmapData(w, h, true, 0x00ffffff), null, true);
 		addChild(page);
 	}
 	

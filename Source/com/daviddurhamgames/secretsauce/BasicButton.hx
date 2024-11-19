@@ -34,14 +34,14 @@ class BasicButton extends Sprite {
 		super();
 		
 		idleBmp = new Bitmap(Assets.getBitmapData(idle), PixelSnapping.AUTO, true);
-		//idleBmp.smoothing = true;
+		idleBmp.smoothing = true;
 		idleBmp.x = -idleBmp.width / 2;
 		idleBmp.y = -idleBmp.height / 2;
 		
 		if (over != null) {
 			
 			overBmp = new Bitmap(Assets.getBitmapData(over), PixelSnapping.AUTO, true);
-			//overBmp.smoothing = true;
+			overBmp.smoothing = true;
 			overBmp.x = -overBmp.width / 2;
 			overBmp.y = -overBmp.height / 2;
 		}
@@ -49,7 +49,7 @@ class BasicButton extends Sprite {
 		if (down != null) {
 			
 			downBmp = new Bitmap(Assets.getBitmapData(down), PixelSnapping.AUTO, true);
-			//downBmp.smoothing = true;
+			downBmp.smoothing = true;
 			downBmp.x = -downBmp.width / 2;
 			downBmp.y = -downBmp.height / 2;
 		}
@@ -57,7 +57,7 @@ class BasicButton extends Sprite {
 		if (disabled != null) {
 			
 			disabledBmp = new Bitmap(Assets.getBitmapData(disabled), PixelSnapping.AUTO, true);
-			//disabledBmp.smoothing = true;
+			disabledBmp.smoothing = true;
 			disabledBmp.x = -disabledBmp.width / 2;
 			disabledBmp.y = -disabledBmp.height / 2;
 		}
@@ -68,8 +68,8 @@ class BasicButton extends Sprite {
 		mouseChildren = false;
 		
 		// add rollover/rollout listeners
-		//addEventListener(MouseEvent.MOUSE_OVER, onOver);
-		//addEventListener(MouseEvent.MOUSE_OUT, onOut);
+		addEventListener(MouseEvent.MOUSE_OVER, onOver);
+		addEventListener(MouseEvent.MOUSE_OUT, onOut);
 		addEventListener(MouseEvent.MOUSE_DOWN, onDown);
 		addEventListener(MouseEvent.MOUSE_UP, onUp);
 	}
