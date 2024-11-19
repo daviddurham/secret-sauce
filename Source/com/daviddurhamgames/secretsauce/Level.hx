@@ -37,10 +37,10 @@ class Level {
 												new TileData(5, "kitchen_floor", 0, [new ObjectData(3, 0, 0), new ObjectData(10, 0, -4, 12)]),
 
 												// reviews
-												new TileData(6, "kitchen_floor", 0, [new ObjectData(3, 0, 0), new ObjectData(10, 0, -4, 13)]),
+												new TileData(6, "kitchen_floor", 0, [new ObjectData(7, 0, 0), new ObjectData(10, 0, -4, 13)]),
 												
 												// wall
-												new TileData(7, "kitchen_floor", 0, [new ObjectData(2, 0, 0)]),
+												new TileData(7, "", 0, [new ObjectData(2, 0, 0)]),
 												
 												// counter
 												new TileData(8, "kitchen_floor", 0, [new ObjectData(3, 0, 0)]),
@@ -273,6 +273,19 @@ class Level {
 							o.z = (-Main.TILE_SIZE * j) + obj.pos.y;
 							o.addChild(label);
 							_world.add(o);
+
+						// reviews screen
+						case 7:
+							
+							var object:GameObject = new GameObject("reviews", cast(_models[8].clone(), ObjectContainer3D));
+							object.x = (Main.TILE_SIZE * i) + obj.pos.x;
+							object.y = 0;
+							object.z = (-Main.TILE_SIZE * j) + obj.pos.y;
+
+							object.scaleX = object.scaleY = object.scaleZ = 4;
+
+							object.setCollisionType("aabb", Main.TILE_SIZE, Main.TILE_SIZE);
+							_world.addObstacle(object);
 
 						// hotspot
 						case 10:

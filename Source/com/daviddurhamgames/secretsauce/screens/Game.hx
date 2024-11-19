@@ -333,11 +333,11 @@ class Game extends Sprite {
 
 		// need to load models sequentially
 		loadedModels = [];
-		modelsToLoad = ["assets/models/robochef.dae", "assets/models/tree.dae", "assets/models/cone.dae", "assets/models/wall.dae", "assets/models/counter.dae", "assets/models/pot.dae", "assets/models/grill.dae", "assets/models/box.dae"];
-		meshCounts = [12, 4, 2, 1, 6, 8, 6, 9];
+		modelsToLoad = ["assets/models/robochef.dae", "assets/models/tree.dae", "assets/models/cone.dae", "assets/models/wall.dae", "assets/models/counter.dae", "assets/models/pot.dae", "assets/models/grill.dae", "assets/models/box.dae", "assets/models/terminal.dae"];
+		meshCounts = [12, 4, 2, 1, 6, 8, 6, 9, 8];
 
 		// some models shouldn't receive shadows
-		shadows = [true, false, false, true, true, true, true, true];
+		shadows = [true, false, false, true, true, true, true, true, true];
 		currentModelLoading = -1;
 		loadNextModel();
 				

@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+    <asset>
+        <contributor>
+            <authoring_tool>MilkShape 3D 1.8.4</authoring_tool>
+            <source_data>file://C:/Users/david/Desktop/terminal.ms3d</source_data>
+        </contributor>
+        <created>2007-05-21T20:10:16Z</created>
+        <modified>2007-05-21T20:10:16Z</modified>
+        <unit meter="1.000000" name="meter" />
+        <up_axis>Y_UP</up_axis>
+    </asset>
+    <library_images>
+        <image id="Material01-image" name="Material01-image">
+            <init_from>robochef.png</init_from>
+        </image>
+    </library_images>
+    <library_materials>
+        <material id="Material01" name="Material01">
+            <instance_effect url="#Material01-effect" />
+        </material>
+    </library_materials>
+    <library_effects>
+        <effect id="Material01-effect" name="Material01-effect">
+            <profile_COMMON>
+                <newparam sid="Material01-image-surface">
+                    <surface type="2D">
+                        <init_from>Material01-image</init_from>
+                        <format>A8R8G8B8</format>
+                    </surface>
+                </newparam>
+                <newparam sid="Material01-image-sampler">
+                    <sampler2D>
+                        <source>Material01-image-surface</source>
+                        <minfilter>LINEAR_MIPMAP_LINEAR</minfilter>
+                        <magfilter>LINEAR</magfilter>
+                    </sampler2D>
+                </newparam>
+                <technique sid="common">
+                    <phong>
+                        <emission>
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </emission>
+                        <ambient>
+                            <color>0.200000 0.200000 0.200000 1.000000</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="Material01-image-sampler" texcoord="" />
+                        </diffuse>
+                        <specular>
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </specular>
+                        <shininess>
+                            <float>0.000000</float>
+                        </shininess>
+                        <reflective>
+                            <color>1.000000 1.000000 1.000000 1.000000</color>
+                        </reflective>
+                        <reflectivity>
+                            <float>1.000000</float>
+                        </reflectivity>
+                        <transparent opaque="A_ONE">
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </transparent>
+                        <transparency>
+                            <float>1.000000</float>
+                        </transparency>
+                        <index_of_refraction>
+                            <float>0.000000</float>
+                        </index_of_refraction>
+                    </phong>
+                </technique>
+            </profile_COMMON>
+        </effect>
+    </library_effects>
+    <library_geometries>
+        <geometry id="Regroup01-geometry" name="Regroup01-geometry">
+            <mesh>
+                <source id="Regroup01-positions" name="position">
+                    <float_array id="Regroup01-positions-array" count="18">-2 2 -2 -2 2 1.8 2 2 -2 2 2 1.8 2 2 2 -2 2 2</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup01-positions-array" count="6" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup01-normals" name="normal">
+                    <float_array id="Regroup01-normals-array" count="3">0 1 0</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup01-normals-array" count="1" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup01-texcoords" name="texcoord">
+                    <float_array id="Regroup01-texcoords-array" count="12">0.915625 0.478125 0.915625 0.28843 0.958276 0.478125 0.958276 0.28843 0.958276 0.278946 0.915625 0.278946</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup01-texcoords-array" count="6" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Regroup01-geometry-vertices">
+                    <input semantic="POSITION" source="#Regroup01-positions" />
+                </vertices>
+                <triangles material="Material01" count="4">
+                    <input semantic="VERTEX" source="#Regroup01-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Regroup01-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Regroup01-texcoords" offset="2" />
+                    <p>0 0 0 1 0 1 2 0 2 1 0 1 3 0 3 2 0 2 4 0 4 3 0 3 1 0 1 4 0 4 1 0 1 5 0 5</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="Regroup02-geometry" name="Regroup02-geometry">
+            <mesh>
+                <source id="Regroup02-positions" name="position">
+                    <float_array id="Regroup02-positions-array" count="12">-2 2 2 -2 1.5 2 2 1.5 2 2 2 2</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup02-positions-array" count="4" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup02-normals" name="normal">
+                    <float_array id="Regroup02-normals-array" count="3">0 0 1</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup02-normals-array" count="1" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup02-texcoords" name="texcoord">
+                    <float_array id="Regroup02-texcoords-array" count="8">0.914162 0.481377 0.914162 0.293054 0.968927 0.293054 0.968927 0.481377</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup02-texcoords-array" count="4" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Regroup02-geometry-vertices">
+                    <input semantic="POSITION" source="#Regroup02-positions" />
+                </vertices>
+                <triangles material="Material01" count="2">
+                    <input semantic="VERTEX" source="#Regroup02-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Regroup02-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Regroup02-texcoords" offset="2" />
+                    <p>0 0 0 1 0 1 2 0 2 0 0 0 2 0 2 3 0 3</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="Regroup04-geometry" name="Regroup04-geometry">
+            <mesh>
+                <source id="Regroup04-positions" name="position">
+                    <float_array id="Regroup04-positions-array" count="12">-2 1.5 1.8 -2 0 1.8 2 1.5 1.8 2 0 1.8</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup04-positions-array" count="4" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup04-normals" name="normal">
+                    <float_array id="Regroup04-normals-array" count="3">0 0 1</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup04-normals-array" count="1" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup04-texcoords" name="texcoord">
+                    <float_array id="Regroup04-texcoords-array" count="8">0.901589 0.168605 0.901589 0.00251371 0.969667 0.168605 0.969667 0.00251371</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup04-texcoords-array" count="4" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Regroup04-geometry-vertices">
+                    <input semantic="POSITION" source="#Regroup04-positions" />
+                </vertices>
+                <triangles material="Material01" count="2">
+                    <input semantic="VERTEX" source="#Regroup04-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Regroup04-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Regroup04-texcoords" offset="2" />
+                    <p>0 0 0 1 0 1 2 0 2 1 0 1 3 0 3 2 0 2</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="Regroup06-geometry" name="Regroup06-geometry">
+            <mesh>
+                <source id="Regroup06-positions" name="position">
+                    <float_array id="Regroup06-positions-array" count="36">-2 2 2 -2 2 1.8 -2 1.5 1.8 -2 1.5 2 2 1.5 2 2 1.5 1.8 2 2 1.8 2 2 2 -2 2 -2 -2 1.5 -2 2 1.5 -2 2 2 -2</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup06-positions-array" count="12" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup06-normals" name="normal">
+                    <float_array id="Regroup06-normals-array" count="6">-1 0 0 1 0 0</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup06-normals-array" count="2" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup06-texcoords" name="texcoord">
+                    <float_array id="Regroup06-texcoords-array" count="12">0.98844 0.404137 0.983667 0.404137 0.983667 0.286066 0.98844 0.286066 0.888222 0.404137 0.888222 0.286066</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup06-texcoords-array" count="6" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Regroup06-geometry-vertices">
+                    <input semantic="POSITION" source="#Regroup06-positions" />
+                </vertices>
+                <triangles material="Material01" count="8">
+                    <input semantic="VERTEX" source="#Regroup06-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Regroup06-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Regroup06-texcoords" offset="2" />
+                    <p>0 0 0 1 0 1 2 0 2 0 0 0 2 0 2 3 0 3 4 1 3 5 1 2 6 1 1 4 1 3 6 1 1 7 1 0 8 0 4 9 0 5 2 0 2 8 0 4 2 0 2 1 0 1 6 1 1 5 1 2 10 1 5 6 1 1 10 1 5 11 1 4</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="Regroup07-geometry" name="Regroup07-geometry">
+            <mesh>
+                <source id="Regroup07-positions" name="position">
+                    <float_array id="Regroup07-positions-array" count="24">2 1.5 1.8 2 0 1.8 2 1.5 -2 2 0 -2 -2 1.5 -2 -2 0 -2 -2 1.5 1.8 -2 0 1.8</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup07-positions-array" count="8" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup07-normals" name="normal">
+                    <float_array id="Regroup07-normals-array" count="6">1 0 0 -1 0 0</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup07-normals-array" count="2" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup07-texcoords" name="texcoord">
+                    <float_array id="Regroup07-texcoords-array" count="8">0.9667 0.240047 0.9667 0.182094 0.907217 0.240047 0.907217 0.182094</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup07-texcoords-array" count="4" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Regroup07-geometry-vertices">
+                    <input semantic="POSITION" source="#Regroup07-positions" />
+                </vertices>
+                <triangles material="Material01" count="4">
+                    <input semantic="VERTEX" source="#Regroup07-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Regroup07-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Regroup07-texcoords" offset="2" />
+                    <p>0 0 0 1 0 1 2 0 2 1 0 1 3 0 3 2 0 2 4 1 2 5 1 3 6 1 0 5 1 3 7 1 1 6 1 0</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="Regroup08-geometry" name="Regroup08-geometry">
+            <mesh>
+                <source id="Regroup08-positions" name="position">
+                    <float_array id="Regroup08-positions-array" count="12">-2 1.5 2 -2 1.5 1.8 2 1.5 1.8 2 1.5 2</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup08-positions-array" count="4" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup08-normals" name="normal">
+                    <float_array id="Regroup08-normals-array" count="3">0 -1 0</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup08-normals-array" count="1" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup08-texcoords" name="texcoord">
+                    <float_array id="Regroup08-texcoords-array" count="8">0.902812 0.188116 0.902812 0.245136 0.960652 0.245136 0.960652 0.188116</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup08-texcoords-array" count="4" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Regroup08-geometry-vertices">
+                    <input semantic="POSITION" source="#Regroup08-positions" />
+                </vertices>
+                <triangles material="Material01" count="2">
+                    <input semantic="VERTEX" source="#Regroup08-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Regroup08-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Regroup08-texcoords" offset="2" />
+                    <p>0 0 0 1 0 1 2 0 2 0 0 0 2 0 2 3 0 3</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="Regroup09-geometry" name="Regroup09-geometry">
+            <mesh>
+                <source id="Regroup09-positions" name="position">
+                    <float_array id="Regroup09-positions-array" count="12">-1.29999 3.79999 1.3 -1.29999 2.20001 1.3 1.29999 3.79999 1.3 1.29999 2.20001 1.3</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup09-positions-array" count="4" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup09-normals" name="normal">
+                    <float_array id="Regroup09-normals-array" count="3">0 0 1</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup09-normals-array" count="1" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup09-texcoords" name="texcoord">
+                    <float_array id="Regroup09-texcoords-array" count="8">0.775438 0.236599 0.775438 0.180943 0.84467 0.236599 0.84467 0.180943</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup09-texcoords-array" count="4" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Regroup09-geometry-vertices">
+                    <input semantic="POSITION" source="#Regroup09-positions" />
+                </vertices>
+                <triangles material="Material01" count="2">
+                    <input semantic="VERTEX" source="#Regroup09-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Regroup09-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Regroup09-texcoords" offset="2" />
+                    <p>0 0 0 1 0 1 2 0 2 1 0 1 3 0 3 2 0 2</p>
+                </triangles>
+            </mesh>
+        </geometry>
+        <geometry id="Regroup03-geometry" name="Regroup03-geometry">
+            <mesh>
+                <source id="Regroup03-positions" name="position">
+                    <float_array id="Regroup03-positions-array" count="72">1.5 4 1.5 1.5 2 1.5 1.5 4 0.5 1.5 2 0.5 -1.5 4 0.5 -1.5 2 0.5 -1.5 4 1.5 -1.5 2 1.5 1 3.5 0.5 1 2 0.5 1 3 -1 1 2 -1 -1 3 -1 -1 2 -1 -1 3.5 0.5 -1 2 0.5 -1.3 3.8 1.5 -1.3 2.2 1.5 1.3 3.8 1.5 1.3 2.2 1.5 -1.29999 3.79999 1.3 -1.29999 2.20001 1.3 1.29999 3.79999 1.3 1.29999 2.20001 1.3</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup03-positions-array" count="24" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup03-normals" name="normal">
+                    <float_array id="Regroup03-normals-array" count="51">0.316228 0 0.948683 0.5547 0 0.83205 1 0 0 0 0 -1 -1 0 0 -0.5547 0 0.83205 -0.316228 0 0.948683 0 1 0 0 0.948683 -0.316228 0.267251 -0.534501 0.801801 0.534501 0.267251 0.801801 -0.534501 -0.267251 0.801801 -0.267251 0.534501 0.801801 0.894427 -0.447214 8.21005e-005 0.447214 0.894427 8.26336e-005 -0.447214 -0.894427 8.26336e-005 -0.894427 0.447214 8.21005e-005</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup03-normals-array" count="17" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Regroup03-texcoords" name="texcoord">
+                    <float_array id="Regroup03-texcoords-array" count="36">0.954691 0.234913 0.954691 0.186323 0.912746 0.234913 0.912746 0.186323 0.947701 0.222765 0.947701 0.186323 0.947701 0.210618 0.919737 0.210618 0.919737 0.186323 0.919737 0.222765 0.915542 0.230054 0.915542 0.191182 0.951895 0.230054 0.951895 0.191182 0.915543 0.230054 0.915543 0.191183 0.951895 0.230054 0.951895 0.191183</float_array>
+                    <technique_common>
+                        <accessor source="#Regroup03-texcoords-array" count="18" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Regroup03-geometry-vertices">
+                    <input semantic="POSITION" source="#Regroup03-positions" />
+                </vertices>
+                <triangles material="Material01" count="32">
+                    <input semantic="VERTEX" source="#Regroup03-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Regroup03-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Regroup03-texcoords" offset="2" />
+                    <p>0 0 0 1 1 1 2 2 0 1 1 1 3 2 1 2 2 0 2 3 0 3 3 1 4 3 2 3 3 1 5 3 3 4 3 2 4 4 2 5 4 3 6 5 2 5 4 3 7 6 3 6 5 2 4 7 2 6 7 2 2 7 0 6 7 2 0 7 0 2 7 0 8 2 4 9 2 5 10 2 6 9 2 5 11 2 5 10 2 6 10 3 6 11 3 5 12 3 7 11 3 5 13 3 8 12 3 7 12 4 7 13 4 8 14 4 9 13 4 8 15 4 8 14 4 9 12 8 7 14 8 9 10 8 6 14 8 9 8 8 4 10 8 6 16 9 10 6 5 2 7 6 3 16 9 10 7 6 3 17 10 11 18 11 12 0 0 0 6 5 2 18 11 12 6 5 2 16 9 10 17 10 11 7 6 3 1 1 1 17 10 11 1 1 1 19 12 13 19 12 13 1 1 1 0 0 0 19 12 13 0 0 0 18 11 12 20 13 14 16 9 10 17 10 11 20 13 14 17 10 11 21 14 15 22 15 16 18 11 12 16 9 10 22 15 16 16 9 10 20 13 14 21 14 15 17 10 11 19 12 13 21 14 15 19 12 13 23 16 17 23 16 17 19 12 13 18 11 12 23 16 17 18 11 12 22 15 16</p>
+                </triangles>
+            </mesh>
+        </geometry>
+    </library_geometries>
+    <library_visual_scenes>
+        <visual_scene id="SceneRoot" name="SceneRoot">
+            <node id="Regroup01" name="Regroup01" type="NODE">
+                <instance_geometry url="#Regroup01-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material01" target="#Material01" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="Regroup02" name="Regroup02" type="NODE">
+                <instance_geometry url="#Regroup02-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material01" target="#Material01" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="Regroup04" name="Regroup04" type="NODE">
+                <instance_geometry url="#Regroup04-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material01" target="#Material01" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="Regroup06" name="Regroup06" type="NODE">
+                <instance_geometry url="#Regroup06-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material01" target="#Material01" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="Regroup07" name="Regroup07" type="NODE">
+                <instance_geometry url="#Regroup07-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material01" target="#Material01" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="Regroup08" name="Regroup08" type="NODE">
+                <instance_geometry url="#Regroup08-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material01" target="#Material01" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="Regroup09" name="Regroup09" type="NODE">
+                <instance_geometry url="#Regroup09-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material01" target="#Material01" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+            <node id="Regroup03" name="Regroup03" type="NODE">
+                <instance_geometry url="#Regroup03-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material01" target="#Material01" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+        </visual_scene>
+    </library_visual_scenes>
+    <scene>
+        <instance_visual_scene url="#SceneRoot" />
+    </scene>
+</COLLADA>
