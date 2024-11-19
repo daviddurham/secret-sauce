@@ -50,31 +50,18 @@ class HUD extends Sprite {
         var centerY:Float = Main.maxHeight / 2;
 
         // pause button invokes pause menu and suspends game
-		pauseButton = new BasicButton("assets/pause_down.png", "assets/pause_down.png", "assets/pause_down.png");
+		pauseButton = new BasicButton("assets/pause_button_idle.png", "assets/pause_button_over.png", "assets/pause_button_over.png");
 		pauseButton.addEventListener(MouseEvent.CLICK, onPauseClicked);
-		pauseButton.x = (Main.maxWidth - Main.offsetX) - 30;
-		pauseButton.y = (Main.offsetY) + 30;
+        pauseButton.scaleX = pauseButton.scaleY = 0.75;
+		pauseButton.x = (Main.maxWidth - Main.offsetX) - 75;
+		pauseButton.y = (Main.offsetY) + 65;
         addChild(pauseButton);
 
-        var format:TextFormat = new TextFormat("_sans", 18, 0xffffff, true);
-
-        /*
-        dayText = new TextField();
-		dayText.defaultTextFormat = format;
-
-		dayText.textColor = 0xffffff;
-		dayText.selectable = false;
-		dayText.autoSize = TextFieldAutoSize.LEFT;
-        dayText.x = Main.offsetX + 5;
-        dayText.y = Main.offsetY + 5;
-		addChild(dayText);
-        */
-
-        dayText = new BitmapText(128, 64, "assets/font_1.png");
+        dayText = new BitmapText(256, 128, "assets/font_1.png");
 		dayText.printText("");
-		dayText.x = Main.offsetX + 5;
-		dayText.y = Main.offsetY + 10;
-        dayText.scaleX = dayText.scaleY = 0.5;
+		dayText.x = Main.offsetX + 20;
+		dayText.y = Main.offsetY + 25;
+        dayText.scaleX = dayText.scaleY = 0.75;
         addChild(dayText);
 
         timeText = new BitmapText(64, 64, "assets/font_1.png");
@@ -112,8 +99,8 @@ class HUD extends Sprite {
 		addChild(reviewsPanel);
 
         recipePanel = new RecipePanel();
-        recipePanel.x = Main.offsetX + 95;
-        recipePanel.y = (Main.maxHeight - Main.offsetY) - 40;
+        recipePanel.x = Main.offsetX + 200;
+        recipePanel.y = (Main.maxHeight - Main.offsetY) - 95;
 		addChild(recipePanel);
 
         maskAnim = new Shape();
@@ -362,7 +349,7 @@ class HUD extends Sprite {
 
     public function onResize(event:Event = null):Void {
 
-        pauseButton.x = (Main.maxWidth - Main.offsetX) - 30;
-		pauseButton.y = (Main.offsetY) + 30;
+        pauseButton.x = (Main.maxWidth - Main.offsetX) - 75;
+		pauseButton.y = (Main.offsetY) + 65;
     }
 }

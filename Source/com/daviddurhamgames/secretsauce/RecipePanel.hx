@@ -23,12 +23,12 @@ class RecipePanel extends Sprite {
 		
 		super();
 		
-        createPanel(170, 65);
+        createPanel(340, 130);
 
-        var titleText:BitmapText = new BitmapText(300, 64, "assets/font_1.png");
+        var titleText:BitmapText = new BitmapText(512, 128, "assets/font_1.png");
 		titleText.printText("LAST RECIPE");
-		titleText.x = -75;
-		titleText.y = -28;
+		titleText.x = -155;
+		titleText.y = -50;
         titleText.scaleX = titleText.scaleY = 0.5;
         addChild(titleText);
 		
@@ -40,18 +40,18 @@ class RecipePanel extends Sprite {
 		addChild(recipeText);
 
         image1 = new Bitmap(Assets.getBitmapData("assets/ingredient1.png"));
-        image1.x = -80;
+        image1.x = -60;
         image1.y = -7;
         addChild(image1);
 
         image2 = new Bitmap(Assets.getBitmapData("assets/ingredient2.png"));
-        image2.x = -29;
+        image2.x = 40;
         image2.y = -7;
         addChild(image2);
 
         image3 = new Bitmap(Assets.getBitmapData("assets/ingredient3.png"));
         image3.x = 22;
-        image3.y = -7;
+        image3.y = 140;
         addChild(image3);
 
         visible = false;

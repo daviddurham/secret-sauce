@@ -1,10 +1,10 @@
 ﻿package com.daviddurhamgames.secretsauce;
 
 import openfl.Assets;
-import flash.display.PixelSnapping;
-import flash.display.Bitmap;
-import flash.display.Sprite;
-import flash.events.Event;
+import openfl.display.PixelSnapping;
+import openfl.display.Bitmap;
+import openfl.display.Sprite;
+import openfl.events.Event;
 import motion.Actuate;
 
 class Transition extends Sprite {

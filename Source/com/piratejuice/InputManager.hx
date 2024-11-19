@@ -1,10 +1,10 @@
 ﻿package com.piratejuice;
 
-import flash.display.Stage;
-import flash.events.Event;
-import flash.events.KeyboardEvent;
-import flash.events.EventDispatcher;
-import flash.Lib;
+import openfl.display.Stage;
+import openfl.events.Event;
+import openfl.events.KeyboardEvent;
+import openfl.events.EventDispatcher;
+import openfl.Lib;
 
 import com.piratejuice.InputKey;
 
@@ -13,7 +13,7 @@ import com.piratejuice.InputKey;
 *	@author David Durham 
 *	
 * 	Original AS3 Version 2010
-* 	Ported to Haxe NME 2013
+* 	Ported to Haxe 2013
 * 	
 * 	Manage key states for a custom list of keys
 *	Example Usage:

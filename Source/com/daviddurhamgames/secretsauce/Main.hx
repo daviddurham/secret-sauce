@@ -41,10 +41,10 @@ class Main extends Sprite {
 	public static var winWidth:Float;
 	public static var winHeight:Float;
 	
-	public static var maxWidth:Int = 590;
-	public static var maxHeight:Int = 270;
-	public static var minWidth:Int = 360;
-	public static var minHeight:Int = 240;
+	public static var maxWidth:Int = 1760;//885;//590;
+	public static var maxHeight:Int = 810;//405;//270;
+	public static var minWidth:Int = 1080;//540;//360;
+	public static var minHeight:Int = 720;//360;//240;
 	
 	public static var offsetX:Float;
 	public static var offsetY:Float;
@@ -150,7 +150,7 @@ class Main extends Sprite {
 		//}
 				
 		var guide:Bitmap = new Bitmap(Assets.getBitmapData("assets/guide.png"));
-		addChild(guide);
+		//addChild(guide);
 		
 		
 		// hide/show event handlers (to suspend game on close)
@@ -195,10 +195,12 @@ class Main extends Sprite {
 
 		if (_game != null) {
 		
+			_game.cleanUp();
 			removeChild(_game);
+
 			_game.removeEventListener("init_menu", initMenu);
 			_game.removeEventListener("quit", initMenu);
-			_game.cleanUp();
+			
 			_game = null;
 		}
 		
@@ -223,7 +225,7 @@ class Main extends Sprite {
 		
 		Lib.current.stage.align = StageAlign.TOP_LEFT;
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		Lib.current.stage.quality = StageQuality.LOW;
+		Lib.current.stage.quality = StageQuality.BEST;
 		
 		Lib.current.stage.stageFocusRect = false;
 		Lib.current.addChild(new Main());

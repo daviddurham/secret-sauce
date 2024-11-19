@@ -1,6 +1,6 @@
 ﻿package com.piratejuice;
 	
-import flash.media.Sound;
+import openfl.media.Sound;
 import openfl.Assets;
 
 import com.piratejuice.Audio;

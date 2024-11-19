@@ -8,17 +8,11 @@ import openfl.Assets;
 
 import motion.Actuate;
 
-import com.piratejuice.Ticker;
-import com.piratejuice.events.TickerEvent;
-
 class Splash extends Sprite {
 	
 	// game running flag
 	private var isRunning:Bool;
-	
-	// update ticker
-	private var ticker:Ticker;
-	
+		
 	// hold everything in this
 	private var holder:Sprite;
 	
@@ -52,14 +46,6 @@ class Splash extends Sprite {
 		
 		// ensure we have focus
 		stage.focus = stage;
-		
-		// update loop
-		ticker = new Ticker(1000 / Main.fps);
-		addChild(ticker);
-		
-		ticker.addEventListener(TickerEvent.TICK, update);
-		ticker.start();
-		
 		mouseEnabled = false;
 	}
 	
@@ -86,16 +72,5 @@ class Splash extends Sprite {
 		
 		removeChild(holder);
 		holder = null;
-		
-		// clear update loop
-		ticker.removeEventListener(TickerEvent.TICK, update);
-	}
-	
-	private function update(event:Event):Void {
-		
-		if (isRunning) {
-		
-			//
-		}
 	}
 }

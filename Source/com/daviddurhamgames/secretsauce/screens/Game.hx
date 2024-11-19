@@ -51,7 +51,7 @@ class Game extends Sprite {
 	private var isButtonDown:Bool = false;
 
 	// pixelated mode
-	private var isRetroMode:Bool = true;
+	private var isRetroMode:Bool = false;//true;
 	
 	// update loop
 	//private var deltaTime:Float;
@@ -281,7 +281,7 @@ class Game extends Sprite {
 		mainLight.castsShadows = false;
 		mainLight.color = 0xeedddd;
         mainLight.direction = new Vector3D(0, -1, 0);
-        mainLight.ambient = 0.5;
+        mainLight.ambient = 0.8;
         mainLight.ambientColor = 0xaaaaaa;
         mainLight.diffuse = 0.5;
         mainLight.specular = 0;
@@ -696,7 +696,6 @@ class Game extends Sprite {
 	
 	private function onTransitionOut():Void {
 		
-		//cleanUp();
 		dispatchEvent(new Event("quit"));
 	}
 	
@@ -876,35 +875,29 @@ class Game extends Sprite {
 	public function cleanUp():Void {
 		
 		// clear update loop
-		stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+		stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame, false);
 
 		// clean up the input manager
 		input.cleanUp();
 		input.removeEventListener("pause_key_pressed", onPauseKeyPressed);
 		input.removeEventListener("a_pressed", onAPressed);
 		input.removeEventListener("b_pressed", onBPressed);
-		input = null;	
+		input = null;
 		
-		/*
 		// remove lighting
 		lightPicker.dispose();
 		lightPicker = null;
-		trace(2);
-
+		
 		shadowMapMethod.dispose();
 		shadowMapMethod = null;
-		trace(3);
-
+		
 		mainLight.dispose();
 		view.scene.removeChild(mainLight);
-		trace(4);
-
+		
 		// dispose the 3D view
 		holder.removeChild(view);
 		view.dispose();
 		view = null;
-		trace(5);
-		*/
 		
 		// dispose the bitmap view
 		holder.removeChild(bitmap);

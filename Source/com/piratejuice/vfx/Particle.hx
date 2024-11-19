@@ -1,10 +1,10 @@
 ﻿package com.piratejuice.vfx;
 
 import com.piratejuice.Vector3D;
-import flash.geom.Point;
+import openfl.geom.Point;
 import openfl.Assets;
-import flash.display.Sprite;
-import flash.display.Bitmap;
+import openfl.display.Sprite;
+import openfl.display.Bitmap;
 
 import com.piratejuice.BitmapSprite;
 
