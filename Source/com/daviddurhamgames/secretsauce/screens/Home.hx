@@ -68,6 +68,8 @@ class Home extends Sprite {
 	// whether we should fade in or use the normal transition
 	private var isFadeIn:Bool;
 
+	// animated background
+	private var background:TileScroller;
 
 	/**
 	* Constructor
@@ -98,11 +100,9 @@ class Home extends Sprite {
 		scene = new Sprite();
 		holder.addChild(scene);
 
-		var bg:Bitmap = new Bitmap(Assets.getBitmapData("assets/title_screen_bg.png"));
-        bg.scaleX = Main.maxWidth;
-		bg.x = 0;
-        bg.y = 0;
-        scene.addChild(bg);
+		background = new TileScroller("assets/titlescreen_tile.png", 1, 1);
+		background.start();
+		scene.addChild(background);
 
 		var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/title.png"), null, true);
 		title.x = Std.int((Main.maxWidth / 2) - (title.width / 2));
@@ -330,7 +330,8 @@ class Home extends Sprite {
 		
 		if (isRunning) {
 		
-			//
+			// animate background
+			background.update();
 		}
 	}
 }
