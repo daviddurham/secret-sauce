@@ -13,7 +13,8 @@ import openfl.Assets;
 import openfl.Lib;
 
 import com.daviddurhamgames.secretsauce.PausePanel;
-import com.daviddurhamgames.secretsauce.CompletePanel;
+import com.daviddurhamgames.secretsauce.SauceMadePanel;
+import com.daviddurhamgames.secretsauce.GameCompletePanel;
 import com.daviddurhamgames.secretsauce.IngredientPanel;
 import com.daviddurhamgames.secretsauce.Ingredient;
 import com.piratejuice.BitmapText;
@@ -24,8 +25,8 @@ class HUD extends Sprite {
     public var pauseButton:BasicButton;
         
     public var pauseMenu:PausePanel;
-    public var completeMessage:CompletePanel;
-    public var failedMessage:FailedPanel;
+    public var sauceMadePanel:SauceMadePanel;
+    public var gameCompletePanel:GameCompletePanel;
     public var ingredientPanel:IngredientPanel;
     public var reviewsPanel:ReviewsPanel;
     public var recipePanel:RecipePanel;
@@ -70,6 +71,18 @@ class HUD extends Sprite {
 		timeText.y = Main.offsetY + 10;
         //addChild(timeText);
 
+        
+
+        sauceMadePanel = new SauceMadePanel();
+        sauceMadePanel.x = centerX;
+		sauceMadePanel.y = centerY;
+		addChild(sauceMadePanel);
+
+        gameCompletePanel = new GameCompletePanel();
+        gameCompletePanel.x = centerX;
+		gameCompletePanel.y = centerY;
+        addChild(gameCompletePanel);
+
         pauseMenu = new PausePanel();
         pauseMenu.x = centerX;
 		pauseMenu.y = centerY;
@@ -77,16 +90,6 @@ class HUD extends Sprite {
         pauseMenu.addEventListener("back", quitCancel, false, 0, true);
         pauseMenu.addEventListener("restart", restart, false, 0, true);
         addChild(pauseMenu);
-
-        completeMessage = new CompletePanel();
-        completeMessage.x = centerX;
-		completeMessage.y = centerY;
-		addChild(completeMessage);
-
-        failedMessage = new FailedPanel();
-        failedMessage.x = centerX;
-		failedMessage.y = centerY;
-        addChild(failedMessage);
 
         ingredientPanel = new IngredientPanel();
 		ingredientPanel.x = (Main.maxWidth - Main.offsetX) - 70;
@@ -188,9 +191,9 @@ class HUD extends Sprite {
             
             pauseMenu.selectionUp();
         }
-        else if (failedMessage.visible) {
+        else if (gameCompletePanel.visible) {
             
-            failedMessage.selectionUp();
+            gameCompletePanel.selectionUp();
         }
     }
     
@@ -200,9 +203,9 @@ class HUD extends Sprite {
             
             pauseMenu.selectionDown();
         }
-        else if (failedMessage.visible) {
+        else if (gameCompletePanel.visible) {
             
-            failedMessage.selectionDown();
+            gameCompletePanel.selectionDown();
         }
     }
     
@@ -212,9 +215,9 @@ class HUD extends Sprite {
             
             pauseMenu.select();
         }
-        else if (failedMessage.visible) {
+        else if (gameCompletePanel.visible) {
             
-            failedMessage.select();
+            gameCompletePanel.select();
         }
     }
     
@@ -284,53 +287,63 @@ class HUD extends Sprite {
         recipePanel.hide();
     }
     
-    public function showCompleteMessage():Void {
+    public function showSauceMadePanel():Void {
         
         disableButtons();			
-        showMessage(completeMessage);
+        showMessage(sauceMadePanel);
     }
     
-    public function hideCompleteMessage():Void {
+    public function hideSauceMadePanel(snap:Bool = false):Void {
         
-        hideMessage(completeMessage);
+        hideMessage(sauceMadePanel, snap);
     }
     
-    public function showFailedMessage():Void {
+    public function showGameCompletePanel():Void {
         
         disableButtons();			
-        showMessage(failedMessage);
+        showMessage(gameCompletePanel);
     }
     
-    public function hideFailedMessage():Void {
+    public function hideGameCompletePanel(snap:Bool = false):Void {
         
-        hideMessage(failedMessage);
+        hideMessage(gameCompletePanel, snap);
     }
     
     
     /* Showing / Hiding Messages */
     
-    private function showMessage(message:Sprite):Void {
+    private function showMessage(message:Sprite, snap:Bool = false):Void {
         
         message.visible = true;
         
-        // init. mask
-        maskAnim.visible = true;
-        Actuate.tween(maskAnim, 0.5, { scaleY: 1 }).onComplete(onMaskOnComplete).ease(Linear.easeNone);
-        
-        // mask
-        message.mask = maskAnim;
-        maskedMessage = cast(message, Sprite);
+        if (!snap) {
+
+            // init. mask
+            maskAnim.visible = true;
+            Actuate.tween(maskAnim, 0.5, { scaleY: 1 }).onComplete(onMaskOnComplete).ease(Linear.easeNone);
+            
+            // mask
+            message.mask = maskAnim;
+            maskedMessage = cast(message, Sprite);
+        }
     }
     
-    private function hideMessage(message:Sprite):Void {
+    private function hideMessage(message:Sprite, snap:Bool = false):Void {
         
-        // init. mask
-        maskAnim.visible = true;
-        Actuate.tween(maskAnim, 0.5, { scaleY: 0 }).onComplete(onMaskOffComplete).ease(Linear.easeNone);
-        
-        // mask
-        message.mask = maskAnim;
-        maskedMessage = cast(message, Sprite);
+        if (snap) {
+
+            message.visible = false;
+        }
+        else {
+
+            // init. mask
+            maskAnim.visible = true;
+            Actuate.tween(maskAnim, 0.5, { scaleY: 0 }).onComplete(onMaskOffComplete).ease(Linear.easeNone);
+            
+            // mask
+            message.mask = maskAnim;
+            maskedMessage = cast(message, Sprite);
+        }
     }
     
     private function onMaskOnComplete():Void {

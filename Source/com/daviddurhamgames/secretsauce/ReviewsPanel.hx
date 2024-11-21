@@ -9,21 +9,27 @@ import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.text.TextFieldAutoSize;
 
+import com.piratejuice.BitmapText;
+
 class ReviewsPanel extends Sprite {
 		
 	private var reviewsText:TextField;
+    private var notes:Array<Review>;
     	
 	public function new():Void {
 		
 		super();
 		
-        createPanel(270, 140);
+        createPanel(820, 300);
 
-        var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/reviews_title.png"));
-		title.x = -title.width / 2;
-        title.y = -70;
-        addChild(title);
+        var titleText:BitmapText = new BitmapText(1024, 64, "assets/font_1.png");
+		titleText.printText("YESTERDAY'S REVIEWS");
+		titleText.x = -200;
+		titleText.y = -125;
+        titleText.scaleX = titleText.scaleY = 0.5;
+        addChild(titleText);
 
+        /*
         reviewsText = new TextField();
 		
 		var format:TextFormat = new TextFormat("_sans", 12);
@@ -35,6 +41,19 @@ class ReviewsPanel extends Sprite {
         reviewsText.x = -80;
         reviewsText.y = -35;
 		addChild(reviewsText);
+        */
+
+        notes = [];
+        var positions:Array<Int> = [-300, -100, 100, 300];
+        
+        for (i in 0...4) {
+
+            var review:Review = new Review();
+            review.x = positions[i];
+            review.y = 25;
+            addChild(review);
+            notes.push(review);
+        }
 
         visible = false;
 	}
@@ -55,14 +74,23 @@ class ReviewsPanel extends Sprite {
 
     public function show(reviews:Array<String>):Void {
 
+        trace(reviews);
         var str:String = "";
+        var count:Int = 0;
+
+        for (note in notes) {
+
+            note.hide();
+        }
 
         for (review in reviews) {
 
-            str += review + "\n\n";
+            notes[count].show(review);
+            //str += review + "\n\n";
+            count++;
         }
         
-        reviewsText.text = str;
+        //reviewsText.text = str;
         visible = true;
     }
 

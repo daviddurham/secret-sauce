@@ -55,7 +55,7 @@ class Main extends Sprite {
 	public static var sfxVolume:Float = 1;
 	public static var musicVolume:Float = 1;
 	public static var showControls:Int = 0;
-
+	
 	public static var audioFormat:String = "wav";
 	
 	// save data

@@ -9,13 +9,16 @@ import openfl.events.MouseEvent;
 import openfl.Assets;
 
 import com.daviddurhamgames.secretsauce.BasicButton;
+import com.piratejuice.BitmapText;
 
 class OptionsMenu extends Sprite {
 	
+    public var buttonFullscreen:BasicButton;
     public var buttonMusic:BasicButton;
     public var buttonSFX:BasicButton;
     public var buttonBack:BasicButton;
 
+    private var fullscreenOptions:Array<Bitmap>;
     private var musicOptions:Array<Bitmap>;
     private var sfxOptions:Array<Bitmap>;
 
@@ -29,77 +32,80 @@ class OptionsMenu extends Sprite {
 		
 		super();
 
-        var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/options_title.png"));
-        title.x = -title.width / 2;
-        title.y = -80 - (title.height / 2);
-        addChild(title);
+        var titleText:BitmapText = new BitmapText(512, 64, "assets/font_1.png");
+		titleText.printText("SETTINGS");
+		titleText.x = -150;
+		titleText.y = -300;
+        titleText.scaleX = titleText.scaleY = 0.75;
+        addChild(titleText);
 
-        buttonMusic = new BasicButton("assets/button_rounded.png", "assets/button_rounded_over.png", "assets/button_rounded_over.png");
+        buttonFullscreen = createButton("assets/sfx_button.png", "assets/sfx_button_over.png", -150, -160, 0.75);
+        buttonFullscreen.addEventListener(MouseEvent.CLICK, onFullscreenClicked);
+        
+        fullscreenOptions = [
+            
+            addSetting("assets/option_0.png", buttonFullscreen),
+            addSetting("assets/option_100.png", buttonFullscreen)
+        ];
+
+        setFullscreen();
+
+        buttonMusic = createButton("assets/music_button.png", "assets/music_button_over.png", -150, -40, 0.75);
         buttonMusic.addEventListener(MouseEvent.CLICK, onMusicClicked);
-		buttonMusic.x = -90;
-		buttonMusic.y = -30;
-        addChild(buttonMusic);
-
-        var label = addLabel("assets/music_button.png", buttonMusic);
 
         musicOptions = [
             
-            addSetting("assets/option_0.png", buttonMusic, label),
-            addSetting("assets/option_25.png", buttonMusic, label),
-            addSetting("assets/option_50.png", buttonMusic, label),
-            addSetting("assets/option_75.png", buttonMusic, label),
-            addSetting("assets/option_100.png", buttonMusic, label)
+            addSetting("assets/option_0.png", buttonMusic),
+            addSetting("assets/option_25.png", buttonMusic),
+            addSetting("assets/option_50.png", buttonMusic),
+            addSetting("assets/option_75.png", buttonMusic),
+            addSetting("assets/option_100.png", buttonMusic)
         ];
 
         setMusicVolume();
 
-        buttonSFX = new BasicButton("assets/button_rounded.png", "assets/button_rounded_over.png", "assets/button_rounded_over.png");
+        buttonSFX = createButton("assets/sfx_button.png", "assets/sfx_button_over.png", -150, 80, 0.75);
         buttonSFX.addEventListener(MouseEvent.CLICK, onSFXClicked);
-		buttonSFX.x = -90;
-		buttonSFX.y = 10;
-        addChild(buttonSFX);
-
-        label = addLabel("assets/sfx_button.png", buttonSFX);
+		addChild(buttonSFX);
 
         sfxOptions = [
             
-            addSetting("assets/option_0.png", buttonSFX, label),
-            addSetting("assets/option_25.png", buttonSFX, label),
-            addSetting("assets/option_50.png", buttonSFX, label),
-            addSetting("assets/option_75.png", buttonSFX, label),
-            addSetting("assets/option_100.png", buttonSFX, label)
+            addSetting("assets/option_0.png", buttonSFX),
+            addSetting("assets/option_25.png", buttonSFX),
+            addSetting("assets/option_50.png", buttonSFX),
+            addSetting("assets/option_75.png", buttonSFX),
+            addSetting("assets/option_100.png", buttonSFX)
         ];
 
         setSFXVolume();
 
-        buttonBack = new BasicButton("assets/back_button.png", "assets/back_button.png", "assets/back_button.png");
+        buttonBack = createButton("assets/back_button.png", "assets/back_button_over.png", 0, 250, 0.75);
         buttonBack.addEventListener(MouseEvent.CLICK, onBackClicked);
-		buttonBack.x = 0;
-		buttonBack.y = 90;
-        addChild(buttonBack);
-
+		
         //create button list
 		currButton = 0;
-		buttonList = [buttonMusic, buttonSFX, buttonBack];
+		buttonList = [buttonFullscreen, buttonMusic, buttonSFX, buttonBack];
 
         visible = false;
 	}
 
-    private function addLabel(image:String, button:BasicButton):Bitmap {
+    private function createButton(idle:String, over:String, x:Float = 0, y:Float = 0, scale:Float = 1):BasicButton {
 
-        var bitmap = new Bitmap(Assets.getBitmapData(image));		
-        bitmap.x = button.x - (button.width / 2);
-        bitmap.y = button.y - (button.height / 2);
-        addChild(bitmap);
+        var button:BasicButton = new BasicButton(idle, over, over);
+		button.x = x;
+		button.y = y;
+        button.scaleX = button.scaleY = scale;
+        addChild(button);
 
-        return bitmap;
+        return button;
     }
 
-    private function addSetting(image:String, button:BasicButton, label:Bitmap):Bitmap {
+    private function addSetting(image:String, button:BasicButton):Bitmap {
 
         var bitmap = new Bitmap(Assets.getBitmapData(image));
-        bitmap.x = label.x + 130;
-        bitmap.y = label.y + (label.height / 2) - (bitmap.height / 2);
+        bitmap.scaleX = bitmap.scaleY = 2;
+        bitmap.x = button.x + 200;
+        bitmap.y = button.y - (bitmap.height / 2);
         addChild(bitmap);
 
         return bitmap;
@@ -117,6 +123,16 @@ class OptionsMenu extends Sprite {
 
     /* Button Handlers */
     
+    private function onFullscreenClicked(event:MouseEvent = null):Void {
+        
+        // increment volume by 25%
+        Main.isFullscreen = !Main.isFullscreen;
+
+        setFullscreen();		
+		//Main.savedData.save("fullscreen", Std.string(Main.isFullscreen));
+        dispatchEvent(new Event("fullscreen"));
+    }
+
     private function onMusicClicked(event:MouseEvent = null):Void {
         
         // increment volume by 25%
@@ -150,6 +166,12 @@ class OptionsMenu extends Sprite {
     private function onBackClicked(event:MouseEvent = null):Void {
         
         dispatchEvent(new Event("back"));
+    }
+
+    private function setFullscreen():Void {
+
+        fullscreenOptions[0].visible = !Main.isFullscreen;
+        fullscreenOptions[1].visible = Main.isFullscreen;
     }
 
     private function setMusicVolume():Void {

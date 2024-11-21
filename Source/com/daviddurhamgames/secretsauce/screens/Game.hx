@@ -169,7 +169,7 @@ class Game extends Sprite {
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
 											[1, 1, 1, 2, 7, 7, 7, 0, 7, 7, 7, 7, 7, 2, 2, 2, 2 ],
-											[1, 1, 1, 2, 7, 8, 8, 0, 9, 8, 7, 2, 2, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 8, 8, 0, 9,21, 7, 2, 2, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
@@ -204,6 +204,8 @@ class Game extends Sprite {
 	private var potContents:Array<Int> = [];
 
 	private var currentDay:Int = 0;
+
+	private var isSauceMade:Bool = false;
 
 	private var reviews:Array<String> = [];
 	private var recipe:Array<String> = [];
@@ -333,11 +335,11 @@ class Game extends Sprite {
 
 		// need to load models sequentially
 		loadedModels = [];
-		modelsToLoad = ["assets/models/robochef.dae", "assets/models/tree.dae", "assets/models/cone.dae", "assets/models/wall.dae", "assets/models/counter.dae", "assets/models/pot.dae", "assets/models/grill.dae", "assets/models/box.dae", "assets/models/terminal.dae"];
-		meshCounts = [12, 4, 2, 1, 6, 8, 6, 9, 8];
+		modelsToLoad = ["assets/models/robochef.dae", "assets/models/tree.dae", "assets/models/cone.dae", "assets/models/wall.dae", "assets/models/counter.dae", "assets/models/pot.dae", "assets/models/grill.dae", "assets/models/box.dae", "assets/models/terminal.dae", "assets/models/sink.dae"];
+		meshCounts = [12, 4, 2, 1, 6, 8, 6, 9, 8, 8];
 
 		// some models shouldn't receive shadows
-		shadows = [true, false, false, true, true, true, true, true, true];
+		shadows = [true, false, false, true, true, true, true, true, true, true];
 		currentModelLoading = -1;
 		loadNextModel();
 				
@@ -477,7 +479,59 @@ class Game extends Sprite {
 		startNextDay();
 	}
 	
-	/* Game Functions */
+	private function checkRecipesMatch():Bool {
+
+		var targetSalt:Int = 0;
+		var targetSweet:Int = 0;
+		var targetSpicy:Int = 0;
+		var targetSour:Int = 0;
+
+		var currentSalt:Int = 0;
+		var currentSweet:Int = 0;
+		var currentSpicy:Int = 0;
+		var currentSour:Int = 0;	
+
+		// compare current recipe with target
+		for (i in 0...targetRecipe.length) {
+
+			for (ingredient in ingredients) {
+		
+				if (ingredient.id == targetRecipe[i]) {
+
+					targetSalt += ingredient.salt;
+					targetSweet += ingredient.sweet;
+					targetSpicy += ingredient.spicy;
+					targetSour += ingredient.sour;
+					break;
+				}
+			}
+		}
+
+		for (i in 0...currentRecipe.length) {
+
+			for (ingredient in ingredients) {
+		
+				if (ingredient.id == currentRecipe[i]) {
+
+					currentSalt += ingredient.salt;
+					currentSweet += ingredient.sweet;
+					currentSpicy += ingredient.spicy;
+					currentSour += ingredient.sour;
+					break;
+				}
+			}
+		}
+
+		if (currentSalt - targetSalt == 0 && 
+			currentSweet - targetSweet == 0 &&
+			currentSpicy - targetSpicy == 0 &&
+			currentSour - targetSour == 0) {
+
+			return true;
+		}
+
+		return false;
+	}
 
 	private function startNextDay():Void {
 
@@ -508,7 +562,7 @@ class Game extends Sprite {
 		reviews = [];
 
 		// no reviews on first day
-		if (/*currentDay > 1*/currentRecipe.length != 0) {
+		if (currentRecipe.length != 0) {
 
 			var targetSalt:Int = 0;
 			var targetSweet:Int = 0;
@@ -564,7 +618,7 @@ class Game extends Sprite {
 			if (diffSalt != 0) {
 
 				var reviewSalt:String = diffSalt > 0 ? "TOO SALTY" : "NOT SALTY ENOUGH";
-				reviewSalt += " (" + diffSalt + ")";
+				reviewSalt += " " + diffSalt;
 
 				reviews.push(reviewSalt);
 			}
@@ -572,7 +626,7 @@ class Game extends Sprite {
 			if (diffSweet != 0) {
 
 				var reviewSweet:String = diffSweet > 0 ? "TOO SWEET" : "NOT SWEET ENOUGH";
-				reviewSweet += " (" + diffSweet + ")";
+				reviewSweet += " " + diffSweet;
 
 				reviews.push(reviewSweet);
 			}
@@ -580,7 +634,7 @@ class Game extends Sprite {
 			if (diffSpicy != 0) {
 
 				var reviewSpicy:String = diffSpicy > 0 ? "TOO SPICY" : "NOT SPICY ENOUGH";
-				reviewSpicy += " (" + diffSpicy + ")";
+				reviewSpicy += " " + diffSpicy;
 
 				reviews.push(reviewSpicy);
 			}
@@ -588,7 +642,7 @@ class Game extends Sprite {
 			if (diffSour != 0) {
 
 				var reviewSour:String = diffSour > 0 ? "TOO SOUR" : "NOT SOUR ENOUGH";
-				reviewSour += " (" + diffSour + ")";
+				reviewSour += " " + diffSour;
 
 				reviews.push(reviewSour);
 			}
@@ -656,6 +710,9 @@ class Game extends Sprite {
 		view.camera.y = 400;
 		view.camera.z = p1.z - 400;
 		view.camera.lookAt(new Vector3D(p1.x, p1.z, 0));
+
+		hud.hideSauceMadePanel(true);
+		hud.hideGameCompletePanel(true);
 	}
 
 	private function start():Void {
@@ -740,7 +797,6 @@ class Game extends Sprite {
 						p1.dropIngredient();
 
 						potContents.push(id);
-						trace(potContents);
 
 						// completed new recipe
 						if (potContents.length >= currentRecipe.length) {
@@ -752,8 +808,25 @@ class Game extends Sprite {
 								currentRecipe.push(potContents[i]);
 							}
 
-							potContents = [];
-							endDay();
+							isSauceMade = true;
+							hud.hideRecipePanel();
+
+							// game complete
+							if (checkRecipesMatch() == true) {
+
+								hud.showGameCompletePanel();
+							}
+							// next day
+							else {
+
+								hud.showSauceMadePanel();
+
+								Actuate.timer(3).onComplete(function() {
+
+									potContents = [];
+									endDay();
+								});
+							}
 						}
 					}
 				}
@@ -864,7 +937,7 @@ class Game extends Sprite {
 	public function onDeactivate(event:Event = null):Void {
 
 		// show pause menu if no other menu is active
-		if (!hud.completeMessage.visible &&	!hud.failedMessage.visible) {
+		if (!hud.sauceMadePanel.visible && !hud.gameCompletePanel.visible) {
 
 			hud.pauseMenu.show();
 		}
@@ -900,7 +973,11 @@ class Game extends Sprite {
 		view = null;
 		
 		// dispose the bitmap view
-		holder.removeChild(bitmap);
+		if (isRetroMode) {
+			
+			holder.removeChild(bitmap);
+		}
+		
 		bitmap = null;
 		bitmapData.dispose();
 		bitmapData = null;
@@ -1042,13 +1119,8 @@ class Game extends Sprite {
 							}
 							else if (currentHotspot == 12) {
 
-								// show recipe
-								hud.showReviewsPanel(reviews);
-							}
-							else if (currentHotspot == 13) {
-
 								// show reviews
-								//hud.showRecipePanel(recipe);
+								hud.showReviewsPanel(reviews);
 							}
 						}
 					}

@@ -9,8 +9,9 @@ import openfl.events.MouseEvent;
 import openfl.Assets;
 
 import com.daviddurhamgames.secretsauce.BasicButton;
+import com.piratejuice.BitmapText;
 
-class CompletePanel extends Sprite {
+class SauceMadePanel extends Sprite {
 	
     public var buttonQuit:BasicButton;
     public var buttonRestart:BasicButton;
@@ -26,14 +27,14 @@ class CompletePanel extends Sprite {
 		
 		super();
 		
-        createPanel(450, 180);
+        createPanel(540, 150);
 
-        var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/level_complete_title.png"));
-        title.smoothing = true;
-		title.scaleX = title.scaleY = 0.5;
-        title.x = -title.width / 2;
-        title.y = -title.height / 2;
-        addChild(title);
+        var titleText:BitmapText = new BitmapText(800, 64, "assets/font_1.png");
+		titleText.printText("SAUCE MADE");
+		titleText.x = -220;
+		titleText.y = -50;
+        titleText.scaleX = titleText.scaleY = 0.75;
+        addChild(titleText);
 
         visible = false;
 	}
@@ -43,16 +44,8 @@ class CompletePanel extends Sprite {
         var panel:Sprite = new Sprite();
         addChild(panel);
 
-        var shadow:Shape = new Shape();
-        shadow.graphics.beginFill(0x000000, 0.25);
-        shadow.graphics.drawRect(-w / 2, -h / 2, w, h);
-        shadow.graphics.endFill();
-        shadow.x = 4;
-        shadow.y = 4;
-        panel.addChild(shadow);
-
         var background:Shape = new Shape();
-        background.graphics.beginFill(0x111111);
+        background.graphics.beginFill(0x111111, 0.5);
         background.graphics.drawRect(-w / 2, -h / 2, w, h);
         background.graphics.endFill();
         panel.addChild(background);

@@ -25,33 +25,33 @@ class RecipePanel extends Sprite {
 		
         createPanel(340, 130);
 
-        var titleText:BitmapText = new BitmapText(512, 128, "assets/font_1.png");
+        var titleText:BitmapText = new BitmapText(512, 64, "assets/font_1.png");
 		titleText.printText("LAST RECIPE");
 		titleText.x = -155;
 		titleText.y = -50;
         titleText.scaleX = titleText.scaleY = 0.5;
         addChild(titleText);
 		
-        recipeText = new BitmapText(288, 64, "assets/font_1.png");
+        recipeText = new BitmapText(512, 64, "assets/font_1.png");
 		recipeText.printText("A  X1 B  X1 C  X1");
         recipeText.scaleX = recipeText.scaleY = 0.5;
-        recipeText.x = -51;
+        recipeText.x = -115;
         recipeText.y = 2;
 		addChild(recipeText);
 
         image1 = new Bitmap(Assets.getBitmapData("assets/ingredient1.png"));
-        image1.x = -60;
-        image1.y = -7;
+        image1.x = -150;
+        image1.y = 0;
         addChild(image1);
 
         image2 = new Bitmap(Assets.getBitmapData("assets/ingredient2.png"));
-        image2.x = 40;
-        image2.y = -7;
+        image2.x = -45;
+        image2.y = 0;
         addChild(image2);
 
         image3 = new Bitmap(Assets.getBitmapData("assets/ingredient3.png"));
-        image3.x = 22;
-        image3.y = 140;
+        image3.x = 60;
+        image3.y = 0;
         addChild(image3);
 
         visible = false;
@@ -98,15 +98,11 @@ class RecipePanel extends Sprite {
                 arr.push(recipe[i]);
                 counts.push(1);
             }
-
-            //str += recipe[i] + "\n";
         }
 
         image1.visible = false;
         image2.visible = false;
         image3.visible = false;
-
-
 
         for (i in 0...counts.length) {
 

@@ -9,8 +9,9 @@ import openfl.events.MouseEvent;
 import openfl.Assets;
 
 import com.daviddurhamgames.secretsauce.BasicButton;
+import com.piratejuice.BitmapText;
 
-class FailedPanel extends Sprite {
+class GameCompletePanel extends Sprite {
 	
     public var buttonQuit:BasicButton;
     public var buttonRestart:BasicButton;
@@ -26,19 +27,19 @@ class FailedPanel extends Sprite {
 		
 		super();
 		
-        createPanel(450, 350);
+        createPanel(640, 320);
 
-        var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/level_failed_title.png"));
-        title.smoothing = true;
-		title.scaleX = title.scaleY = 0.5;
-        title.x = -title.width / 2;
-        title.y = -175;
-        addChild(title);
+        var titleText:BitmapText = new BitmapText(800, 140, "assets/font_1.png");
+		titleText.printText("YOU FOUND THE SECRET SAUCE!");
+		titleText.x = -100;
+		titleText.y = -125;
+        titleText.scaleX = titleText.scaleY = 0.5;
+        addChild(titleText);
 
-        buttonRestart = createButton("assets/restart_button.png", 0, 0);
+        buttonRestart = createButton("assets/home_continue_button.png", "assets/home_continue_button_over.png", 0, 0, 0.75);
         buttonRestart.addEventListener(MouseEvent.CLICK, onRestartClicked);
 
-        buttonQuit = createButton("assets/quit_button.png", 0, 45);
+        buttonQuit = createButton("assets/home_continue_button.png", "assets/home_continue_button_over.png", 0, 150, 0.75);
         buttonQuit.addEventListener(MouseEvent.CLICK, onQuitClicked);
 
         //create button list
@@ -53,16 +54,8 @@ class FailedPanel extends Sprite {
         var panel:Sprite = new Sprite();
         addChild(panel);
 
-        var shadow:Shape = new Shape();
-        shadow.graphics.beginFill(0x000000, 0.25);
-        shadow.graphics.drawRect(-w / 2, -h / 2, w, h);
-        shadow.graphics.endFill();
-        shadow.x = 4;
-        shadow.y = 4;
-        panel.addChild(shadow);
-
         var background:Shape = new Shape();
-        background.graphics.beginFill(0x111111);
+        background.graphics.beginFill(0x111111, 0.5);
         background.graphics.drawRect(-w / 2, -h / 2, w, h);
         background.graphics.endFill();
         panel.addChild(background);
@@ -70,22 +63,13 @@ class FailedPanel extends Sprite {
         return panel;
     }
 
-    private function createButton(labelBitmap:String, x:Float = 0, y:Float = 0, scale:Float = 1):BasicButton {
+    private function createButton(idle:String, over:String, x:Float = 0, y:Float = 0, scale:Float = 1):BasicButton {
 
-        var button:BasicButton = new BasicButton("assets/button_rounded.png", "assets/button_rounded.png", "assets/button_rounded.png");
+        var button:BasicButton = new BasicButton(idle, over, over);
 		button.x = x;
 		button.y = y;
         button.scaleX = button.scaleY = scale;
         addChild(button);
-
-		var icon:Sprite = new Sprite();
-		var label:Bitmap = new Bitmap(Assets.getBitmapData(labelBitmap));
-		label.x = -210;//label.width / 2;
-		label.y = (-label.height / 2) + 10;
-        label.scaleX = label.scaleY = 0.75;
-		label.smoothing = true;
-        icon.addChild(label);
-		button.addIcon(icon, 0, 0);
 
         return button;
     }
