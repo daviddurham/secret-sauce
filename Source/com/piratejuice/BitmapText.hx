@@ -1,9 +1,9 @@
 ﻿package com.piratejuice;
 
-import openfl.display.PixelSnapping;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
+import openfl.filters.ColorMatrixFilter;
 import openfl.geom.Rectangle;
 import openfl.geom.Point;
 import openfl.Assets;
@@ -24,7 +24,7 @@ class BitmapText extends Sprite {
 	// current string
 	public var content:String;
 	
-	public function new(w:Int, h:Int, fontBmp:String = "assets/font_1.png", size:Int = 64, spacing:Int = 42, leading:Int = 80):Void {
+	public function new(w:Int, h:Int, fontBmp:String = "assets/font_1.png", size:Int = 64, spacing:Int = 42, leading:Int = 80, isBlack:Bool = false):Void {
 		
 		super();
 		
@@ -35,9 +35,25 @@ class BitmapText extends Sprite {
 		mouseEnabled = mouseChildren = false;
 		
 		font = Assets.getBitmapData(fontBmp);
-		//bmp = new Bitmap(Assets.getBitmapData(font), PixelSnapping.ALWAYS);
 		page = new Bitmap(new BitmapData(w, h, true, 0x00ffffff), null, true);
+		
 		addChild(page);
+
+		if (isBlack) {
+
+			var matrix:Array<Float> = [
+
+				0, 0, 0, 0, 0, // red channel
+				0, 0, 0, 0, 0, // green channel
+				0, 0, 0, 0, 0, // blue channel
+				0, 0, 0, 1, 0  // alpha channel (no change)
+			];
+
+			var filter:ColorMatrixFilter = new ColorMatrixFilter(matrix);
+			
+			// apply the filter to the bitmap
+			page.filters = [filter];
+		}
 	}
 	
 	public function clear():Void {

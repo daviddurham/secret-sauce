@@ -10,32 +10,28 @@ import openfl.text.TextFormat;
 import openfl.text.TextFieldAutoSize;
 
 import com.daviddurhamgames.secretsauce.Ingredient;
+import com.piratejuice.BitmapText;
 
 class IngredientPanel extends Sprite {
 		
-	private var valuesText:TextField;
+	private var valuesText:BitmapText;
     	
 	public function new():Void {
 		
 		super();
 		
-        createPanel(120, 80);
+        createPanel(230, 120);
 
         var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/paused_title.png"));
         title.x = -title.width / 2;
         title.y = -40;
         //addChild(title);
 
-        valuesText = new TextField();
-		
-		var format:TextFormat = new TextFormat("_sans", 12);
-		valuesText.defaultTextFormat = format;
-
-		valuesText.textColor = 0xffffff;
-		valuesText.selectable = false;
-		valuesText.autoSize = TextFieldAutoSize.LEFT;
-        valuesText.x = -50;
-        valuesText.y = -30;
+        valuesText = new BitmapText(480, 200, "assets/font_1.png");
+		valuesText.printText("");
+        valuesText.scaleX = valuesText.scaleY = 0.5;
+        valuesText.x = -95;
+        valuesText.y = -35;
 		addChild(valuesText);
 
         visible = false;
@@ -61,25 +57,25 @@ class IngredientPanel extends Sprite {
 
         if (ingredient.salt > 0) {
 
-            str += "SALTY: " + ingredient.salt + "\n";
+            str += "SALTY " + ingredient.salt + " ";
         }
 
         if (ingredient.sweet > 0) {
 
-            str += "SWEET: " + ingredient.sweet + "\n";
+            str += "SWEET " + ingredient.sweet + " ";
         }
 
         if (ingredient.spicy > 0) {
 
-            str += "SPICY: " + ingredient.spicy + "\n";
+            str += "SPICY " + ingredient.spicy + " ";
         }
 
         if (ingredient.sour > 0) {
 
-            str += "SOUR: " + ingredient.sour + "\n";
+            str += "SOUR " + ingredient.sour + " ";
         }
 
-        valuesText.text = str;
+        valuesText.printText(str);
         visible = true;
     }
 

@@ -22,11 +22,11 @@ class Review extends Sprite {
         panel.y = -panel.height / 2;
         addChild(panel);
 
-        reviewText = new BitmapText(290, 290, "assets/font_1.png");
+        reviewText = new BitmapText(290, 300, "assets/font_1.png", 64, 42, 80, true);
 		reviewText.printText("");
 		reviewText.x = -70;
 		reviewText.y = -70;
-        reviewText.scaleX = reviewText.scaleY = 0.5;
+        reviewText.scaleX = reviewText.scaleY = 0.4;
         addChild(reviewText);
 	}
 

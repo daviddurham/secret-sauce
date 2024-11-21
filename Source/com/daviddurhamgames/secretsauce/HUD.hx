@@ -50,14 +50,6 @@ class HUD extends Sprite {
         var centerX:Float = Main.maxWidth / 2;
         var centerY:Float = Main.maxHeight / 2;
 
-        // pause button invokes pause menu and suspends game
-		pauseButton = new BasicButton("assets/pause_button_idle.png", "assets/pause_button_over.png", "assets/pause_button_over.png");
-		pauseButton.addEventListener(MouseEvent.CLICK, onPauseClicked);
-        pauseButton.scaleX = pauseButton.scaleY = 0.75;
-		pauseButton.x = (Main.maxWidth - Main.offsetX) - 75;
-		pauseButton.y = (Main.offsetY) + 65;
-        addChild(pauseButton);
-
         dayText = new BitmapText(256, 128, "assets/font_1.png");
 		dayText.printText("");
 		dayText.x = Main.offsetX + 20;
@@ -69,9 +61,7 @@ class HUD extends Sprite {
 		timeText.printText("");
 		timeText.x = centerX - 32;
 		timeText.y = Main.offsetY + 10;
-        //addChild(timeText);
-
-        
+        //addChild(timeText);        
 
         sauceMadePanel = new SauceMadePanel();
         sauceMadePanel.x = centerX;
@@ -83,17 +73,9 @@ class HUD extends Sprite {
 		gameCompletePanel.y = centerY;
         addChild(gameCompletePanel);
 
-        pauseMenu = new PausePanel();
-        pauseMenu.x = centerX;
-		pauseMenu.y = centerY;
-		pauseMenu.addEventListener("quit", quitConfirm, false, 0, true);
-        pauseMenu.addEventListener("back", quitCancel, false, 0, true);
-        pauseMenu.addEventListener("restart", restart, false, 0, true);
-        addChild(pauseMenu);
-
         ingredientPanel = new IngredientPanel();
-		ingredientPanel.x = (Main.maxWidth - Main.offsetX) - 70;
-		ingredientPanel.y = (Main.maxHeight - Main.offsetY) - 50;
+		ingredientPanel.x = (Main.maxWidth - Main.offsetX) - 140;
+		ingredientPanel.y = (Main.maxHeight - Main.offsetY) - 90;
         addChild(ingredientPanel);
 
         reviewsPanel = new ReviewsPanel();
@@ -102,8 +84,8 @@ class HUD extends Sprite {
 		addChild(reviewsPanel);
 
         recipePanel = new RecipePanel();
-        recipePanel.x = Main.offsetX + 200;
-        recipePanel.y = (Main.maxHeight - Main.offsetY) - 95;
+        recipePanel.x = Main.offsetX + 190;
+        recipePanel.y = (Main.maxHeight - Main.offsetY) - 90;
 		addChild(recipePanel);
 
         maskAnim = new Shape();
@@ -119,6 +101,22 @@ class HUD extends Sprite {
         // create audio object
 		eventSFXAudio = new Audio();
 		//eventSFXAudio.setVolume(Global.sfxVolume);
+
+        // pause button invokes pause menu and suspends game
+		pauseButton = new BasicButton("assets/pause_button_idle.png", "assets/pause_button_over.png", "assets/pause_button_over.png");
+		pauseButton.addEventListener(MouseEvent.CLICK, onPauseClicked);
+        pauseButton.scaleX = pauseButton.scaleY = 0.75;
+		pauseButton.x = (Main.maxWidth - Main.offsetX) - 75;
+		pauseButton.y = (Main.offsetY) + 65;
+        addChild(pauseButton);
+
+        pauseMenu = new PausePanel();
+        pauseMenu.x = centerX;
+		pauseMenu.y = centerY;
+		pauseMenu.addEventListener("quit", quitConfirm, false, 0, true);
+        pauseMenu.addEventListener("back", quitCancel, false, 0, true);
+        pauseMenu.addEventListener("restart", restart, false, 0, true);
+        addChild(pauseMenu);
     }
     
     public function setDay(day:Int):Void {
