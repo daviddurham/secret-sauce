@@ -24,11 +24,6 @@ class NewGameMenu extends Sprite {
 		
 		super();
 
-        var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/newgame_title.png"));
-        title.x = -title.width / 2;
-        title.y = -80 - (title.height / 2);
-        addChild(title);
-
         buttonNormal = new BasicButton("assets/button_normal.png", "assets/button_normal.png", "assets/button_normal.png");
         buttonNormal.addEventListener(MouseEvent.CLICK, onNormalClicked);
 		buttonNormal.x = -200;

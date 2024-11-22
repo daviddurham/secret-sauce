@@ -12,6 +12,7 @@ import com.piratejuice.Audio;
 import com.piratejuice.Vector2D;
 import com.piratejuice.InputManager;
 import com.piratejuice.Collisions;
+import com.piratejuice.BitmapText;
 
 import away3d.containers.*;
 import away3d.entities.*;
@@ -69,7 +70,7 @@ class Game extends Sprite {
 	private var holder:Sprite;
 	
 	// loading message
-	private var loadingMessage:Bitmap;
+	private var loadingMessage:BitmapText;
 
 	// transition
 	private var transition:Shape;
@@ -80,7 +81,8 @@ class Game extends Sprite {
 	private var objects:Array<GameObject>;
 	
 	// background music
-	private var bgm:Audio;
+	private var bgm1:Audio;
+	private var bgm2:Audio;
 	
 	// sfx
 	private var eventSFXAudio:Audio;
@@ -157,15 +159,15 @@ class Game extends Sprite {
 											[1, 1, 1, 2, 7, 0,15,16, 0,17,18, 0, 7, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 7, 7, 7, 7, 0, 7, 7, 7, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 7,22, 7,24, 0, 7, 7, 7, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 8, 8,10,10, 0, 6, 5, 7, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 0, 7, 2, 2, 2, 2 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
-											[1, 1, 1, 2, 7, 7, 7, 0, 7, 7, 7, 7, 7, 2, 2, 2, 2 ],
-											[1, 1, 1, 2, 7, 8, 8, 0, 9,21, 7, 2, 2, 2, 1, 1, 1 ],
+											[1, 1, 1, 2, 7, 7, 7, 0,23, 7, 7, 7, 7, 2, 2, 2, 2 ],
+											[1, 1, 1, 2, 7, 8, 8, 0,21, 9, 7, 2, 2, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
@@ -293,9 +295,11 @@ class Game extends Sprite {
 		}
 
 		// show a loading message while 3D models are loaded
-		loadingMessage = new Bitmap(Assets.getBitmapData("assets/loading_message.png"));
-		loadingMessage.x = Std.int((Main.maxWidth / 2) - (loadingMessage.width / 2));
-        loadingMessage.y = Std.int((Main.maxHeight / 2) - (loadingMessage.height / 2));
+		loadingMessage = new BitmapText(440, 64, "assets/font_1.png");
+		loadingMessage.printText("LOADING");
+		loadingMessage.x = (Main.maxWidth / 2) - 100;
+        loadingMessage.y = (Main.maxHeight / 2) - 16;
+        loadingMessage.scaleX = loadingMessage.scaleY = 0.5;
         addChild(loadingMessage);
 
 		// add touch controls
@@ -317,23 +321,27 @@ class Game extends Sprite {
 		assetLoaderContext.mapUrlToData("shadow_circle.png", Assets.getBitmapData("assets/shadow_circle.png"));
 		assetLoaderContext.mapUrlToData("cone.png", Assets.getBitmapData("assets/cone.png"));
 		assetLoaderContext.mapUrlToData("box.png", Assets.getBitmapData("assets/box.png"));
+		assetLoaderContext.mapUrlToData("sign_1.png", Assets.getBitmapData("assets/sign_1.png"));
+		assetLoaderContext.mapUrlToData("sign_2.png", Assets.getBitmapData("assets/sign_2.png"));
 
 		Asset3DLibrary.enableParser(DAEParser);
 		Asset3DLibrary.addEventListener(Asset3DEvent.ASSET_COMPLETE, onAssetComplete);
 
 		// need to load models sequentially
 		loadedModels = [];
-		modelsToLoad = ["assets/models/robochef.dae", "assets/models/tree.dae", "assets/models/cone.dae", "assets/models/wall.dae", "assets/models/counter.dae", "assets/models/pot.dae", "assets/models/grill.dae", "assets/models/box.dae", "assets/models/terminal.dae", "assets/models/sink.dae"];
-		meshCounts = [12, 4, 2, 1, 6, 8, 6, 9, 8, 9];
+		modelsToLoad = ["assets/models/robochef.dae", "assets/models/tree.dae", "assets/models/cone.dae", "assets/models/wall.dae", "assets/models/counter.dae", "assets/models/pot.dae", "assets/models/grill.dae", "assets/models/box.dae", "assets/models/terminal.dae", "assets/models/sink.dae", "assets/models/wall_alt1.dae", "assets/models/wall_alt2.dae", "assets/models/wall_alt3.dae"];
+		meshCounts = [12, 4, 2, 1, 6, 8, 6, 9, 8, 9, 3, 3, 3];
 
 		// some models shouldn't receive shadows
-		shadows = [true, false, false, true, true, true, true, true, true, true];
+		shadows = [true, false, false, true, true, true, true, true, true, true, true, true, true];
 		currentModelLoading = -1;
 		loadNextModel();
 				
 		// create audio object
-		eventSFXAudio = new Audio();
-		eventSFXAudio.setSound("assets/audio/button" + "." + Main.audioFormat);
+		eventSFXAudio = new Audio("assets/audio/button" + "." + Main.audioFormat);
+
+		bgm1 = new Audio("assets/audio/not_holding" + "." + Main.audioFormat, -1);
+		bgm2 = new Audio("assets/audio/holding" + "." + Main.audioFormat, -1);
 				
 		// ensure we have focus
 		stage.focus = stage;
@@ -420,6 +428,11 @@ class Game extends Sprite {
 		loadingMessage = null;
 
 		reset();
+
+		bgm1.play();
+
+		bgm2.setVolume(0);
+		bgm2.play();
 
 		// transition in
 		Actuate.tween(transition, 0.5, { alpha: 0 }).delay(0).onComplete(onTransitionIn).ease(Quad.easeInOut);
@@ -521,6 +534,9 @@ class Game extends Sprite {
 	private function startNextDay():Void {
 
 		reset();
+
+		bgm1.setVolume(1);
+		bgm2.setVolume(0);
 
 		currentDay++;
 		hud.setDay(currentDay);
@@ -756,6 +772,8 @@ class Game extends Sprite {
 				if (currentHotspot > 0 && currentHotspot <= 10) {
 
 					p1.collectIngredient(ingredients[currentHotspot - 1]);
+					bgm1.setVolume(0);
+					bgm2.setVolume(1);
 				}
 			}
 			// try to drop the thing being held
@@ -767,6 +785,9 @@ class Game extends Sprite {
 					// can drop here?
 					// 11 is the pot (make sure pot is not full)
 					if (currentHotspot == 11 && potContents.length < 8) {
+
+						bgm1.setVolume(1);
+						bgm2.setVolume(0);
 				
 						var id:Int = p1.holding.id;
 						p1.dropIngredient();
@@ -937,6 +958,18 @@ class Game extends Sprite {
 			
 			eventSFXAudio.cleanUp();
 			eventSFXAudio = null;
+		}
+
+		if (bgm1 != null) {
+			
+			bgm1.cleanUp();
+			bgm1 = null;
+		}
+
+		if (bgm2 != null) {
+			
+			bgm2.cleanUp();
+			bgm2 = null;
 		}
 		
 		// clean up the game

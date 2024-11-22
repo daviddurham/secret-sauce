@@ -63,7 +63,12 @@ class Level {
 												new TileData(19, "kitchen_floor", 0, [new ObjectData(6, 0, 2, 9), new ObjectData(10, 0, -2, 9)]),
 												new TileData(20, "kitchen_floor", 0, [new ObjectData(6, 0, 2, 10), new ObjectData(10, 0, -2, 10)]),
 
-												new TileData(21, "kitchen_floor", 0, [new ObjectData(8, 0, 0)])
+												new TileData(21, "kitchen_floor", 0, [new ObjectData(8, 0, 0)]),
+
+												// wall alt
+												new TileData(22, "", 0, [new ObjectData(11, 0, 0)]),
+												new TileData(23, "", 0, [new ObjectData(12, 0, 0)]),
+												new TileData(24, "", 0, [new ObjectData(13, 0, 0)])
 											];
 																	
 	// default level map data
@@ -199,15 +204,7 @@ class Level {
 						// wall
 						case 2:
 							
-							var object:GameObject = new GameObject("wall", cast(_models[3].clone(), ObjectContainer3D));
-							object.x = (Main.TILE_SIZE * i) + obj.pos.x;
-							object.y = 0;
-							object.z = (-Main.TILE_SIZE * j) + obj.pos.y;
-
-							object.scaleX = object.scaleY = object.scaleZ = 4;
-
-							object.setCollisionType("aabb", Main.TILE_SIZE, Main.TILE_SIZE);
-							_world.addObstacle(object);
+							addWall((Main.TILE_SIZE * i) + obj.pos.x, (-Main.TILE_SIZE * j) + obj.pos.y, 3);
 
 						// counter
 						case 3:
@@ -266,12 +263,37 @@ class Level {
 						case 10:
 							
 							addHotspot(i, j, obj);
+
+						case 11:
+
+							addWall((Main.TILE_SIZE * i) + obj.pos.x, (-Main.TILE_SIZE * j) + obj.pos.y, 10);
+
+						case 12:
+
+							addWall((Main.TILE_SIZE * i) + obj.pos.x, (-Main.TILE_SIZE * j) + obj.pos.y, 11);
+
+						case 13:
+
+							addWall((Main.TILE_SIZE * i) + obj.pos.x, (-Main.TILE_SIZE * j) + obj.pos.y, 12);
 					}
 				}
 				
 				count++;
 			}
 		}
+	}
+
+	private function addWall(px:Float, pz:Float, modelID:Int):Void {
+
+		var object:GameObject = new GameObject("wall", cast(_models[modelID].clone(), ObjectContainer3D));
+		object.x = px;
+		object.y = 0;
+		object.z = pz;
+
+		object.scaleX = object.scaleY = object.scaleZ = 4;
+
+		object.setCollisionType("aabb", Main.TILE_SIZE, Main.TILE_SIZE);
+		_world.addObstacle(object);
 	}
 
 	private function addCounterObject(px:Float, pz:Float, name:String, modelId:Int):Void {

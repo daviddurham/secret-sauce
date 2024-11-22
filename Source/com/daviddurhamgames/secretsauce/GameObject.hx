@@ -31,7 +31,7 @@ class GameObject extends ObjectContainer3D {
 			// for debug...
 			var mat = new ColorMaterial(0xff00ff);
 			mat.bothSides = true;
-						
+
 			var h = new Mesh(new CylinderGeometry(Main.TILE_SIZE / 2, Main.TILE_SIZE / 2, 2, 8, 1, false, false), mat);
 			h.y = 1;
 			addChild(h);

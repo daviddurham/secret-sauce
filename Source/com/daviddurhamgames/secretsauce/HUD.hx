@@ -150,7 +150,7 @@ class HUD extends Sprite {
     
     private function onPauseClicked(event:Event):Void {
         
-        eventSFXAudio.setSound("assets/audio/button_click" + "." + Main.audioFormat);
+        eventSFXAudio.setSound("assets/audio/button" + "." + Main.audioFormat);
 		eventSFXAudio.play();
 
         disableButtons();
