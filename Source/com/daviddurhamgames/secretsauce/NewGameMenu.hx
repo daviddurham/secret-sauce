@@ -11,8 +11,8 @@ import com.daviddurhamgames.secretsauce.BasicButton;
 
 class NewGameMenu extends Sprite {
 	
-    public var button1Player:BasicButton;
-    public var button2Player:BasicButton;
+    public var buttonNormal:BasicButton;
+    public var buttonHard:BasicButton;
     public var buttonBack:BasicButton;
 
     // selector to move through buttons
@@ -29,27 +29,28 @@ class NewGameMenu extends Sprite {
         title.y = -80 - (title.height / 2);
         addChild(title);
 
-        button1Player = new BasicButton("assets/button_1player.png", "assets/button_1player.png", "assets/button_1player.png");
-        button1Player.addEventListener(MouseEvent.CLICK, on1PlayerClicked);
-		button1Player.x = -80;
-		button1Player.y = 0;
-        addChild(button1Player);
+        buttonNormal = new BasicButton("assets/button_normal.png", "assets/button_normal.png", "assets/button_normal.png");
+        buttonNormal.addEventListener(MouseEvent.CLICK, onNormalClicked);
+		buttonNormal.x = -200;
+		buttonNormal.y = 0;
+        addChild(buttonNormal);
 
-        button2Player = new BasicButton("assets/button_2player.png", "assets/button_2player.png", "assets/button_2player.png");
-        button2Player.addEventListener(MouseEvent.CLICK, on2PlayerClicked);
-		button2Player.x = 80;
-		button2Player.y = 0;
-        addChild(button2Player);
+        buttonHard = new BasicButton("assets/button_hard.png", "assets/button_hard.png", "assets/button_hard.png");
+        buttonHard.addEventListener(MouseEvent.CLICK, onHardClicked);
+		buttonHard.x = 200;
+		buttonHard.y = 0;
+        addChild(buttonHard);
 
         buttonBack = new BasicButton("assets/back_button.png", "assets/back_button.png", "assets/back_button.png");
         buttonBack.addEventListener(MouseEvent.CLICK, onBackClicked);
+        buttonBack.scaleX = buttonBack.scaleY = 0.75;
 		buttonBack.x = 0;
-		buttonBack.y = 90;
+		buttonBack.y = 250;
         addChild(buttonBack);
 
         //create button list
 		currButton = 0;
-		buttonList = [button1Player, button2Player, buttonBack];
+		buttonList = [buttonNormal, buttonHard, buttonBack];
 
         visible = false;
 	}
@@ -66,18 +67,14 @@ class NewGameMenu extends Sprite {
 
     /* Button Handlers */
 
-    private function on1PlayerClicked(event:MouseEvent = null):Void {
+    private function onNormalClicked(event:MouseEvent = null):Void {
         
         Main.mode = "quick_race";
-        Main.numberOfPlayers = 1;
-
         dispatchEvent(new Event("start"));
     }
-    private function on2PlayerClicked(event:MouseEvent = null):Void {
+    private function onHardClicked(event:MouseEvent = null):Void {
         
         Main.mode = "quick_race";
-        Main.numberOfPlayers = 2;
-
         dispatchEvent(new Event("start"));
     }
 

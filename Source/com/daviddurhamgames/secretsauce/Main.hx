@@ -13,8 +13,6 @@ import openfl.Lib;
 import openfl.display.FPS;
 import openfl.Assets;
 
-import com.piratejuice.debug.Debug;
-
 import com.daviddurhamgames.secretsauce.screens.Home;
 import com.daviddurhamgames.secretsauce.screens.Game;
 import com.daviddurhamgames.secretsauce.screens.Splash;
@@ -37,14 +35,14 @@ class Main extends Sprite {
 	
 	// window properties
 	public static var scale:Float = 1;
-	
 	public static var winWidth:Float;
 	public static var winHeight:Float;
 	
-	public static var maxWidth:Int = 1760;//885;//590;
-	public static var maxHeight:Int = 810;//405;//270;
-	public static var minWidth:Int = 1080;//540;//360;
-	public static var minHeight:Int = 720;//360;//240;
+	// logical game dimensions
+	public static var maxWidth:Int = 1760;
+	public static var maxHeight:Int = 810;
+	public static var minWidth:Int = 1080;
+	public static var minHeight:Int = 720;
 	
 	public static var offsetX:Float;
 	public static var offsetY:Float;
@@ -54,9 +52,8 @@ class Main extends Sprite {
 	// global settings
 	public static var sfxVolume:Float = 1;
 	public static var musicVolume:Float = 1;
-	public static var showControls:Int = 0;
-	
 	public static var audioFormat:String = "wav";
+	public static var mode:String = "";
 	
 	// save data
 	public static var savedData:SavedData;
@@ -76,13 +73,8 @@ class Main extends Sprite {
 	// fps counter
 	private var _fps:FPS;
 
-	// some globals (move these)
 	// height and width of each tile
 	public static var TILE_SIZE:Int = 16;
-
-	public static var mode:String = "";
-	public static var numberOfPlayers = 1;
-	public static var level:String = "";
 
 	// control keys
 	public static var KEY_UP:Int = 38;
@@ -130,18 +122,11 @@ class Main extends Sprite {
 		savedData = new SavedData();
 		//savedData.clear();
 
-		showControls =  Std.parseInt(savedData.load("screen_controls"));
-
 		sfxVolume = Std.parseFloat(savedData.load("sfx_volume"));
 		musicVolume = Std.parseFloat(savedData.load("music_volume"));
 
-		var bg:Bitmap = new Bitmap(Assets.getBitmapData("assets/bg.png"));
-		bg.scaleX = Main.maxWidth;
-		//addChild(bg);
-
 		//initSplash();
 		initMenu();
-		//initGame();
 
 		//if (Main.isDebug) {
 			
@@ -150,8 +135,7 @@ class Main extends Sprite {
 		//}
 				
 		var guide:Bitmap = new Bitmap(Assets.getBitmapData("assets/guide.png"));
-		//addChild(guide);
-		
+		//addChild(guide);		
 		
 		// hide/show event handlers (to suspend game on close)
 		Lib.current.stage.addEventListener(Event.ACTIVATE, onActivate);
@@ -168,7 +152,7 @@ class Main extends Sprite {
 			_menu = null;
 		}
 		
-		_game = new Game(mode, numberOfPlayers);
+		_game = new Game(mode);
 		_game.addEventListener("quit", initMenu);
 		addChild(_game);
 
@@ -231,7 +215,6 @@ class Main extends Sprite {
 		Lib.current.addChild(new Main());
 	}
 	
-
 	/* Fullscreen */
 	
 	private function fullscreenMode(flag:Bool):Void {

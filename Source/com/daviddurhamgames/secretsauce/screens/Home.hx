@@ -152,7 +152,7 @@ class Home extends Sprite {
 		// create audio objects
 		eventSFXAudio = new Audio();
 		eventSFXAudio.setVolume(Main.sfxVolume);
-		eventSFXAudio.setSound("assets/audio/button_click" + "." + Main.audioFormat);
+		eventSFXAudio.setSound("assets/audio/button" + "." + Main.audioFormat);
 
 		/*
 		musicAudio = new Audio();

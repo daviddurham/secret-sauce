@@ -2,14 +2,8 @@ package com.daviddurhamgames.secretsauce;
 
 import away3d.primitives.CylinderGeometry;
 import away3d.materials.ColorMaterial;
-import away3d.primitives.CubeGeometry;
-import away3d.primitives.PlaneGeometry;
 import away3d.entities.Mesh;
 import away3d.containers.ObjectContainer3D;
-import away3d.materials.TextureMaterial;
-import openfl.display.Bitmap;
-import openfl.Assets;
-import openfl.Lib;
 
 import com.piratejuice.Vector2D;
 

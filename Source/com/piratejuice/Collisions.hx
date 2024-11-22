@@ -1,7 +1,6 @@
 ﻿package com.piratejuice;
 
 import com.piratejuice.Vector2D;
-import com.piratejuice.Vector3D;
 
 class Collisions {
 	
@@ -25,13 +24,10 @@ class Collisions {
 	
 	public static function circleCollision(ax:Float, ay:Float, ar:Float, bx:Float, by:Float, br:Float):Float {
 		
-		//var diff:Vector2D = new Vector2D(bx - ax, by - ay);
 		var diffX:Float = bx - ax;
 		var diffY:Float = by - ay;
 		
-		//if (diff.magnitude() <= (ar + br)) return true;
-		return ((diffX * diffX) + (diffY * diffY) - (ar + br) * (ar + br));// return true;
-		//else return false;
+		return ((diffX * diffX) + (diffY * diffY) - (ar + br) * (ar + br));
 	}
 	
 	/* 2D AABB vs AABB Collision */
@@ -186,58 +182,4 @@ class Collisions {
 		// circle is completely inside AABB
 		return true;
 	}
-
-	/* Slope Collision - calculate y value on a slope given x, slope, and width */
-	
-	// Example usage
-	//var slopeX:Float = 5.0; // X coordinate on the slope
-	//var slopeWidth:Float = 10.0; // Width of the slope
-	//var slopeAngle:Float = 0.5; // Slope angle (slope = tan(angle))
-
-	// Calculate the y value on the slope
-	//var slopeY:Float = getSlopeY(slopeX, Math.tan(slopeAngle), slopeWidth);
-	//trace("The y-coordinate on the slope is: " + slopeY);
-
-    public static function getSlopeYOld(x:Float, slope:Float, slopeWidth:Float):Float {
-
-        // calculate the y-intercept (b) using the formula: y = mx + b
-        // you can adjust the intercept value based on the starting y-coordinate of your slope
-        var yIntercept:Float = 0;
-
-        // yalculate the y value on the slope
-        var y:Float = slope * x + yIntercept;
-
-        // adjust the y value based on the width of the slope
-        y += (slopeWidth * slope) / 2;
-
-        return y;
-    }
-
-
-	// Calculate y value on a slope given x, start height, end height, and width
-	/*
-	// Example usage:
-
-		var slopeX:Float = 5.0; // X coordinate on the slope
-		var slopeWidth:Float = 10.0; // Width of the slope
-		var startX:Float = 0.0; // X coordinate of the start point
-		var startY:Float = 0.0; // Y coordinate of the start point
-		var endX:Float = 10.0; // X coordinate of the end point
-		var endY:Float = 20.0; // Y coordinate of the end point
-
-		var slopeY:Float = getSlopeY(slopeX, startX, startY, endX, endY, slopeWidth);
-	*/
-    public static function getSlopeY(x:Float, startX:Float, startY:Float, endX:Float, endY:Float, slopeWidth:Float):Float {
-        
-		// Calculate the slope using the start and end points: slope = (endY - startY) / (endX - startX)
-        var slope:Float = (endY - startY) / (endX - startX);
-
-        // Calculate the y value on the slope
-        var y:Float = slope * (x - startX) + startY;
-
-        // Adjust the y value based on the width of the slope
-        y += (slopeWidth * slope) / 2;
-
-        return y;
-    }        
 }

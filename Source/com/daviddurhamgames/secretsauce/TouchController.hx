@@ -46,12 +46,6 @@ class TouchController extends Sprite {
 									Main.maxWidth * 0.5, 
 									Main.maxHeight);
         addChild(p1AreaR);
-		
-		if (Main.showControls == 0) {
-
-			p1AreaL.alpha = 0;
-			p1AreaR.alpha = 0;
-		}
 
 		#if windows
 		
@@ -97,15 +91,6 @@ class TouchController extends Sprite {
 
     public function setEnabled(flag:Bool):Void {
 
-    }
-
-    public function setVisible(flag:Bool):Void {
-
-		if (Main.showControls == 1) {
-
-			p1AreaL.visible = flag;
-			p1AreaR.visible = flag;
-		}
     }
 
 	public function reset():Void {

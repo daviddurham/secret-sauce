@@ -16,6 +16,7 @@ import com.piratejuice.Collisions;
 import away3d.containers.*;
 import away3d.entities.*;
 import away3d.materials.*;
+import away3d.primitives.*;
 import away3d.materials.lightpickers.StaticLightPicker;
 import away3d.lights.*;
 import away3d.materials.methods.HardShadowMapMethod;
@@ -54,9 +55,6 @@ class Game extends Sprite {
 	private var isRetroMode:Bool = false;//true;
 	
 	// update loop
-	//private var deltaTime:Float;
-    //private var oldTime:Float;
-    //private var accumulator:Float;
 	private var isStarted = false;
 	private var accumulator:Float = 0;
     private var previousTime:Float = 0;
@@ -118,41 +116,39 @@ class Game extends Sprite {
 	// level builder
 	private var level:Level;
 	
-	// game mode (quick race, championship etc)
+	// game mode (useful later?)
 	private var gameMode:String;
-
-	// winning player
-	private var winner:Int = 0;
 	
 	// player
 	private var p1:Player;
 	
-	// boss
+	// boss chef
 	private var enemy:Player;
 
-	// other players
+	// all characters
 	private var players:Array<Player>;
+
+	// for debug only
+	private var detectionCircle:Mesh;
 
 	// current ingredient the player is next to
 	private var currentHotspot = 0;
 
+	// game timer (may not use time limit after all)
 	private var timeLimit:Int = 90;
 	private var currentTime:Float = 0;
 
 	// keyboard input manager
 	private var input:InputManager;
 
+	// for 'retro' mode
 	private var bitmapData:BitmapData;
 	private var bitmap:Bitmap;
 
+	// camera zoom  multiplier
 	private var zoom:Int = 1;
 
-	// DEBUG
-	private var isFreeCamera:Bool = false;
-	private var isPointerDown:Bool = false;
-	private var pointerStart:Vector2D;
-	private var pointerCurrent:Vector2D;
-
+	// level map
 	private var map:Array<Array<Int>> = [	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
 											[1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 7, 7, 7, 7, 7, 7, 7, 7, 2, 1, 1, 1 ],
@@ -192,8 +188,8 @@ class Game extends Sprite {
 		new Ingredient(8, "purple",	0, 1, 0, 2, "assets/ingredient8.png")
 	];
 
-	// tweak this for difficulty
-	private var recipeLength:Int = 5;
+	// tweak this for difficulty?
+	private var recipeLength:Int = 3;
 
 	// TODO: generate a target secret recipe each time
 	// the ingredients don't have to match - just the flavour levels
@@ -203,20 +199,22 @@ class Game extends Sprite {
 	private var currentRecipe:Array<Int> = [ 2, 1, 7 ];
 	private var potContents:Array<Int> = [];
 
+	// how many turns the player has taken
 	private var currentDay:Int = 0;
 
+	// flag when a sauce (any sauce) has been made and day ends
 	private var isSauceMade:Bool = false;
 
+	// current review and recipe strings (sent to HUD)
 	private var reviews:Array<String> = [];
 	private var recipe:Array<String> = [];
 
-	public function new(mode:String = "default", players:Int = 1, code:String = "") {
+	public function new(mode:String = "default") {
 		
 		super();
 
 		// get game settings
 		gameMode = mode;
-
 		addEventListener(Event.ADDED_TO_STAGE, init);
 	}
 
@@ -238,7 +236,6 @@ class Game extends Sprite {
 		transition.graphics.endFill();
 		addChild(transition);
 		
-
 		// keyboard controls
 		input = new InputManager(stage);
 		input.addKey("left", Main.KEY_LEFT);
@@ -247,17 +244,11 @@ class Game extends Sprite {
 		input.addKey("down", Main.KEY_DOWN);
 
 		input.addKey("a", Main.KEY_A);
-		input.addKey("b", Main.KEY_B);
-
 		input.addKey("pause", 80);
-		input.addKey("restart", 82);
 		
 		// on key events
 		input.onKey("a", "a_pressed");
 		input.addEventListener("a_pressed", onAPressed, false, 0, true);
-
-		input.onKey("b", "b_pressed");
-		input.addEventListener("b_pressed", onBPressed, false, 0, true);
 		
 		// on key events		
 		input.onKey("pause", "pause_key_pressed");
@@ -271,11 +262,9 @@ class Game extends Sprite {
 		// setup the camera - we want a low-ish FOV to approximate an orthographic camera
 		// NOTE: very low field of view (e.g. < 10) causes weirdness with shadows
 		view.camera.lens = new PerspectiveLens(20);
-		
 		view.camera.lens.far = 400 * zoom;
-		
-		view.height = Main.maxHeight;// * Main.scale;
-        view.width = Main.maxWidth;//view.height * 2.17;
+		view.height = Main.maxHeight;
+        view.width = Main.maxWidth;
 		holder.addChild(view);
 
 		// create main light
@@ -318,7 +307,6 @@ class Game extends Sprite {
 		hud.addEventListener("pause", pause, false, 0, true);
 		hud.addEventListener("resume", resume, false, 0, true);
 		hud.addEventListener("quit", quit, false, 0, true);
-		hud.addEventListener("restart", restart, false, 0, true);
 		holder.addChild(hud);
 
 		// load 3D models
@@ -345,18 +333,12 @@ class Game extends Sprite {
 				
 		// create audio object
 		eventSFXAudio = new Audio();
-		eventSFXAudio.setSound("assets/audio/button_click" + "." + Main.audioFormat);
-		
-		// basic mouse events
-		//stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-		//stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-		//stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-		
+		eventSFXAudio.setSound("assets/audio/button" + "." + Main.audioFormat);
+				
 		// ensure we have focus
 		stage.focus = stage;
 
 		// initialize frame loop
-		//oldTime = getTimer();
     	isStarted = false;
 		previousTime = getTimer() / 1000;
 		accumulator = 0;
@@ -421,11 +403,14 @@ class Game extends Sprite {
 		world.add(enemy);
 		players.push(enemy);
 
+		/*
+		var mat = new ColorMaterial(0xff00ff);
+		mat.bothSides = true;
+		detectionCircle = new Mesh(new CylinderGeometry(enemy.detectionRadius, enemy.detectionRadius, 2, 16, 1, false, false), mat);
+		world.level.addChild(detectionCircle);
+		*/
 		enemy.setLightPicker(lightPicker);
 		view.scene.addChild(enemy);
-
-		//deltaTime = (getTimer() / 1000);
-		//oldTime = (getTimer() / 1000);
 		
 		previousTime = getTimer() / 1000;
 		accumulator = 0;
@@ -729,16 +714,6 @@ class Game extends Sprite {
 		
 		isRunning = true;
 	}
-	
-	public function restart(event:Event = null):Void {
-		
-		hud.pauseMenu.visible = false;
-		
-		// reset race //
-		
-		stage.focus = stage;
-		isRunning = true;
-	}
 
 	private function quit(event:Event = null):Void {
 		
@@ -833,26 +808,6 @@ class Game extends Sprite {
 			}
 		}
 	}
-	
-	private function onBPressed(event:Event):Void {
-		
-		if (isRunning) {
-			
-			
-		}
-	}
-	
-	private function onMouseDown(event:MouseEvent):Void {
-		
-	}
-	
-	private function onMouseMove(event:MouseEvent):Void {
-		
-	}
-	
-	private function onMouseUp(event:MouseEvent):Void {
-		
-	}
 
 	private function updateInput():Void {
 		
@@ -882,20 +837,9 @@ class Game extends Sprite {
 		
 		if (input.keyDown("a")) {
 
-			//isShooting = true;
 		}
 		else {
 
-			//isShooting = false;
-		}
-
-		if (input.keyDown("b")) {
-
-			//isThrusting = true;
-		}
-		else {
-
-			//isThrusting = false;
 		}
 	}
 
@@ -954,7 +898,6 @@ class Game extends Sprite {
 		input.cleanUp();
 		input.removeEventListener("pause_key_pressed", onPauseKeyPressed);
 		input.removeEventListener("a_pressed", onAPressed);
-		input.removeEventListener("b_pressed", onBPressed);
 		input = null;
 		
 		// remove lighting
@@ -964,12 +907,12 @@ class Game extends Sprite {
 		shadowMapMethod.dispose();
 		shadowMapMethod = null;
 		
-		mainLight.dispose();
 		view.scene.removeChild(mainLight);
+		mainLight.dispose();
 		
 		// dispose the 3D view
 		holder.removeChild(view);
-		view.dispose();
+		//view.dispose();	// <-- this is throwing an error?
 		view = null;
 		
 		// dispose the bitmap view
@@ -986,7 +929,6 @@ class Game extends Sprite {
 		hud.removeEventListener("pause", pause);
 		hud.removeEventListener("resume", resume);
 		hud.removeEventListener("quit", quit);
-		hud.removeEventListener("restart", restart);
 		holder.removeChild(hud);
 		hud.cleanUp();
 				
@@ -1067,6 +1009,44 @@ class Game extends Sprite {
 
 			// update world objects
 			world.update();
+
+			var angleInRadians = (enemy.holder.rotationY + 90) * (Math.PI / 180);
+    		var x = enemy.x - enemy.detectionOffset * Math.cos(angleInRadians);
+    		var z = enemy.z + enemy.detectionOffset * Math.sin(angleInRadians);
+
+			/*
+			detectionCircle.x = x;
+			detectionCircle.y = 1;
+			detectionCircle.z = z;
+			*/
+
+			if (Collisions.circleCollision(p1.x, p1.z, 4, x, z, enemy.detectionRadius) < 0) {
+
+				if (enemy.alertCooldown <= 0) {
+				
+					eventSFXAudio.setSound("assets/audio/alert" + "." + Main.audioFormat);
+					eventSFXAudio.play();
+				}
+
+				enemy.alertCooldown = 5;
+				enemy.alert.visible = true;
+
+				enemy.dir.x = enemy.x - p1.x;
+				enemy.dir.y = p1.z - enemy.z;
+				enemy.dir.normalize();
+			}
+			else {
+
+				if (enemy.alertCooldown > 0) {
+				
+					enemy.alertCooldown -= dt;
+
+					if (enemy.alertCooldown <= 0) {
+					
+						enemy.alert.visible = false;
+					}
+				}
+			}
 
 			for (player in players) {
 				

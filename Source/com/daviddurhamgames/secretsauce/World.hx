@@ -154,7 +154,6 @@ class World {
 		remove(hotspot);
 	}
 
-
 	// cones are any object that can be knocked around
 	public function addCone(cone:GameObject):Void {
 		

@@ -30,7 +30,11 @@ class Player extends ObjectContainer3D {
 
 	public var holding = null;
 	public var holdingObjectMaterial:TextureMaterial;
-	public var holdingObject:Mesh;	
+	public var holdingObject:Mesh;
+
+	public var alert:Mesh;
+	//public var isAlerted:Bool = false;
+	public var alertCooldown:Float = 0;
 
 	public var velY:Float = 0;
 	public var velRot:Float = 0.1;
@@ -54,6 +58,9 @@ class Player extends ObjectContainer3D {
 	public var targetPositionX:Float;
 	public var targetPositionZ:Float;
 	public var moveCallback = null;
+
+	public var detectionRadius:Float = 18;
+	public var detectionOffset:Float = -18;
 	
 	public function new(_id:Int, _model:ObjectContainer3D, _cam:Camera3D = null):Void {
 		
@@ -100,6 +107,34 @@ class Player extends ObjectContainer3D {
 		holdingObject.rotationX = -90;
 		holdingObject.visible = false;
 		model.addChild(holdingObject);
+
+		var alertMaterial:TextureMaterial = new TextureMaterial(Cast.bitmapTexture("assets/alert.png"), false);
+		alertMaterial.alphaThreshold = 1;
+		//alertMaterial.lightPicker = lightPicker;
+		alertMaterial.mipmap = false;
+		alertMaterial.bothSides = true;
+
+		alert = new Mesh(new PlaneGeometry(8, 8), alertMaterial);
+		alert.x = 0;
+		alert.y = 14;
+		alert.z = 0;
+		alert.rotationX = -90;
+		alert.visible = false;
+		model.addChild(alert);
+
+		// for debug...
+		/*
+		var mat = new ColorMaterial(0xff00ff);
+		mat.bothSides = true;
+		var h = new Mesh(new CylinderGeometry(15, 15, 2, 16, 1, false, false), mat);
+		h.y = 1;
+		h.z = -18;
+		model.addChild(h);
+		*/
+
+		//var g = new Mesh(new CylinderGeometry(25, 25, 2, 16, 1, false, false), mat);
+		//g.y = 1;
+		//model.addChild(g);
 	}
 
 	private function updateMaterials(m:ObjectContainer3D, object:ObjectContainer3D, material:TextureMaterial):Void {
@@ -228,130 +263,137 @@ class Player extends ObjectContainer3D {
 		if (isActive) {
 
 			// for npcs...
-			if (isMovingTo) {
+			if (alertCooldown > 0) {
 
-				if (x > targetPositionX - 1 && x < targetPositionX + 1) {
 
-					isLeft = false;
-					isRight = false;
-				}
+			}
+			else {
+				
+				if (isMovingTo) {
 
-				if (z > targetPositionZ - 1 && z < targetPositionZ + 1) {
+					if (x > targetPositionX - 1 && x < targetPositionX + 1) {
 
-					isUp = false;
-					isDown = false;
-				}
+						isLeft = false;
+						isRight = false;
+					}
 
-				// target reached
-				if (x > targetPositionX - 1 && x < targetPositionX + 1 &&
-					z > targetPositionZ - 1 && z < targetPositionZ + 1) {
+					if (z > targetPositionZ - 1 && z < targetPositionZ + 1) {
 
-					isMovingTo = false;
+						isUp = false;
+						isDown = false;
+					}
 
 					// target reached
-					if (moveCallback != null) {
-						
-						moveCallback();
+					if (x > targetPositionX - 1 && x < targetPositionX + 1 &&
+						z > targetPositionZ - 1 && z < targetPositionZ + 1) {
+
+						isMovingTo = false;
+
+						// target reached
+						if (moveCallback != null) {
+							
+							moveCallback();
+						}
 					}
 				}
-			}
-		
-			if (isDown) {
-
-				dir.y = -1;
-
-				if (zSpeed > -maxSpeed) {
-
-					zSpeed -= 0.03;
-				}
-				else {
-					
-					zSpeed = -maxSpeed;
-				}
-			}
-			else if (isUp) {
-
-				dir.y = 1;
-
-				if (zSpeed < maxSpeed) {
-
-					zSpeed += 0.03;
-				}
-				else {
-					
-					zSpeed = maxSpeed;
-				}
-			}
-			else {
-
-				if (zSpeed != 0) {
-
-					zSpeed *= 0.8;
-				}
-				
-				if (Math.abs(zSpeed) < 0.05) {
-
-					zSpeed = 0;
-				}
-			}
-
-			if (isLeft) {
-
-				dir.x = 1;
-
-				if (xSpeed > -maxSpeed) {
-
-					xSpeed -= 0.03;
-				}
-				else {
-					
-					xSpeed = -maxSpeed;
-				}
-			}
-			else if (isRight) {
-
-				dir.x = -1;
-
-				if (xSpeed < maxSpeed) {
-
-					xSpeed += 0.03;
-				}
-				else {
-					
-					xSpeed = maxSpeed;
-				}
-			}
-			else {
-
-				if (xSpeed != 0) {
-
-					xSpeed *= 0.8;
-				}
-				
-				if (Math.abs(xSpeed) < 0.05) {
-
-					xSpeed = 0;
-				}
-			}
-
-			var multiplier:Float = 1;
 			
-			if (xSpeed != 0 && zSpeed != 0) {
+				if (isDown) {
 
-				multiplier = 0.7;
-			}
+					dir.y = -1;
 
-			x += xSpeed * multiplier;
-			z += zSpeed * multiplier;
-			
-			if ((isRight || isLeft) && (!isUp && !isDown)) {
+					if (zSpeed > -maxSpeed) {
 
-				dir.y = 0;
-			}
+						zSpeed -= 0.03;
+					}
+					else {
+						
+						zSpeed = -maxSpeed;
+					}
+				}
+				else if (isUp) {
 
-			if ((!isRight && !isLeft) && (isUp || isDown)) {
+					dir.y = 1;
 
-				dir.x = 0;
+					if (zSpeed < maxSpeed) {
+
+						zSpeed += 0.03;
+					}
+					else {
+						
+						zSpeed = maxSpeed;
+					}
+				}
+				else {
+
+					if (zSpeed != 0) {
+
+						zSpeed *= 0.8;
+					}
+					
+					if (Math.abs(zSpeed) < 0.05) {
+
+						zSpeed = 0;
+					}
+				}
+
+				if (isLeft) {
+
+					dir.x = 1;
+
+					if (xSpeed > -maxSpeed) {
+
+						xSpeed -= 0.03;
+					}
+					else {
+						
+						xSpeed = -maxSpeed;
+					}
+				}
+				else if (isRight) {
+
+					dir.x = -1;
+
+					if (xSpeed < maxSpeed) {
+
+						xSpeed += 0.03;
+					}
+					else {
+						
+						xSpeed = maxSpeed;
+					}
+				}
+				else {
+
+					if (xSpeed != 0) {
+
+						xSpeed *= 0.8;
+					}
+					
+					if (Math.abs(xSpeed) < 0.05) {
+
+						xSpeed = 0;
+					}
+				}
+
+				var multiplier:Float = 1;
+				
+				if (xSpeed != 0 && zSpeed != 0) {
+
+					multiplier = 0.7;
+				}
+
+				x += xSpeed * multiplier;
+				z += zSpeed * multiplier;
+				
+				if ((isRight || isLeft) && (!isUp && !isDown)) {
+
+					dir.y = 0;
+				}
+
+				if ((!isRight && !isLeft) && (isUp || isDown)) {
+
+					dir.x = 0;
+				}
 			}
 
 			var targetAngle:Float = dir.angle();
@@ -360,6 +402,7 @@ class Player extends ObjectContainer3D {
 			holder.rotationY += D180_OVER_PI * Math.atan2((Math.cos(holder.rotationY * PI_OVER_180) * Math.sin(targetAngle * PI_OVER_180) - Math.sin(holder.rotationY * PI_OVER_180) * Math.cos(targetAngle * PI_OVER_180)), (Math.sin(holder.rotationY * PI_OVER_180) * Math.sin(targetAngle * PI_OVER_180) + Math.cos(holder.rotationY * PI_OVER_180) * Math.cos(targetAngle * PI_OVER_180))) / 8;
 	
 			holdingObject.rotationY = -holder.rotationY;
+			alert.rotationY = -holder.rotationY;
 		}
 	}
 }
