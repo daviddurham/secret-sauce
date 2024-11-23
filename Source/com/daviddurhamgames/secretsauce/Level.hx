@@ -163,6 +163,7 @@ class Level {
 				}
 				
 				// trees and stuff on blank tiles
+				/*
 				if (tileData.id == 1) {
 					
 					var treePattern:Int = Math.floor(Math.random() * trees.length);
@@ -183,6 +184,7 @@ class Level {
 						_world.addObstacle(tree);
 					}
 				}
+				*/
 
 				for (obj in tileData.objects) {
 					
@@ -215,6 +217,8 @@ class Level {
 						case 4:
 							
 							addCounterObject((Main.TILE_SIZE * i) + obj.pos.x, (-Main.TILE_SIZE * j) + obj.pos.y, "pot", 5);
+							addPrompt((Main.TILE_SIZE * i) + obj.pos.x, (-Main.TILE_SIZE * j) + obj.pos.y, "assets/prompt_empty.png", 0);
+							addPrompt((Main.TILE_SIZE * i) + obj.pos.x, (-Main.TILE_SIZE * j) + obj.pos.y, "assets/prompt_drop.png", 0);
 
 						// grill
 						case 5:
@@ -249,6 +253,8 @@ class Level {
 							o.addChild(label);
 							_world.add(o);
 
+							addPrompt((Main.TILE_SIZE * i) + obj.pos.x, (-Main.TILE_SIZE * j) + obj.pos.y, "assets/prompt_collect.png", 0);
+
 						// reviews screen
 						case 7:
 							
@@ -281,6 +287,24 @@ class Level {
 				count++;
 			}
 		}
+	}
+
+	private function addPrompt(px:Float, pz:Float, texture:String, id:Int) {
+		
+		trace(texture);
+		var material:TextureMaterial = new TextureMaterial(Cast.bitmapTexture(texture), false);
+		material.alphaThreshold = 1;
+		material.mipmap = false;
+		material.bothSides = true;
+
+		var prompt = new Mesh(new PlaneGeometry(8, 8), material);
+		prompt.castsShadows = false;
+		prompt.x = px;
+		prompt.y = 24;
+		prompt.z = pz;
+		prompt.rotationX = -45;
+		prompt.visible = false;
+		_world.addPrompt(prompt, id);
 	}
 
 	private function addWall(px:Float, pz:Float, modelID:Int):Void {

@@ -6,11 +6,6 @@ import openfl.display.Shape;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
-import openfl.text.TextField;
-import openfl.text.TextFormat;
-import openfl.text.TextFieldAutoSize;
-import openfl.Assets;
-import openfl.Lib;
 
 import com.daviddurhamgames.secretsauce.PausePanel;
 import com.daviddurhamgames.secretsauce.SauceMadePanel;
@@ -30,10 +25,7 @@ class HUD extends Sprite {
     public var ingredientPanel:IngredientPanel;
     public var reviewsPanel:ReviewsPanel;
     public var recipePanel:RecipePanel;
-    
-    private var tutorial:Sprite;
-    private var tutorialStep:Int;
-    
+       
     public var maskedMessage:Sprite;
     public var maskAnim:Shape;
 
@@ -41,14 +33,33 @@ class HUD extends Sprite {
 	private var eventSFXAudio:Audio;
 
     private var dayText:BitmapText;
+    private var dayTextShadow:BitmapText;
     private var timeText:BitmapText;
+
+    private var tutorialText:BitmapText;
+    private var tutorialStep:Int = 0;
+    private var tutorial:Array<String>;
 
     public function new():Void {
         
         super();
 
+        tutorial = ["First get rid of the old sauce in the cooking pot.",
+                    "Have a look at the reviews from yesterday's customers.",
+                    "Pick ingredients to make a new sauce.",
+                    "Take this to the cooking pot, but don't let Chef see you with it.",
+                    "The sauce needs 3 ingredients. Keep going."];
+
         var centerX:Float = Main.maxWidth / 2;
         var centerY:Float = Main.maxHeight / 2;
+
+        dayTextShadow = new BitmapText(256, 128, "assets/font_1.png", 64, 42, 80, true);
+		dayTextShadow.printText("");
+		dayTextShadow.x = Main.offsetX + 24;
+		dayTextShadow.y = Main.offsetY + 29;
+        dayTextShadow.scaleX = dayTextShadow.scaleY = 0.75;
+        dayTextShadow.alpha = 0.25;
+        addChild(dayTextShadow);
 
         dayText = new BitmapText(256, 128, "assets/font_1.png");
 		dayText.printText("");
@@ -61,7 +72,15 @@ class HUD extends Sprite {
 		timeText.printText("");
 		timeText.x = centerX - 32;
 		timeText.y = Main.offsetY + 10;
-        //addChild(timeText);        
+        //addChild(timeText);
+
+        tutorialText = new BitmapText(1400, 160, "assets/font_1.png", 64, 42, 80, true);
+        tutorialText.printText("");
+        tutorialText.scaleX = tutorialText.scaleY = 0.4;
+		tutorialText.x = centerX - 512 * 0.33;
+		tutorialText.y = (Main.maxHeight - Main.offsetY) - 150;
+        tutorialText.visible = false;
+        addChild(tutorialText);
 
         sauceMadePanel = new SauceMadePanel();
         sauceMadePanel.x = centerX;
@@ -122,6 +141,7 @@ class HUD extends Sprite {
     public function setDay(day:Int):Void {
 
         dayText.printText("DAY " + day);
+        dayTextShadow.printText("DAY " + day);
     }
 
     public function setTime(time:Int):Void {
@@ -224,16 +244,10 @@ class HUD extends Sprite {
     
     public function showTutorial(step:Int = 1):Void {
         
-        // ensure old tutorial is removed
-        hideTutorial();
-        
-        /*
-        var TutorialClass:Class = getDefinitionByName("Tutorial" + step) as Class;
-        tutorial = new TutorialClass();
-        addChildAt(tutorial, getChildIndex(helpMenu));
-        */
-
         tutorialStep = step;
+
+        tutorialText.printText(tutorial[tutorialStep - 1]);
+        tutorialText.visible = true;
     }
     
     public function getTutorialStep():Int {
@@ -248,11 +262,7 @@ class HUD extends Sprite {
     
     public function hideTutorial():Void {
         
-        if (tutorial != null) {
-            
-            removeChild(tutorial);
-            tutorial = null;
-        }
+        tutorialText.visible = false;
     }
     
     public function showIngredientPanel(ingredient:Ingredient):Void {
@@ -362,5 +372,16 @@ class HUD extends Sprite {
 
         pauseButton.x = (Main.maxWidth - Main.offsetX) - 75;
 		pauseButton.y = (Main.offsetY) + 65;
+
+        ingredientPanel.x = (Main.maxWidth - Main.offsetX) - 140;
+		ingredientPanel.y = (Main.maxHeight - Main.offsetY) - 90;
+
+        recipePanel.x = Main.offsetX + 190;
+        recipePanel.y = (Main.maxHeight - Main.offsetY) - 90;
+
+        dayText.x = Main.offsetX + 20;
+		dayText.y = Main.offsetY + 25;
+        dayTextShadow.x = Main.offsetX + 24;
+		dayTextShadow.y = Main.offsetY + 29;
     }
 }

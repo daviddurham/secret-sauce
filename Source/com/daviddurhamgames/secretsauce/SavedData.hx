@@ -20,17 +20,13 @@ class SavedData {
 		
 		switch(key) {
 			
-			case "vintage_filter":
+			case "pixel_filter":
 				
-				return object.data.vintage_filter;
+				return object.data.pixel_filter;
 
 			case "screen_controls":
 				
 				return object.data.screen_controls;
-
-			case "hat_type":
-				
-				return object.data.hat_type;
 
 			case "sfx_volume":
 				
@@ -44,13 +40,9 @@ class SavedData {
 				
 				return object.data.test;
 				
-			case "progress_1":
+			case "progress":
 				
 				return object.data.progress_1;
-				
-			case "progress_2":
-				
-				return object.data.progress_2;
 		}
 		
 		return "";
@@ -60,17 +52,13 @@ class SavedData {
 		
 		switch(key) {
 			
-			case "vintage_filter":
+			case "pixel_filter":
 				
 				object.data.vintage_filter = value;
 
 			case "screen_controls":
 				
 				object.data.screen_controls = value;
-
-			case "hat_type":
-				
-				object.data.hat_type = value;
 
 			case "sfx_volume":
 				
@@ -84,13 +72,9 @@ class SavedData {
 				
 				object.data.test = value;
 				
-			case "progress_1":
+			case "progress":
 				
 				object.data.progress_1 = value;
-				
-			case "progress_2":
-				
-				object.data.progress_2 = value;
 		}
 		
 		object.flush();
@@ -110,13 +94,12 @@ class SavedData {
 		// set default vaules
 		save("sfx_volume", "1");
 		save("music_volume", "1");
-		save("vintage_filter", "1");
+		save("pixel_filter", "1");
 		save("screen_controls", "1");
-		save("hat_type", "1");
 		
 		save("test", "default");
 		
-		save("progress_1", "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1");
-		save("progress_2", "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1");
+		// day, target, current
+		save("progress", "0,1,1,1,2,2,2");
 	}
 }

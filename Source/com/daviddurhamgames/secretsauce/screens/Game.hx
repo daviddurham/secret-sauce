@@ -207,6 +207,9 @@ class Game extends Sprite {
 	// flag when a sauce (any sauce) has been made and day ends
 	private var isSauceMade:Bool = false;
 
+	// pot must be emptied first
+	private var isPotReady:Bool = false;
+
 	// current review and recipe strings (sent to HUD)
 	private var reviews:Array<String> = [];
 	private var recipe:Array<String> = [];
@@ -540,6 +543,11 @@ class Game extends Sprite {
 
 		currentDay++;
 		hud.setDay(currentDay);
+
+		if (currentDay == 1) {
+
+			hud.showTutorial(1);
+		}
 		
 		currentTime = timeLimit;
 		hud.setTime(Math.floor(currentTime));
@@ -696,6 +704,8 @@ class Game extends Sprite {
 
 	private function reset():Void {
 
+		isPotReady = false;
+
 		p1.x = Main.TILE_SIZE * 9;
 		p1.z = Main.TILE_SIZE * -12;
 
@@ -724,11 +734,17 @@ class Game extends Sprite {
 	private function pause(event:Event = null):Void {
 		
 		isRunning = false;
+
+		bgm1.stop();
+		bgm2.stop();
 	}
 	
 	private function resume(event:Event = null):Void {
 		
 		isRunning = true;
+
+		bgm1.play();
+		bgm2.play();
 	}
 
 	private function quit(event:Event = null):Void {
@@ -774,6 +790,26 @@ class Game extends Sprite {
 					p1.collectIngredient(ingredients[currentHotspot - 1]);
 					bgm1.setVolume(0);
 					bgm2.setVolume(1);
+
+					if (hud.getTutorialStep() == 3) {
+
+						hud.showTutorial(4);
+					}
+					else if (hud.getTutorialStep() == 5) {
+
+						hud.hideTutorial();
+						hud.setTutorialStep(6);
+					}
+				}
+				// empty pot
+				else if (currentHotspot == 11 && !isPotReady) {
+					
+					if (hud.getTutorialStep() == 1) {
+
+						hud.showTutorial(2);
+					}
+
+					isPotReady = true;
 				}
 			}
 			// try to drop the thing being held
@@ -784,7 +820,7 @@ class Game extends Sprite {
 
 					// can drop here?
 					// 11 is the pot (make sure pot is not full)
-					if (currentHotspot == 11 && potContents.length < 8) {
+					if (currentHotspot == 11 && potContents.length < 8 && isPotReady) {
 
 						bgm1.setVolume(1);
 						bgm2.setVolume(0);
@@ -793,6 +829,11 @@ class Game extends Sprite {
 						p1.dropIngredient();
 
 						potContents.push(id);
+
+						if (hud.getTutorialStep() == 4) {
+
+							hud.showTutorial(5);
+						}
 
 						// completed new recipe
 						if (potContents.length >= currentRecipe.length) {
@@ -1053,7 +1094,7 @@ class Game extends Sprite {
 			detectionCircle.z = z;
 			*/
 
-			if (Collisions.circleCollision(p1.x, p1.z, 4, x, z, enemy.detectionRadius) < 0) {
+			if (Collisions.circleCollision(p1.x, p1.z, 4, x, z, enemy.detectionRadius) < 0 && p1.holding != null) {
 
 				if (enemy.alertCooldown <= 0) {
 				
@@ -1119,6 +1160,9 @@ class Game extends Sprite {
 
 					currentHotspot = 0;
 
+					var prompt:Mesh = null;
+					world.hideAllPrompts();
+
 					for (hotspot in world.hotspots) {
 
 						// for hotspots use a smaller player radius to avoid overlaps
@@ -1130,10 +1174,28 @@ class Game extends Sprite {
 							
 								hud.showIngredientPanel(ingredients[hotspot.objectID - 1]);
 							}
+							else if (currentHotspot == 11) {
+
+								if (!isPotReady && player.holding == null) {
+								
+									prompt = world.getPrompt(6);
+									prompt.visible = true;
+								}
+								else if (isPotReady && player.holding != null) {
+
+									prompt = world.getPrompt(7);
+									prompt.visible = true;
+								}
+							}
 							else if (currentHotspot == 12) {
 
 								// show reviews
 								hud.showReviewsPanel(reviews);
+
+								if (hud.getTutorialStep() == 2) {
+
+									hud.showTutorial(3);
+								}
 							}
 						}
 					}

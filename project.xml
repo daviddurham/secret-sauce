@@ -31,6 +31,8 @@
 	<haxelib name="away3d" />
 	
 	<!-- assets -->
+	<!--<library name="default" type="pak" />-->
+	<!--<assets path="Assets" rename="assets" library="default" />-->
 	<assets path="Assets" rename="assets" />
 	
 	<!-- ios icon -->

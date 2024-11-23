@@ -6,6 +6,7 @@ import away3d.materials.methods.ShadowMapMethodBase;
 import away3d.materials.lightpickers.StaticLightPicker;
 import away3d.containers.ObjectContainer3D;
 import away3d.containers.Scene3D;
+import away3d.entities.Mesh;
 
 import com.daviddurhamgames.secretsauce.LevelTile;
 import com.piratejuice.vfx.ScreenShake;
@@ -32,8 +33,8 @@ class World {
 	public var obstacles:Array<GameObject>;
 	public var cones:Array<GameObject>;
 	
-	// pickups
-	//public var pickups:Array<Pickup>;
+	// prompts
+	public var prompts:Array<Mesh>;
 	
 	// vfx
 	private var _shake:ScreenShake;
@@ -68,6 +69,8 @@ class World {
 
 		obstacles = new Array<GameObject>();
 		cones = new Array<GameObject>();
+
+		prompts = new Array<Mesh>();
 		
 		_shake = new ScreenShake();
 		_shake.setReduction(0.8);
@@ -109,6 +112,43 @@ class World {
 		}
 	}
 	
+	public function addPrompt(prompt:Mesh, id:Int):Void {
+
+		add(prompt);		
+		prompts.push(prompt);
+	}
+
+	public function removePrompt(prompt:Mesh):Void {
+		
+		var len:Int = prompts.length;
+		
+		for (i in 0...len) {
+			
+			if (prompts[i] == prompt) {
+				
+				prompts.splice(i, 1);
+				break;
+			}
+		}
+		
+		remove(prompt);
+	}
+
+	public function getPrompt(pos:Int):Mesh {
+
+		return prompts[pos];
+	}
+
+	public function hideAllPrompts():Void {
+		
+		var len:Int = prompts.length;
+		
+		for (i in 0...len) {
+			
+			prompts[i].visible = false;
+		}
+	}
+
 	public function addObstacle(obstacle:GameObject):Void {
 
 		add(obstacle);		
@@ -219,6 +259,7 @@ class World {
 		
 		obstacles.splice(0, obstacles.length);
 		cones.splice(0, cones.length);
+		prompts.splice(0, prompts.length);
 		
 		removeAllTiles();
 		removeAllObjects();

@@ -64,11 +64,9 @@ class Vector2D {
 	
 	public function angle():Float {
 	
-		//trace(x + ", " + y);
 		var r:Float = Math.atan2(-y, -x);
-		//trace(r);
 		var d:Float = Math.round(r * D180_OVER_PI);
-		//trace(d);
+		
 		// subtract 90 to orient angle correctly
 		d -= 90;
 		

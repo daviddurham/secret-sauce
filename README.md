@@ -3,6 +3,8 @@
 ## Overview
 A Game Jam Game for GitHub Game Off
 
+Secret Sauce is a blend of puzzle and stealth game. Secretly collect ingredients to make a better sauce, based on the reviews from the day before. Try a new combination each day until you perfect the recipe, and find the Secret Sauce.
+
 ## Setting Up
 The app is made using OpenFL with programming done in Haxe.
 
