@@ -20,7 +20,7 @@ class IngredientPanel extends Sprite {
 		
 		super();
 		
-        createPanel(230, 120);
+        createPanel(230, 110);
 
         var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/paused_title.png"));
         title.x = -title.width / 2;

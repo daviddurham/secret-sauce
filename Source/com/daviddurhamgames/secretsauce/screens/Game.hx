@@ -1,6 +1,5 @@
 package com.daviddurhamgames.secretsauce.screens;
 
-import away3d.materials.methods.ShadowMapMethodBase;
 import com.daviddurhamgames.secretsauce.Player;
 import com.daviddurhamgames.secretsauce.HUD;
 import com.daviddurhamgames.secretsauce.TouchController;
@@ -13,11 +12,12 @@ import com.piratejuice.Vector2D;
 import com.piratejuice.InputManager;
 import com.piratejuice.Collisions;
 import com.piratejuice.BitmapText;
+import com.piratejuice.vfx.Confetti;
 
 import away3d.containers.*;
 import away3d.entities.*;
 import away3d.materials.*;
-import away3d.primitives.*;
+import away3d.materials.methods.ShadowMapMethodBase;
 import away3d.materials.lightpickers.StaticLightPicker;
 import away3d.lights.*;
 import away3d.materials.methods.HardShadowMapMethod;
@@ -166,7 +166,7 @@ class Game extends Sprite {
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
-											[1, 1, 1, 2, 7, 7, 7, 0,23, 7, 7, 7, 7, 2, 2, 2, 2 ],
+											[1, 1, 1, 2, 7, 7, 7,25,23, 7, 7, 7, 7, 2, 2, 2, 2 ],
 											[1, 1, 1, 2, 7, 8, 8, 0,21, 9, 7, 2, 2, 2, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
 											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
@@ -213,6 +213,8 @@ class Game extends Sprite {
 	// current review and recipe strings (sent to HUD)
 	private var reviews:Array<String> = [];
 	private var recipe:Array<String> = [];
+
+	private var confetti:Confetti;
 
 	public function new(mode:String = "default") {
 		
@@ -345,7 +347,11 @@ class Game extends Sprite {
 
 		bgm1 = new Audio("assets/audio/not_holding" + "." + Main.audioFormat, -1);
 		bgm2 = new Audio("assets/audio/holding" + "." + Main.audioFormat, -1);
-				
+		
+		// create confetti
+		confetti = new Confetti(30, Main.maxWidth, Main.maxHeight, 1);
+		holder.addChild(confetti);
+
 		// ensure we have focus
 		stage.focus = stage;
 
@@ -436,6 +442,8 @@ class Game extends Sprite {
 
 		bgm2.setVolume(0);
 		bgm2.play();
+
+		//confetti.start();
 
 		// transition in
 		Actuate.tween(transition, 0.5, { alpha: 0 }).delay(0).onComplete(onTransitionIn).ease(Quad.easeInOut);
@@ -1063,6 +1071,8 @@ class Game extends Sprite {
 		
 		if (isRunning && !isQuitting) {
 
+			confetti.update();
+
 			if (currentTime > 0) {
 			
 				//currentTime -= dt;
@@ -1100,6 +1110,15 @@ class Game extends Sprite {
 				
 					eventSFXAudio.setSound("assets/audio/alert" + "." + Main.audioFormat);
 					eventSFXAudio.play();
+
+					// turn on barriers
+					for (object in world.obstacles) {
+
+						if (object.objectID == 99) {
+
+							object.objectID = 98;
+						}
+					}
 				}
 
 				enemy.alertCooldown = 5;
@@ -1118,6 +1137,15 @@ class Game extends Sprite {
 					if (enemy.alertCooldown <= 0) {
 					
 						enemy.alert.visible = false;
+
+						// turn off barriers
+						for (object in world.obstacles) {
+
+							if (object.objectID == 98) {
+
+								object.objectID = 99;
+							}
+						}
 					}
 				}
 			}
@@ -1140,12 +1168,16 @@ class Game extends Sprite {
 
 					else if (object.collisionType == "aabb") {
 
-						if (Collisions.isAABBCollision(player.x, player.z, player.radius * 2, player.radius * 2, object.x, object.z, object.cWidth, object.cHeight)) {
-							
-							var cd:Vector2D = Collisions.AABBCollision(player.x, player.z, player.radius * 2, player.radius * 2, object.x, object.z, object.cWidth, object.cHeight);
-							
-							player.x += (cd.x * 1.1);
-							player.z += (cd.y * 1.1);
+						// not a disabled barrier
+						if (object.objectID != 99) {
+
+							if (Collisions.isAABBCollision(player.x, player.z, player.radius * 2, player.radius * 2, object.x, object.z, object.cWidth, object.cHeight)) {
+								
+								var cd:Vector2D = Collisions.AABBCollision(player.x, player.z, player.radius * 2, player.radius * 2, object.x, object.z, object.cWidth, object.cHeight);
+								
+								player.x += (cd.x * 1.1);
+								player.z += (cd.y * 1.1);
+							}
 						}
 					}
 				}
@@ -1156,7 +1188,6 @@ class Game extends Sprite {
 					// collisions with interactive hotspots (e.g ingredients)
 					hud.hideIngredientPanel();
 					hud.hideReviewsPanel();
-					//hud.hideRecipePanel();
 
 					currentHotspot = 0;
 
@@ -1173,6 +1204,24 @@ class Game extends Sprite {
 							if (currentHotspot <= 10) {
 							
 								hud.showIngredientPanel(ingredients[hotspot.objectID - 1]);
+
+								if (p1.holding == null) {
+
+									// prompts are in a weird order and don't have a linking ID
+									if (hotspot.objectID == 1) prompt = world.getPrompt(0);
+									else if (hotspot.objectID == 2) prompt = world.getPrompt(2);
+									else if (hotspot.objectID == 3) prompt = world.getPrompt(4);
+									else if (hotspot.objectID == 4) prompt = world.getPrompt(8);
+									else if (hotspot.objectID == 5) prompt = world.getPrompt(1);
+									else if (hotspot.objectID == 6) prompt = world.getPrompt(3);
+									else if (hotspot.objectID == 7) prompt = world.getPrompt(5);
+									else if (hotspot.objectID == 8) prompt = world.getPrompt(9);
+
+									if (prompt != null) {
+
+										prompt.visible = true;
+									}
+								}
 							}
 							else if (currentHotspot == 11) {
 

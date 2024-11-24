@@ -44,19 +44,19 @@ class HUD extends Sprite {
         
         super();
 
-        tutorial = ["First get rid of the old sauce in the cooking pot.",
-                    "Have a look at the reviews from yesterday's customers.",
-                    "Pick ingredients to make a new sauce.",
-                    "Take this to the cooking pot, but don't let Chef see you with it.",
-                    "The sauce needs 3 ingredients. Keep going."];
+        tutorial = ["Get rid of the old sauce in the cooking pot.",
+                    "Look at the customer reviews from yesterday.",
+                    "Pick ingredients from the store room to make a new sauce.",
+                    "Take this to the cooking pot, but don't let Chef see it.",
+                    "The sauce needs 3 ingredients, so keep going."];
 
         var centerX:Float = Main.maxWidth / 2;
         var centerY:Float = Main.maxHeight / 2;
 
         dayTextShadow = new BitmapText(256, 128, "assets/font_1.png", 64, 42, 80, true);
 		dayTextShadow.printText("");
-		dayTextShadow.x = Main.offsetX + 24;
-		dayTextShadow.y = Main.offsetY + 29;
+		dayTextShadow.x = Main.offsetX + 25;
+		dayTextShadow.y = Main.offsetY + 30;
         dayTextShadow.scaleX = dayTextShadow.scaleY = 0.75;
         dayTextShadow.alpha = 0.25;
         addChild(dayTextShadow);
@@ -74,11 +74,11 @@ class HUD extends Sprite {
 		timeText.y = Main.offsetY + 10;
         //addChild(timeText);
 
-        tutorialText = new BitmapText(1400, 160, "assets/font_1.png", 64, 42, 80, true);
+        tutorialText = new BitmapText(2560, 64, "assets/font_1.png", 64, 42, 80, true);
         tutorialText.printText("");
-        tutorialText.scaleX = tutorialText.scaleY = 0.4;
-		tutorialText.x = centerX - 512 * 0.33;
-		tutorialText.y = (Main.maxHeight - Main.offsetY) - 150;
+        tutorialText.scaleX = tutorialText.scaleY = 0.333;
+		tutorialText.x = centerX - (1024 * 0.333);
+		tutorialText.y = (Main.maxHeight - Main.offsetY) - 185;
         tutorialText.visible = false;
         addChild(tutorialText);
 
@@ -94,7 +94,7 @@ class HUD extends Sprite {
 
         ingredientPanel = new IngredientPanel();
 		ingredientPanel.x = (Main.maxWidth - Main.offsetX) - 140;
-		ingredientPanel.y = (Main.maxHeight - Main.offsetY) - 90;
+		ingredientPanel.y = (Main.maxHeight - Main.offsetY) - 85;
         addChild(ingredientPanel);
 
         reviewsPanel = new ReviewsPanel();
@@ -104,7 +104,7 @@ class HUD extends Sprite {
 
         recipePanel = new RecipePanel();
         recipePanel.x = Main.offsetX + 190;
-        recipePanel.y = (Main.maxHeight - Main.offsetY) - 90;
+        recipePanel.y = (Main.maxHeight - Main.offsetY) - 85;
 		addChild(recipePanel);
 
         maskAnim = new Shape();
@@ -246,6 +246,7 @@ class HUD extends Sprite {
         
         tutorialStep = step;
 
+        tutorialText.x = (Main.maxWidth / 2) - ((42 * tutorial[tutorialStep - 1].length) * 0.333 * 0.5);
         tutorialText.printText(tutorial[tutorialStep - 1]);
         tutorialText.visible = true;
     }
@@ -374,14 +375,14 @@ class HUD extends Sprite {
 		pauseButton.y = (Main.offsetY) + 65;
 
         ingredientPanel.x = (Main.maxWidth - Main.offsetX) - 140;
-		ingredientPanel.y = (Main.maxHeight - Main.offsetY) - 90;
+		ingredientPanel.y = (Main.maxHeight - Main.offsetY) - 85;
 
         recipePanel.x = Main.offsetX + 190;
-        recipePanel.y = (Main.maxHeight - Main.offsetY) - 90;
+        recipePanel.y = (Main.maxHeight - Main.offsetY) - 85;
 
         dayText.x = Main.offsetX + 20;
 		dayText.y = Main.offsetY + 25;
-        dayTextShadow.x = Main.offsetX + 24;
-		dayTextShadow.y = Main.offsetY + 29;
+        dayTextShadow.x = Main.offsetX + 25;
+		dayTextShadow.y = Main.offsetY + 30;
     }
 }

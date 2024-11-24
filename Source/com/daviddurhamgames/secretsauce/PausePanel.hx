@@ -9,6 +9,7 @@ import openfl.events.MouseEvent;
 import openfl.Assets;
 
 import com.daviddurhamgames.secretsauce.BasicButton;
+import com.piratejuice.BitmapText;
 
 class PausePanel extends Sprite {
 	
@@ -31,14 +32,17 @@ class PausePanel extends Sprite {
 		
         //createPanel(230, 200);
         var panel:Bitmap = new Bitmap(Assets.getBitmapData("assets/paused_panel.png"));
-		panel.x = -panel.width / 2;
-        panel.y = -panel.height / 2;
+		panel.scaleX = panel.scaleY = 0.8;
+        panel.x = -panel.width / 2;
+        panel.y = -20 - (panel.height / 2);
         addChild(panel);
 
-        var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/paused_title.png"));
-		title.x = -title.width / 2;
-        title.y = -190;
-        addChild(title);
+        var titleText:BitmapText = new BitmapText(512, 64, "assets/font_1.png");
+		titleText.printText("PAUSED");
+		titleText.x = -100;
+		titleText.y = -170;
+        titleText.scaleX = titleText.scaleY = 0.75;
+        addChild(titleText);
 
         buttonBack = createButton("assets/home_continue_button.png", "assets/home_continue_button_over.png", 0, -40, 0.75);
         buttonBack.addEventListener(MouseEvent.CLICK, onBackClicked);
