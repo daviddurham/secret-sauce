@@ -31,8 +31,8 @@ class SauceMadePanel extends Sprite {
 
         var titleText:BitmapText = new BitmapText(800, 64, "assets/font_1.png");
 		titleText.printText("SAUCE MADE");
-		titleText.x = -220;
-		titleText.y = -50;
+		titleText.x = -170;
+		titleText.y = -20;
         titleText.scaleX = titleText.scaleY = 0.75;
         addChild(titleText);
 

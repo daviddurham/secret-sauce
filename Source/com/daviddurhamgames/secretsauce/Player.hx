@@ -29,8 +29,8 @@ class Player extends ObjectContainer3D {
 	public var isJumping:Bool = false;
 
 	public var holding = null;
-	public var holdingObjectMaterial:TextureMaterial;
-	public var holdingObject:Mesh;
+	//public var holdingObjectMaterial:TextureMaterial;
+	public var holdingObject:GameObject;
 
 	public var alert:Mesh;
 	//public var isAlerted:Bool = false;
@@ -94,6 +94,7 @@ class Player extends ObjectContainer3D {
 		newMaterial.mipmap = false;
 		updateMaterials(model, _model, newMaterial);
 
+		/*
 		holdingObjectMaterial = new TextureMaterial(Cast.bitmapTexture("assets/ingredient1.png"), false);
 		holdingObjectMaterial.alphaThreshold = 1;
 		//holdingObjectMaterial.lightPicker = lightPicker;
@@ -107,6 +108,7 @@ class Player extends ObjectContainer3D {
 		holdingObject.rotationX = -90;
 		holdingObject.visible = false;
 		model.addChild(holdingObject);
+		*/
 
 		var alertMaterial:TextureMaterial = new TextureMaterial(Cast.bitmapTexture("assets/alert.png"), false);
 		alertMaterial.alphaThreshold = 1;
@@ -159,7 +161,7 @@ class Player extends ObjectContainer3D {
 	public function setLightPicker(lightPicker:StaticLightPicker):Void {
 
 		newMaterial.lightPicker = lightPicker;
-		holdingObjectMaterial.lightPicker = lightPicker;
+		//holdingObjectMaterial.lightPicker = lightPicker;
 	}
 	
 	public function setActive(flag:Bool):Void {
@@ -196,19 +198,33 @@ class Player extends ObjectContainer3D {
 		maxSpeed = max;
 	}
 
-	public function collectIngredient(ingredient:Ingredient):Void {
+	public function collectIngredient(ingredient:Ingredient, object:GameObject):Void {
 
 		holding = ingredient;
 
-		holdingObjectMaterial.texture = Cast.bitmapTexture(ingredient.image/*"assets/leaf.png"*/);
-		holdingObject.material = holdingObjectMaterial;
+		//holdingObjectMaterial.texture = Cast.bitmapTexture(ingredient.image/*"assets/leaf.png"*/);
+		//holdingObject.material = holdingObjectMaterial;
 
-		holdingObject.visible = true;
+		//holdingObject.visible = true;
+
+		holdingObject = object;
+		object.x = 0;
+		object.y = 10;
+		object.z = 0;
+		object.scaleX = object.scaleX / 1.1;
+		object.scaleY = object.scaleY / 1.1;
+		object.scaleZ = object.scaleZ / 1.1;
+		object.rotationY = 90;
+		object.visible = true;
+		model.addChild(object);
 	}
 
 	public function dropIngredient():Void {
 
-		holdingObject.visible = false;
+		//model.removeChild(holdingObject);
+		//holdingObject.visible = false;
+		//holdingObject.y = 10;
+		
 		holding = null;
 	}
 
@@ -401,7 +417,7 @@ class Player extends ObjectContainer3D {
 			model.rotationX = Math.max(Math.abs(xSpeed), Math.abs(zSpeed)) * 15;
 			holder.rotationY += D180_OVER_PI * Math.atan2((Math.cos(holder.rotationY * PI_OVER_180) * Math.sin(targetAngle * PI_OVER_180) - Math.sin(holder.rotationY * PI_OVER_180) * Math.cos(targetAngle * PI_OVER_180)), (Math.sin(holder.rotationY * PI_OVER_180) * Math.sin(targetAngle * PI_OVER_180) + Math.cos(holder.rotationY * PI_OVER_180) * Math.cos(targetAngle * PI_OVER_180))) / 8;
 	
-			holdingObject.rotationY = -holder.rotationY;
+			//holdingObject.rotationY = -holder.rotationY;
 			alert.rotationY = -holder.rotationY;
 		}
 	}

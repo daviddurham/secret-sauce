@@ -54,6 +54,8 @@ class Game extends Sprite {
 
 	// pixelated mode
 	private var isRetroMode:Bool = false;//true;
+
+	private var isTutorial:Bool = false;
 	
 	// update loop
 	private var isStarted = false;
@@ -120,6 +122,9 @@ class Game extends Sprite {
 	
 	// game mode (useful later?)
 	private var gameMode:String;
+
+	// ingredient objects in the scene
+	private var ingredientObjects:Array<GameObject> = [];
 	
 	// player
 	private var p1:Player;
@@ -135,6 +140,7 @@ class Game extends Sprite {
 
 	// current ingredient the player is next to
 	private var currentHotspot = 0;
+	private var hotspotObject:GameObject = null;
 
 	// game timer (may not use time limit after all)
 	private var timeLimit:Int = 90;
@@ -177,17 +183,17 @@ class Game extends Sprite {
 
 	private var ingredients:Array<Ingredient> = [
 
-		new Ingredient(1, "white", 	3, 0, 1, 0, "assets/ingredient1.png"),
-		new Ingredient(2, "blue",	2, 0, 0, 1, "assets/ingredient2.png"),
+		new Ingredient(1, "white", 	3, 0, 1, 0, "assets/ingredient_1.png"),
+		new Ingredient(2, "blue",	2, 0, 0, 1, "assets/ingredient_2.png"),
 
-		new Ingredient(3, "pink", 	0, 3, 0, 1, "assets/ingredient3.png"),
-		new Ingredient(4, "brown",	1, 2, 0, 0, "assets/ingredient4.png"),
+		new Ingredient(3, "pink", 	0, 3, 0, 1, "assets/ingredient_3.png"),
+		new Ingredient(4, "brown",	1, 2, 0, 0, "assets/ingredient_4.png"),
 		
-		new Ingredient(5, "red", 	0, 1, 3, 0, "assets/ingredient5.png"),
-		new Ingredient(6, "orange",	1, 0, 2, 0, "assets/ingredient6.png"),
+		new Ingredient(5, "red", 	0, 1, 3, 0, "assets/ingredient_5.png"),
+		new Ingredient(6, "orange",	1, 0, 2, 0, "assets/ingredient_6.png"),
 		
-		new Ingredient(7, "green", 	0, 0, 1, 3, "assets/ingredient7.png"),
-		new Ingredient(8, "purple",	0, 1, 0, 2, "assets/ingredient8.png")
+		new Ingredient(7, "green", 	0, 0, 1, 3, "assets/ingredient_7.png"),
+		new Ingredient(8, "purple",	0, 1, 0, 2, "assets/ingredient_8.png")
 	];
 
 	// tweak this for difficulty?
@@ -231,6 +237,18 @@ class Game extends Sprite {
 		
 		isRunning = true;
 		isControlLocked = false;
+
+		// set the target and starting recipes
+		for (i in 0...3) {
+
+			// making it totally random for now
+			// ...but maybe that's not good enough?
+			targetRecipe[i] = Math.floor(Math.random() * 8) + 1;
+			currentRecipe[i] = Math.floor(Math.random() * 8) + 1;
+		}
+
+		trace(targetRecipe);
+		trace(currentRecipe);
 		
 		holder = new Sprite();
 		addChild(holder);
@@ -328,17 +346,44 @@ class Game extends Sprite {
 		assetLoaderContext.mapUrlToData("box.png", Assets.getBitmapData("assets/box.png"));
 		assetLoaderContext.mapUrlToData("sign_1.png", Assets.getBitmapData("assets/sign_1.png"));
 		assetLoaderContext.mapUrlToData("sign_2.png", Assets.getBitmapData("assets/sign_2.png"));
+		assetLoaderContext.mapUrlToData("fruits.png", Assets.getBitmapData("assets/fruits.png"));
 
 		Asset3DLibrary.enableParser(DAEParser);
 		Asset3DLibrary.addEventListener(Asset3DEvent.ASSET_COMPLETE, onAssetComplete);
 
 		// need to load models sequentially
 		loadedModels = [];
-		modelsToLoad = ["assets/models/robochef.dae", "assets/models/tree.dae", "assets/models/cone.dae", "assets/models/wall.dae", "assets/models/counter.dae", "assets/models/pot.dae", "assets/models/grill.dae", "assets/models/box.dae", "assets/models/terminal.dae", "assets/models/sink.dae", "assets/models/wall_alt1.dae", "assets/models/wall_alt2.dae", "assets/models/wall_alt3.dae"];
-		meshCounts = [12, 4, 2, 1, 6, 8, 6, 9, 8, 9, 3, 3, 3];
+		modelsToLoad = [	"assets/models/robochef.dae",
+							"assets/models/tree.dae",
+							"assets/models/cone.dae",
+							"assets/models/wall.dae",
+							"assets/models/counter.dae",
+							"assets/models/pot.dae",
+							"assets/models/grill.dae",
+							"assets/models/box.dae",
+							"assets/models/terminal.dae",
+							"assets/models/sink.dae",
+							"assets/models/wall_alt1.dae",
+							"assets/models/wall_alt2.dae",
+							"assets/models/wall_alt3.dae",
+						
+							"assets/models/ingredients/white.dae",
+							"assets/models/ingredients/blue.dae",
+							"assets/models/ingredients/pink.dae",
+							"assets/models/ingredients/brown.dae",
+							"assets/models/ingredients/red.dae",
+							"assets/models/ingredients/orange.dae",
+							"assets/models/ingredients/green.dae",
+							"assets/models/ingredients/purple.dae"
+						];
+
+		meshCounts = [	12, 4, 2, 1, 6, 8, 6, 9, 8, 9, 3, 3, 3,
+						1, 1, 1, 1, 1, 1, 1, 1	];
 
 		// some models shouldn't receive shadows
-		shadows = [true, false, false, true, true, true, true, true, true, true, true, true, true];
+		shadows = [ true, false, false, true, true, true, true, true, true, true, true, true, true,
+					true, true, true, true, true, true, true, true ];
+
 		currentModelLoading = -1;
 		loadNextModel();
 				
@@ -419,6 +464,21 @@ class Game extends Sprite {
 		enemy = new Player(2, cast(loadedModels[0], ObjectContainer3D), view.camera);
 		world.add(enemy);
 		players.push(enemy);
+
+		// ingredients
+		for (i in 0...8) {
+
+			var ingredient:GameObject = new GameObject(name, cast(loadedModels[13 + i].clone(), ObjectContainer3D));
+			//ingredient.x = Main.TILE_SIZE * 9;
+			ingredient.y = 10;
+			//ingredient.z = Main.TILE_SIZE * -12;		
+			ingredient.rotationY = 90;
+			ingredient.scaleX = ingredient.scaleY = ingredient.scaleZ = 4;
+			ingredient.visible = false;
+			world.add(ingredient);
+			
+			ingredientObjects.push(ingredient);
+		}
 
 		/*
 		var mat = new ColorMaterial(0xff00ff);
@@ -552,9 +612,13 @@ class Game extends Sprite {
 		currentDay++;
 		hud.setDay(currentDay);
 
-		if (currentDay == 1) {
+		if (currentDay == 1 && isTutorial) {
 
 			hud.showTutorial(1);
+		}
+		else {
+		
+			isTutorial = false;
 		}
 		
 		currentTime = timeLimit;
@@ -675,6 +739,23 @@ class Game extends Sprite {
 		startNextDay();
 	}
 
+	private function startEnemyEntrance():Void {
+
+		enemy.moveToPosition(Main.TILE_SIZE * 7, Main.TILE_SIZE * -10, function() {
+
+			Actuate.timer(3).onComplete(function() {
+
+				enemy.moveToPosition(Main.TILE_SIZE * 6, Main.TILE_SIZE * -10, function() {
+
+					Actuate.timer(3).onComplete(function() {
+
+						startEnemyRoutine();
+					});
+				});
+			});
+		});
+	}
+
 	private function startEnemyRoutine():Void {
 
 		Actuate.timer(5).onComplete(function() {
@@ -705,11 +786,6 @@ class Game extends Sprite {
 		);
 	}
 
-	private function onEnemyMoveComplete():Void {
-
-		
-	}
-
 	private function reset():Void {
 
 		isPotReady = false;
@@ -717,12 +793,13 @@ class Game extends Sprite {
 		p1.x = Main.TILE_SIZE * 9;
 		p1.z = Main.TILE_SIZE * -12;
 
-		enemy.x = Main.TILE_SIZE * 6;
-		enemy.z = Main.TILE_SIZE * -10;
+		enemy.x = Main.TILE_SIZE * 7;
+		enemy.z = Main.TILE_SIZE * -15;
 		enemy.setMaxSpeed(0.3);
 		enemy.setRotation(0, 1);
 
-		startEnemyRoutine();
+		// initial enemy movement
+		startEnemyEntrance();
 
 		// initial camera position
 		view.camera.x = p1.x;
@@ -776,7 +853,9 @@ class Game extends Sprite {
 		if (isRunning) {
 			
 			pause();
-			hud.pauseMenu.show();
+		//	hud.pauseMenu.show();
+
+			hud.showGameCompletePanel();
 		}
 		else {
 			
@@ -795,26 +874,52 @@ class Game extends Sprite {
 				// ingredients 1 - 10
 				if (currentHotspot > 0 && currentHotspot <= 10) {
 
-					p1.collectIngredient(ingredients[currentHotspot - 1]);
-					bgm1.setVolume(0);
-					bgm2.setVolume(1);
+					var obj:GameObject = ingredientObjects[currentHotspot - 1];
+					var ing:Ingredient = ingredients[currentHotspot - 1];
 
-					if (hud.getTutorialStep() == 3) {
+					obj.x = hotspotObject.x;
+					obj.y = 10;
+					obj.z = hotspotObject.z;
 
-						hud.showTutorial(4);
-					}
-					else if (hud.getTutorialStep() == 5) {
+					obj.scaleX = 1;
+					obj.scaleY = 1;
+					obj.scaleZ = 1;
 
-						hud.hideTutorial();
-						hud.setTutorialStep(6);
-					}
+					obj.rotationY = -90;
+					obj.visible = true;
+
+					p1.holding = ing;
+
+					// y is tweened to 10 x 1.1 because 1.1 is the scale of the player model
+					Actuate.tween(obj, 0.5, {x: p1.x, y: 10 * 1.1, z: p1.z, scaleX: 4, scaleY: 4, scaleZ: 4}).onComplete(function() {
+					
+						p1.collectIngredient(ing, obj);
+						bgm1.setVolume(0);
+						bgm2.setVolume(1);
+
+						if (isTutorial) {
+						
+							if (hud.getTutorialStep() == 3) {
+
+								hud.showTutorial(4);
+							}
+							else if (hud.getTutorialStep() == 5) {
+
+								hud.hideTutorial();
+								hud.setTutorialStep(6);
+							}
+						}	
+					});
 				}
 				// empty pot
 				else if (currentHotspot == 11 && !isPotReady) {
 					
-					if (hud.getTutorialStep() == 1) {
+					if (isTutorial) {
+					
+						if (hud.getTutorialStep() == 1) {
 
-						hud.showTutorial(2);
+							hud.showTutorial(2);
+						}
 					}
 
 					isPotReady = true;
@@ -830,49 +935,64 @@ class Game extends Sprite {
 					// 11 is the pot (make sure pot is not full)
 					if (currentHotspot == 11 && potContents.length < 8 && isPotReady) {
 
-						bgm1.setVolume(1);
-						bgm2.setVolume(0);
-				
+						world.level.addChild(p1.holdingObject);
+						p1.holdingObject.scaleX = 4;
+						p1.holdingObject.scaleY = 4;
+						p1.holdingObject.scaleZ = 4;
+						p1.holdingObject.x = p1.x;
+						p1.holdingObject.y = 10;
+						p1.holdingObject.z = p1.z;
+
 						var id:Int = p1.holding.id;
+						var obj:GameObject = p1.holdingObject;
 						p1.dropIngredient();
 
-						potContents.push(id);
+						Actuate.tween(obj, 0.5, {x: hotspotObject.x, y: 10, z: hotspotObject.z, scaleX: 1, scaleY: 1, scaleZ: 1}).onComplete(function() {
+					
+							bgm1.setVolume(1);
+							bgm2.setVolume(0);						
 
-						if (hud.getTutorialStep() == 4) {
+							potContents.push(id);
 
-							hud.showTutorial(5);
-						}
+							if (isTutorial) {
+							
+								if (hud.getTutorialStep() == 4) {
 
-						// completed new recipe
-						if (potContents.length >= currentRecipe.length) {
-
-							currentRecipe = [];
-
-							for (i in 0...potContents.length) {
-
-								currentRecipe.push(potContents[i]);
+									hud.showTutorial(5);
+								}
 							}
 
-							isSauceMade = true;
-							hud.hideRecipePanel();
+							// completed new recipe
+							if (potContents.length >= currentRecipe.length) {
 
-							// game complete
-							if (checkRecipesMatch() == true) {
+								currentRecipe = [];
 
-								hud.showGameCompletePanel();
-							}
-							// next day
-							else {
+								for (i in 0...potContents.length) {
 
-								hud.showSauceMadePanel();
+									currentRecipe.push(potContents[i]);
+								}
 
-								Actuate.timer(3).onComplete(function() {
+								isSauceMade = true;
+								hud.hideRecipePanel();
 
-									potContents = [];
-									endDay();
-								});
-							}
-						}
+								// game complete
+								if (checkRecipesMatch() == true) {
+
+									hud.showGameCompletePanel();
+								}
+								// next day
+								else {
+
+									hud.showSauceMadePanel();
+
+									Actuate.timer(3).onComplete(function() {
+
+										potContents = [];
+										endDay();
+									});
+								}
+							}	
+						});
 					}
 				}
 			}
@@ -1200,6 +1320,7 @@ class Game extends Sprite {
 						if (Collisions.sphereCollision(player.x, player.y, player.z, player.radius / 2, hotspot.x, hotspot.y, hotspot.z, hotspot.cRadius)) {
 							
 							currentHotspot = hotspot.objectID;
+							hotspotObject = hotspot;
 
 							if (currentHotspot <= 10) {
 							
@@ -1241,9 +1362,12 @@ class Game extends Sprite {
 								// show reviews
 								hud.showReviewsPanel(reviews);
 
-								if (hud.getTutorialStep() == 2) {
+								if (isTutorial) {
+								
+									if (hud.getTutorialStep() == 2) {
 
-									hud.showTutorial(3);
+										hud.showTutorial(3);
+									}
 								}
 							}
 						}

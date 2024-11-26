@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+    <asset>
+        <contributor>
+            <authoring_tool>MilkShape 3D 1.8.4</authoring_tool>
+            <source_data>file://C:/Users/DavidDurham/Desktop/ingredients.ms3d</source_data>
+        </contributor>
+        <created>2007-05-21T20:10:16Z</created>
+        <modified>2007-05-21T20:10:16Z</modified>
+        <unit meter="1.000000" name="meter" />
+        <up_axis>Y_UP</up_axis>
+    </asset>
+    <library_images>
+        <image id="Material01-image" name="Material01-image">
+            <init_from>fruits.png</init_from>
+        </image>
+    </library_images>
+    <library_materials>
+        <material id="Material01" name="Material01">
+            <instance_effect url="#Material01-effect" />
+        </material>
+    </library_materials>
+    <library_effects>
+        <effect id="Material01-effect" name="Material01-effect">
+            <profile_COMMON>
+                <newparam sid="Material01-image-surface">
+                    <surface type="2D">
+                        <init_from>Material01-image</init_from>
+                        <format>A8R8G8B8</format>
+                    </surface>
+                </newparam>
+                <newparam sid="Material01-image-sampler">
+                    <sampler2D>
+                        <source>Material01-image-surface</source>
+                        <minfilter>LINEAR_MIPMAP_LINEAR</minfilter>
+                        <magfilter>LINEAR</magfilter>
+                    </sampler2D>
+                </newparam>
+                <technique sid="common">
+                    <phong>
+                        <emission>
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </emission>
+                        <ambient>
+                            <color>0.200000 0.200000 0.200000 1.000000</color>
+                        </ambient>
+                        <diffuse>
+                            <texture texture="Material01-image-sampler" texcoord="" />
+                        </diffuse>
+                        <specular>
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </specular>
+                        <shininess>
+                            <float>0.000000</float>
+                        </shininess>
+                        <reflective>
+                            <color>1.000000 1.000000 1.000000 1.000000</color>
+                        </reflective>
+                        <reflectivity>
+                            <float>1.000000</float>
+                        </reflectivity>
+                        <transparent opaque="A_ONE">
+                            <color>0.000000 0.000000 0.000000 1.000000</color>
+                        </transparent>
+                        <transparency>
+                            <float>1.000000</float>
+                        </transparency>
+                        <index_of_refraction>
+                            <float>0.000000</float>
+                        </index_of_refraction>
+                    </phong>
+                </technique>
+            </profile_COMMON>
+        </effect>
+    </library_effects>
+    <library_geometries>
+        <geometry id="Cylinder07-geometry" name="Cylinder07-geometry">
+            <mesh>
+                <source id="Cylinder07-positions" name="position">
+                    <float_array id="Cylinder07-positions-array" count="66">0.6 0 0 0.48541 0 0.352671 -2.16744e-009 0 0 0.6 0.4 0 -2.16744e-009 0.4 0 0.48541 0.4 0.352671 0.18541 0 0.570635 0.18541 0.4 0.570635 -0.18541 0 0.570635 -0.18541 0.4 0.570635 -0.48541 0 0.352671 -0.48541 0.4 0.352671 -0.6 0 0 -0.6 0.4 0 -0.48541 0 -0.352672 -0.48541 0.4 -0.352672 -0.18541 0 -0.570634 -0.18541 0.4 -0.570634 0.18541 0 -0.570634 0.18541 0.4 -0.570634 0.48541 0 -0.352672 0.48541 0.4 -0.352672</float_array>
+                    <technique_common>
+                        <accessor source="#Cylinder07-positions-array" count="22" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Cylinder07-normals" name="normal">
+                    <float_array id="Cylinder07-normals-array" count="42">0 -1 0 0 1 0 1 0 4.07368e-007 1 0 4.07368e-007 0.809018 0 0.587784 0.309018 0 0.951056 -0.309018 0 0.951056 -0.809018 0 0.587784 -1 0 4.07368e-007 -1 0 4.07368e-007 -0.809017 0 -0.587786 -0.309016 0 -0.951057 0.309016 0 -0.951057 0.809017 0 -0.587786</float_array>
+                    <technique_common>
+                        <accessor source="#Cylinder07-normals-array" count="14" stride="3">
+                            <param name="X" type="float" />
+                            <param name="Y" type="float" />
+                            <param name="Z" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <source id="Cylinder07-texcoords" name="texcoord">
+                    <float_array id="Cylinder07-texcoords-array" count="22">0.22391 0.368715 0.205071 0.311211 0.125268 0.368715 0.15575 0.275671 0.0947868 0.275671 0.0454662 0.311211 0.0266274 0.368715 0.0454662 0.426219 0.0947868 0.461759 0.15575 0.461759 0.205071 0.426219</float_array>
+                    <technique_common>
+                        <accessor source="#Cylinder07-texcoords-array" count="11" stride="2">
+                            <param name="S" type="float" />
+                            <param name="T" type="float" />
+                        </accessor>
+                    </technique_common>
+                </source>
+                <vertices id="Cylinder07-geometry-vertices">
+                    <input semantic="POSITION" source="#Cylinder07-positions" />
+                </vertices>
+                <triangles material="Material01" count="40">
+                    <input semantic="VERTEX" source="#Cylinder07-geometry-vertices" offset="0" />
+                    <input semantic="NORMAL" source="#Cylinder07-normals" offset="1" />
+                    <input semantic="TEXCOORD" source="#Cylinder07-texcoords" offset="2" />
+                    <p>0 0 0 1 0 1 2 0 2 3 1 0 4 1 2 5 1 1 0 2 0 3 3 0 1 4 1 3 3 0 5 4 1 1 4 1 1 0 1 6 0 3 2 0 2 5 1 1 4 1 2 7 1 3 1 4 1 5 4 1 7 5 3 1 4 1 7 5 3 6 5 3 6 0 3 8 0 4 2 0 2 7 1 3 4 1 2 9 1 4 6 5 3 7 5 3 8 6 4 7 5 3 9 6 4 8 6 4 8 0 4 10 0 5 2 0 2 9 1 4 4 1 2 11 1 5 8 6 4 9 6 4 11 7 5 8 6 4 11 7 5 10 7 5 10 0 5 12 0 6 2 0 2 11 1 5 4 1 2 13 1 6 10 7 5 11 7 5 12 8 6 11 7 5 13 9 6 12 8 6 12 0 6 14 0 7 2 0 2 13 1 6 4 1 2 15 1 7 12 8 6 13 9 6 15 10 7 12 8 6 15 10 7 14 10 7 14 0 7 16 0 8 2 0 2 15 1 7 4 1 2 17 1 8 14 10 7 15 10 7 16 11 8 15 10 7 17 11 8 16 11 8 16 0 8 18 0 9 2 0 2 17 1 8 4 1 2 19 1 9 16 11 8 17 11 8 19 12 9 16 11 8 19 12 9 18 12 9 18 0 9 20 0 10 2 0 2 19 1 9 4 1 2 21 1 10 18 12 9 19 12 9 20 13 10 19 12 9 21 13 10 20 13 10 20 0 10 0 0 0 2 0 2 21 1 10 4 1 2 3 1 0 20 13 10 21 13 10 3 3 0 20 13 10 3 3 0 0 2 0</p>
+                </triangles>
+            </mesh>
+        </geometry>
+    </library_geometries>
+    <library_visual_scenes>
+        <visual_scene id="SceneRoot" name="SceneRoot">
+            <node id="Cylinder07" name="Cylinder07" type="NODE">
+                <instance_geometry url="#Cylinder07-geometry">
+                    <bind_material>
+                        <technique_common>
+                            <instance_material symbol="Material01" target="#Material01" />
+                        </technique_common>
+                    </bind_material>
+                </instance_geometry>
+            </node>
+        </visual_scene>
+    </library_visual_scenes>
+    <scene>
+        <instance_visual_scene url="#SceneRoot" />
+    </scene>
+</COLLADA>

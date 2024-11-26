@@ -14,7 +14,6 @@ import com.piratejuice.BitmapText;
 class GameCompletePanel extends Sprite {
 	
     public var buttonQuit:BasicButton;
-    public var buttonRestart:BasicButton;
     
     // selector
     public var selector:MovieClip;
@@ -22,7 +21,6 @@ class GameCompletePanel extends Sprite {
     private var buttonList:Array<BasicButton>;
     private var currButton:Int;
 
-	
 	public function new():Void {
 		
 		super();
@@ -31,20 +29,17 @@ class GameCompletePanel extends Sprite {
 
         var titleText:BitmapText = new BitmapText(800, 140, "assets/font_1.png");
 		titleText.printText("YOU FOUND THE SECRET SAUCE!");
-		titleText.x = -100;
+		titleText.x = -210;
 		titleText.y = -125;
-        titleText.scaleX = titleText.scaleY = 0.5;
+        titleText.scaleX = titleText.scaleY = 0.75;
         addChild(titleText);
 
-        buttonRestart = createButton("assets/home_continue_button.png", "assets/home_continue_button_over.png", 0, 0, 0.75);
-        buttonRestart.addEventListener(MouseEvent.CLICK, onRestartClicked);
-
-        buttonQuit = createButton("assets/home_continue_button.png", "assets/home_continue_button_over.png", 0, 150, 0.75);
+        buttonQuit = createButton("assets/home_continue_button.png", "assets/home_continue_button_over.png", 0, 75, 0.75);
         buttonQuit.addEventListener(MouseEvent.CLICK, onQuitClicked);
 
         //create button list
 		currButton = 0;
-		buttonList = [buttonQuit, buttonRestart];
+		buttonList = [ buttonQuit ];
 
         visible = false;
 	}
@@ -77,11 +72,6 @@ class GameCompletePanel extends Sprite {
     private function onQuitClicked(event:MouseEvent = null):Void {
         
         dispatchEvent(new Event("quit"));
-    }
-    
-    private function onRestartClicked(event:MouseEvent = null):Void {
-        
-        dispatchEvent(new Event("retry"));
     }
 
     public function show():Void {

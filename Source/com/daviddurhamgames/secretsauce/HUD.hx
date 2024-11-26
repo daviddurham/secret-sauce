@@ -90,6 +90,7 @@ class HUD extends Sprite {
         gameCompletePanel = new GameCompletePanel();
         gameCompletePanel.x = centerX;
 		gameCompletePanel.y = centerY;
+        gameCompletePanel.addEventListener("quit", quitConfirm, false, 0, true);
         addChild(gameCompletePanel);
 
         ingredientPanel = new IngredientPanel();
@@ -377,7 +378,7 @@ class HUD extends Sprite {
         ingredientPanel.x = (Main.maxWidth - Main.offsetX) - 140;
 		ingredientPanel.y = (Main.maxHeight - Main.offsetY) - 85;
 
-        recipePanel.x = Main.offsetX + 190;
+        recipePanel.x = Main.offsetX + 210;
         recipePanel.y = (Main.maxHeight - Main.offsetY) - 85;
 
         dayText.x = Main.offsetX + 20;
