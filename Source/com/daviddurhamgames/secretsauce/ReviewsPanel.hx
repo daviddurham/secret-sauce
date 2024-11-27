@@ -72,9 +72,8 @@ class ReviewsPanel extends Sprite {
         return panel;
     }
 
-    public function show(reviews:Array<String>):Void {
+    public function show(reviews:Array<String>, stats:Array<Int>):Void {
 
-        trace(reviews);
         var str:String = "";
         var count:Int = 0;
 
@@ -83,9 +82,9 @@ class ReviewsPanel extends Sprite {
             note.hide();
         }
 
-        for (review in reviews) {
+        for (i in 0...reviews.length) {
 
-            notes[count].show(review);
+            notes[count].show(reviews[i], stats[i]);
             //str += review + "\n\n";
             count++;
         }

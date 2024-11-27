@@ -55,7 +55,9 @@ class Game extends Sprite {
 	// pixelated mode
 	private var isRetroMode:Bool = false;//true;
 
+	private var isIntro:Bool = true;
 	private var isTutorial:Bool = false;
+	private var isComplete:Bool = false;
 	
 	// update loop
 	private var isStarted = false;
@@ -156,6 +158,7 @@ class Game extends Sprite {
 	// camera zoom  multiplier
 	private var zoom:Int = 1;
 	private var cameraPosition:Vector2D;
+	private var cameraMovement:Vector2D;
 
 	// level map
 	private var map:Array<Array<Int>> = [	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
@@ -219,6 +222,7 @@ class Game extends Sprite {
 
 	// current review and recipe strings (sent to HUD)
 	private var reviews:Array<String> = [];
+	private var reviewStats:Array<Int> = [];
 	private var recipe:Array<String> = [];
 
 	private var confetti:Confetti;
@@ -226,6 +230,9 @@ class Game extends Sprite {
 	public function new(mode:String = "default") {
 		
 		super();
+
+		isTutorial = Main.isTutorial;
+		Main.isTutorial = false;
 
 		// get game settings
 		gameMode = mode;
@@ -247,9 +254,6 @@ class Game extends Sprite {
 			targetRecipe[i] = Math.floor(Math.random() * 8) + 1;
 			currentRecipe[i] = Math.floor(Math.random() * 8) + 1;
 		}
-
-		trace(targetRecipe);
-		trace(currentRecipe);
 		
 		holder = new Sprite();
 		addChild(holder);
@@ -395,10 +399,11 @@ class Game extends Sprite {
 		bgm2 = new Audio("assets/audio/holding" + "." + Main.audioFormat, -1);
 		
 		// create confetti
-		confetti = new Confetti(30, Main.maxWidth, Main.maxHeight, 1);
+		confetti = new Confetti(50, Main.maxWidth, Main.maxHeight, 1);
 		holder.addChild(confetti);
 
 		cameraPosition = new Vector2D();
+		cameraMovement = new Vector2D();
 
 		// ensure we have focus
 		stage.focus = stage;
@@ -506,7 +511,7 @@ class Game extends Sprite {
 		bgm2.setVolume(0);
 		bgm2.play();
 
-		//confetti.start();
+		startNextDay();
 
 		// transition in
 		Actuate.tween(transition, 0.5, { alpha: 0 }).delay(0).onComplete(onTransitionIn).ease(Quad.easeInOut);
@@ -548,7 +553,7 @@ class Game extends Sprite {
 		removeChild(transition);
 
 		// start the day
-		startNextDay();
+		//startNextDay();
 	}
 	
 	private function checkRecipesMatch():Bool {
@@ -614,15 +619,6 @@ class Game extends Sprite {
 
 		currentDay++;
 		hud.setDay(currentDay);
-
-		if (currentDay == 1 && isTutorial) {
-
-			hud.showTutorial(1);
-		}
-		else {
-		
-			isTutorial = false;
-		}
 		
 		currentTime = timeLimit;
 		hud.setTime(Math.floor(currentTime));
@@ -644,6 +640,7 @@ class Game extends Sprite {
 
 		// reset reviews
 		reviews = [];
+		reviewStats = [];
 
 		// no reviews on first day
 		if (currentRecipe.length != 0) {
@@ -702,36 +699,40 @@ class Game extends Sprite {
 			if (diffSalt != 0) {
 
 				var reviewSalt:String = diffSalt > 0 ? "TOO SALTY" : "NOT SALTY ENOUGH";
-				reviewSalt += " " + diffSalt;
+				//reviewSalt += " " + diffSalt;
 
 				reviews.push(reviewSalt);
+				reviewStats.push(diffSalt);
 			}
 
 			if (diffSweet != 0) {
 
 				var reviewSweet:String = diffSweet > 0 ? "TOO SWEET" : "NOT SWEET ENOUGH";
-				reviewSweet += " " + diffSweet;
+				//reviewSweet += " " + diffSweet;
 
 				reviews.push(reviewSweet);
+				reviewStats.push(diffSweet);
 			}
 
 			if (diffSpicy != 0) {
 
 				var reviewSpicy:String = diffSpicy > 0 ? "TOO SPICY" : "NOT SPICY ENOUGH";
-				reviewSpicy += " " + diffSpicy;
+				//reviewSpicy += " " + diffSpicy;
 
 				reviews.push(reviewSpicy);
+				reviewStats.push(diffSpicy);
 			}
 
 			if (diffSour != 0) {
 
 				var reviewSour:String = diffSour > 0 ? "TOO SOUR" : "NOT SOUR ENOUGH";
-				reviewSour += " " + diffSour;
+				//reviewSour += " " + diffSour;
 
 				reviews.push(reviewSour);
+				reviewStats.push(diffSour);
 			}
 
-			hud.showReviewsPanel(reviews);
+			hud.showReviewsPanel(reviews, reviewStats);
 		}
 
 		hud.showRecipePanel(recipe);
@@ -792,22 +793,23 @@ class Game extends Sprite {
 	private function reset():Void {
 
 		isPotReady = false;
+		isIntro = true;
 
 		p1.x = Main.TILE_SIZE * 9;
 		p1.z = Main.TILE_SIZE * -12;
 
 		enemy.x = Main.TILE_SIZE * 7;
-		enemy.z = Main.TILE_SIZE * -15;
+		enemy.z = Main.TILE_SIZE * -14.5;
 		enemy.setMaxSpeed(0.3);
 		enemy.setRotation(0, 1);
 
 		// initial enemy movement
 		startEnemyEntrance();
 
-		// initial camera position
+		// initial camera position		
 		view.camera.x = p1.x;
-		view.camera.y = 400;
-		view.camera.z = p1.z - 400;
+		view.camera.y = 150 * zoom;
+		view.camera.z = enemy.z - (150 * zoom);
 		view.camera.lookAt(new Vector3D(p1.x, p1.z, 0));
 
 		hud.hideSauceMadePanel(true);
@@ -856,9 +858,7 @@ class Game extends Sprite {
 		if (isRunning) {
 			
 			pause();
-		//	hud.pauseMenu.show();
-
-			hud.showGameCompletePanel();
+			hud.pauseMenu.show();
 		}
 		else {
 			
@@ -869,7 +869,7 @@ class Game extends Sprite {
 
 	private function onAPressed(event:Event):Void {
 		
-		if (isRunning) {
+		if (isRunning && !isIntro && !isComplete) {
 			
 			// not holding anything?
 			if (p1.holding == null) { 
@@ -982,6 +982,8 @@ class Game extends Sprite {
 								if (checkRecipesMatch() == true) {
 
 									hud.showGameCompletePanel();
+									confetti.start();
+									isComplete = true;
 								}
 								// next day
 								else {
@@ -1004,35 +1006,38 @@ class Game extends Sprite {
 
 	private function updateInput():Void {
 		
-		p1.isLeft = false;
-		p1.isRight = false;
+		if (!isIntro && !isComplete) {
 
-		if (input.keyDown("left")) {
-			
-			p1.isLeft = true;
-		}
-		else if (input.keyDown("right")) {
-			
-			p1.isRight = true;
-		}
-		
-		p1.isUp = false;
-		p1.isDown = false;
+			p1.isLeft = false;
+			p1.isRight = false;
 
-        if (input.keyDown("up")) {
+			if (input.keyDown("left")) {
+				
+				p1.isLeft = true;
+			}
+			else if (input.keyDown("right")) {
+				
+				p1.isRight = true;
+			}
 			
-			p1.isUp = true;	
-		}
-		else if (input.keyDown("down")) {
+			p1.isUp = false;
+			p1.isDown = false;
+
+			if (input.keyDown("up")) {
+				
+				p1.isUp = true;	
+			}
+			else if (input.keyDown("down")) {
+				
+				p1.isDown = true;
+			}
 			
-			p1.isDown = true;
-		}
-		
-		if (input.keyDown("a")) {
+			if (input.keyDown("a")) {
 
-		}
-		else {
+			}
+			else {
 
+			}
 		}
 	}
 
@@ -1363,7 +1368,7 @@ class Game extends Sprite {
 							else if (currentHotspot == 12) {
 
 								// show reviews
-								hud.showReviewsPanel(reviews);
+								hud.showReviewsPanel(reviews, reviewStats);
 
 								if (isTutorial) {
 								
@@ -1415,17 +1420,50 @@ class Game extends Sprite {
 				cameraPosition.y = (p1.z + enemy.z) / 2;
 			}
 			else {
-			*/
+			
 				cameraPosition.x = p1.x;
 				cameraPosition.y = p1.z;
-			//}
+			}
 
-			//view.camera.x += (view.camera.x - cameraPosition.x) / 20;
+			cameraMovement.x = (view.camera.x - cameraPosition.x) / 10;
+			cameraMovement.y = (view.camera.z - (cameraPosition.y - (150 * zoom))) / 10;
 
+			view.camera.x -= cameraMovement.x;
+			view.camera.y = 150 * zoom;
+			view.camera.z -= cameraMovement.y;
+			view.camera.lookAt(new Vector3D(view.camera.x, (view.camera.z + (150 * zoom)), 0));
+			*/
+			
+			// follow chef in intro
+			if (isIntro) {
+
+				cameraPosition.x = p1.x;
+				cameraPosition.y = enemy.z;
+				
+				if (cameraPosition.y >= p1.z) {
+
+					isIntro = false;
+
+					// start tutorial
+					if (currentDay == 1 && isTutorial) {
+
+						hud.showTutorial(1);
+					}
+					else {
+					
+						isTutorial = false;
+					}
+				}
+			}
+			else {
+
+				cameraPosition.x = p1.x;
+				cameraPosition.y = p1.z;
+			}
+			
 			view.camera.x = cameraPosition.x;
 			view.camera.y = 150 * zoom;
 			view.camera.z = cameraPosition.y - (150 * zoom);
-			view.camera.lookAt(new Vector3D(cameraPosition.x, cameraPosition.y, 0));
 		}
 	}
 }

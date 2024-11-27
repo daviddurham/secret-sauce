@@ -4,8 +4,12 @@ import motion.easing.Linear;
 import motion.Actuate;
 import openfl.display.Shape;
 import openfl.display.Sprite;
+import openfl.display.Bitmap;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
+import openfl.text.TextField;
+import openfl.text.TextFormat;
+import openfl.Assets;
 
 import com.daviddurhamgames.secretsauce.PausePanel;
 import com.daviddurhamgames.secretsauce.SauceMadePanel;
@@ -37,8 +41,11 @@ class HUD extends Sprite {
     private var timeText:BitmapText;
 
     private var tutorialText:BitmapText;
+    //private var tutorialText:TextField;
     private var tutorialStep:Int = 0;
     private var tutorial:Array<String>;
+
+    private var tutorials:Array<Bitmap> = [];
 
     public function new():Void {
         
@@ -117,6 +124,17 @@ class HUD extends Sprite {
         maskAnim.scaleY = 0;
         maskAnim.visible = false;
         addChild(maskAnim);
+
+        for (i in 0...5) {
+
+            var t:Bitmap = new Bitmap(Assets.getBitmapData("assets/tutorial_" + (i + 1) + ".png"), null, true);
+            t.x = (centerX - t.width / 2);
+            t.y = (Main.maxHeight - Main.offsetY) - 110;
+            t.visible = false;
+            addChild(t);
+            tutorials.push(t);
+        }
+        
 
         // create audio object
 		eventSFXAudio = new Audio();
@@ -247,9 +265,10 @@ class HUD extends Sprite {
         
         tutorialStep = step;
 
-        tutorialText.x = (Main.maxWidth / 2) - ((42 * tutorial[tutorialStep - 1].length) * 0.333 * 0.5);
-        tutorialText.printText(tutorial[tutorialStep - 1]);
-        tutorialText.visible = true;
+        for (i in 0...tutorials.length) {
+        
+            tutorials[i].visible = (i == step - 1) ? true : false;
+        }        
     }
     
     public function getTutorialStep():Int {
@@ -264,7 +283,10 @@ class HUD extends Sprite {
     
     public function hideTutorial():Void {
         
-        tutorialText.visible = false;
+        for (i in 0...tutorials.length) {
+        
+            tutorials[i].visible = false;
+        }
     }
     
     public function showIngredientPanel(ingredient:Ingredient):Void {
@@ -277,9 +299,9 @@ class HUD extends Sprite {
         ingredientPanel.hide();
     }
     
-    public function showReviewsPanel(reviews:Array<String>):Void {
+    public function showReviewsPanel(reviews:Array<String>, stats:Array<Int>):Void {
         
-        reviewsPanel.show(reviews);
+        reviewsPanel.show(reviews, stats);
     }
     
     public function hideReviewsPanel():Void {
@@ -385,5 +407,10 @@ class HUD extends Sprite {
 		dayText.y = Main.offsetY + 25;
         dayTextShadow.x = Main.offsetX + 25;
 		dayTextShadow.y = Main.offsetY + 30;
+
+        for (t in tutorials) {
+
+            t.y = (Main.maxHeight - Main.offsetY) - 110;
+        }
     }
 }

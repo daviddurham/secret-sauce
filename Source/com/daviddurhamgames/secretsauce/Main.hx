@@ -87,6 +87,9 @@ class Main extends Sprite {
 
 	public static var KEY_START:Int = 13;	// enter
 	public static var KEY_SELECT:Int = 8;	// backspace
+
+	// tutorial only shows for the first play in a session
+	public static var isTutorial:Bool = true;
 	
 	public function new() {
 		
