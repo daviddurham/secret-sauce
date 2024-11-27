@@ -22,11 +22,6 @@ class IngredientPanel extends Sprite {
 		
         createPanel(230, 125);
 
-        var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/paused_title.png"));
-        title.x = -title.width / 2;
-        title.y = -40;
-        //addChild(title);
-
         valuesText = new BitmapText(480, 200, "assets/font_1.png", 64, 42, 88);
 		valuesText.printText("");
         valuesText.scaleX = valuesText.scaleY = 0.5;

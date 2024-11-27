@@ -155,6 +155,7 @@ class Game extends Sprite {
 
 	// camera zoom  multiplier
 	private var zoom:Int = 1;
+	private var cameraPosition:Vector2D;
 
 	// level map
 	private var map:Array<Array<Int>> = [	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
@@ -396,6 +397,8 @@ class Game extends Sprite {
 		// create confetti
 		confetti = new Confetti(30, Main.maxWidth, Main.maxHeight, 1);
 		holder.addChild(confetti);
+
+		cameraPosition = new Vector2D();
 
 		// ensure we have focus
 		stage.focus = stage;
@@ -1405,10 +1408,24 @@ class Game extends Sprite {
 				}
 			}
 
-			view.camera.x = p1.x;
+			/*
+			if (enemy.alertCooldown > 0) {
+
+				cameraPosition.x = (p1.x + enemy.x) / 2;
+				cameraPosition.y = (p1.z + enemy.z) / 2;
+			}
+			else {
+			*/
+				cameraPosition.x = p1.x;
+				cameraPosition.y = p1.z;
+			//}
+
+			//view.camera.x += (view.camera.x - cameraPosition.x) / 20;
+
+			view.camera.x = cameraPosition.x;
 			view.camera.y = 150 * zoom;
-			view.camera.z = p1.z - (150 * zoom);
-			view.camera.lookAt(new Vector3D(p1.x, p1.z, 0));
+			view.camera.z = cameraPosition.y - (150 * zoom);
+			view.camera.lookAt(new Vector3D(cameraPosition.x, cameraPosition.y, 0));
 		}
 	}
 }

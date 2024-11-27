@@ -54,7 +54,6 @@ class Home extends Sprite {
 
 	// menus
 	private var optionsMenu:OptionsMenu;
-    private var newGameMenu:NewGameMenu;
 	
 	// flag when quit is initiated
 	private var isQuitting = false;
@@ -109,6 +108,11 @@ class Home extends Sprite {
         title.y = Std.int((Main.maxHeight / 2) - (title.height / 2) - 240);
         scene.addChild(title);
 
+		var image:Bitmap = new Bitmap(Assets.getBitmapData("assets/title_image.png"), null, true);
+		image.x = Std.int((Main.maxWidth / 2) - (image.width / 2) - 200);
+        image.y = Std.int((Main.maxHeight / 2) - (image.height / 2) + 50);
+        scene.addChild(image);
+
 		// background for menus
 		menuBackground = new Shape();
 		menuBackground.graphics.beginFill(0x990055);
@@ -124,6 +128,8 @@ class Home extends Sprite {
 		holder.addChild(buttonHolder);
 
 		continueButton = createButton("assets/home_continue_button.png", "assets/home_continue_button_over.png", (Main.maxWidth / 2) + 220, -220, 0.75);
+		continueButton.alpha = 0.5;
+		continueButton.setEnabled(false);
 		continueButton.addEventListener(MouseEvent.CLICK, onContinueButtonClicked);
 
 		newGameButton = createButton("assets/home_newgame_button.png", "assets/home_newgame_button_over.png", (Main.maxWidth / 2) + 220, -100, 0.75);
@@ -141,13 +147,6 @@ class Home extends Sprite {
 		optionsMenu.addEventListener("sfx_volume", onSFXVolume, false, 0, true);
 		optionsMenu.addEventListener("back", onOptionsBack, false, 0, true);
 		holder.addChild(optionsMenu);
-
-		newGameMenu = new NewGameMenu();
-		newGameMenu.x = Main.maxWidth / 2;
-		newGameMenu.y = Main.maxHeight / 2;
-		newGameMenu.addEventListener("back", onNewGameBack, false, 0, true);
-		newGameMenu.addEventListener("start", onNewGameStart, false, 0, true);
-		holder.addChild(newGameMenu);
 
 		// create audio objects
 		eventSFXAudio = new Audio();
@@ -273,26 +272,8 @@ class Home extends Sprite {
 
 		eventSFXAudio.play();
 
-		buttonHolder.visible = false;
-		Actuate.tween(menuBackground, 0.4, { scaleY: 1 }).ease(Quad.easeInOut).onComplete(showNewGame);
-	}
-
-	private function showNewGame():Void {
-
-		newGameMenu.visible = true;
-	}
-	
-	private function onNewGameBack(event:Event):Void {
-
-		newGameMenu.visible = false;
-		Actuate.tween(menuBackground, 0.4, { scaleY: 0 }).ease(Quad.easeInOut).onComplete(showHomeButtons);
-	}
-
-	private function onNewGameStart(event:Event):Void {
-			
 		holder.addChild(fadeIn);
 		Actuate.tween(fadeIn, 0.5, { alpha: 1 }).delay(0).onComplete(onTransitionOut).ease(Quad.easeInOut);
-		//musicAudio.fadeOut(0.5);
 	}
 
 	private function onTransitionOut():Void {
