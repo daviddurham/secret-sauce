@@ -30,6 +30,9 @@ class Home extends Sprite {
 	// game level or 'scene'
 	private var scene:Sprite;
 
+	private var title:Bitmap;
+	private var image:Bitmap;
+	private var credit:Bitmap;
 	private var menuBackground:Shape;
 	
 	private var buttonHolder:Sprite;
@@ -103,34 +106,44 @@ class Home extends Sprite {
 		background.start();
 		scene.addChild(background);
 
-		var title:Bitmap = new Bitmap(Assets.getBitmapData("assets/title.png"), null, true);
+		title = new Bitmap(Assets.getBitmapData("assets/title.png"), null, true);
 		title.x = Std.int((Main.maxWidth / 2) - (title.width / 2));
         title.y = Std.int((Main.maxHeight / 2) - (title.height / 2) - 240);
         scene.addChild(title);
 
-		var image:Bitmap = new Bitmap(Assets.getBitmapData("assets/title_image.png"), null, true);
+		image = new Bitmap(Assets.getBitmapData("assets/title_image.png"), null, true);
 		image.x = Std.int((Main.maxWidth / 2) - (image.width / 2) - 200);
-        image.y = Std.int((Main.maxHeight / 2) - (image.height / 2) + 50);
+        image.y = Std.int((Main.maxHeight / 2) - (image.height / 2) + 40);
         scene.addChild(image);
+
+		credit = new Bitmap(Assets.getBitmapData("assets/credit.png"), null, true);
+		credit.x = Std.int((Main.maxWidth / 2) - (credit.width / 2));
+        credit.y = Std.int((Main.maxHeight - Main.offsetY) - credit.height - 10);
+		scene.addChild(credit);
 
 		// background for menus
 		menuBackground = new Shape();
-		menuBackground.graphics.beginFill(0x990055);
+		menuBackground.graphics.beginFill(0x000000, 0.5);
 		menuBackground.graphics.drawRect(-1000, 0, 2000, -Main.maxHeight);
 		menuBackground.graphics.endFill();
 
 		menuBackground.x = Main.maxWidth / 2;
 		menuBackground.y = Main.maxHeight;
-		menuBackground.scaleY = 0;
+		menuBackground.visible = false;
 		scene.addChild(menuBackground);
 
 		buttonHolder = new Sprite();
 		holder.addChild(buttonHolder);
 
 		continueButton = createButton("assets/home_continue_button.png", "assets/home_continue_button_over.png", (Main.maxWidth / 2) + 220, -220, 0.75);
-		continueButton.alpha = 0.5;
-		continueButton.setEnabled(false);
 		continueButton.addEventListener(MouseEvent.CLICK, onContinueButtonClicked);
+
+		trace(Main.savedData.load("progress"));
+		if (Main.savedData.load("progress") == "0") {
+
+			continueButton.alpha = 0.5;
+			continueButton.setEnabled(false);
+		}
 
 		newGameButton = createButton("assets/home_newgame_button.png", "assets/home_newgame_button_over.png", (Main.maxWidth / 2) + 220, -100, 0.75);
 		newGameButton.addEventListener(MouseEvent.CLICK, onNewGameButtonClicked);
@@ -143,6 +156,7 @@ class Home extends Sprite {
 		optionsMenu.x = Main.maxWidth / 2;
 		optionsMenu.y = Main.maxHeight / 2;
 		optionsMenu.addEventListener("toggle_filter", onToggleFilter, false, 0, true);
+		optionsMenu.addEventListener("fullscreen", onToggleFullscreen, false, 0, true);
 		optionsMenu.addEventListener("music_volume", onMusicVolume, false, 0, true);
 		optionsMenu.addEventListener("sfx_volume", onSFXVolume, false, 0, true);
 		optionsMenu.addEventListener("back", onOptionsBack, false, 0, true);
@@ -151,12 +165,12 @@ class Home extends Sprite {
 		// create audio objects
 		eventSFXAudio = new Audio();
 		eventSFXAudio.setVolume(Main.sfxVolume);
-		eventSFXAudio.setSound("assets/audio/button" + "." + Main.audioFormat);
+		eventSFXAudio.setSound("assets/audio/" + Main.audioFormat + "/button_2" + "." + Main.audioFormat);
 
 		/*
 		musicAudio = new Audio();
 		musicAudio.setVolume(Main.musicVolume);
-		musicAudio.setSound("assets/audio/menu_loop" + "." + Main.audioFormat);
+		musicAudio.setSound("assets/audio/" + Main.audioFormat + "/menu_loop" + "." + Main.audioFormat);
 		musicAudio.play();
 		*/
 
@@ -223,7 +237,8 @@ class Home extends Sprite {
     private function onContinueButtonClicked(event:Event):Void {
 
 		eventSFXAudio.play();
-			
+		
+		Main.mode = "continue";
 		holder.addChild(fadeIn);
 		Actuate.tween(fadeIn, 0.5, { alpha: 1 }).delay(0).onComplete(onTransitionOut).ease(Quad.easeInOut);
 		//musicAudio.fadeOut(0.5);
@@ -238,8 +253,12 @@ class Home extends Sprite {
 
 		eventSFXAudio.play();
 
+		title.visible = false;
+		image.visible = false;
 		buttonHolder.visible = false;
-		Actuate.tween(menuBackground, 0.4, { scaleY: 1 }).ease(Quad.easeInOut).onComplete(showOptions);
+
+		menuBackground.visible = true;
+		showOptions();
 	}
 
 	private function showOptions():Void {
@@ -250,12 +269,21 @@ class Home extends Sprite {
 	private function onOptionsBack(event:Event):Void {
 
 		optionsMenu.visible = false;
-		Actuate.tween(menuBackground, 0.4, { scaleY: 0 }).ease(Quad.easeInOut).onComplete(showHomeButtons);
+		menuBackground.visible = false;
+
+		title.visible = true;
+		image.visible = true;
+		showHomeButtons();
 	}
 
 	private function onToggleFilter(event:Event):Void {
 
 		buttonHolder.transform.colorTransform = new ColorTransform();
+	}
+
+	private function onToggleFullscreen(event:Event):Void {
+
+		dispatchEvent(event);
 	}
 
 	private function onMusicVolume(event:Event):Void {
@@ -272,6 +300,7 @@ class Home extends Sprite {
 
 		eventSFXAudio.play();
 
+		Main.mode = "new";
 		holder.addChild(fadeIn);
 		Actuate.tween(fadeIn, 0.5, { alpha: 1 }).delay(0).onComplete(onTransitionOut).ease(Quad.easeInOut);
 	}
@@ -283,8 +312,8 @@ class Home extends Sprite {
 
 	public function onResize(event:Event = null):Void {
 
-		//buttonHolder.x = (Main.maxWidth - Main.offsetX) - 80;
 		buttonHolder.y = (Main.maxHeight * 0.75) - (Main.offsetY / 2);
+		credit.y = Std.int((Main.maxHeight - Main.offsetY) - credit.height - 10);
     }
 	
 	private function onEnterFrame(event:Event):Void {

@@ -98,11 +98,6 @@ class PausePanel extends Sprite {
         
         dispatchEvent(new Event("quit"));
     }
-    
-    private function onRestartClicked(event:MouseEvent = null):Void {
-        
-        dispatchEvent(new Event("restart"));
-    }
 
     private function onBackClicked(event:MouseEvent = null):Void {
         

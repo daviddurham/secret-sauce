@@ -1,5 +1,6 @@
 package com.daviddurhamgames.secretsauce.screens;
 
+import motion.easing.Linear;
 import com.daviddurhamgames.secretsauce.Player;
 import com.daviddurhamgames.secretsauce.HUD;
 import com.daviddurhamgames.secretsauce.TouchController;
@@ -122,9 +123,6 @@ class Game extends Sprite {
 	// level builder
 	private var level:Level;
 	
-	// game mode (useful later?)
-	private var gameMode:String;
-
 	// ingredient objects in the scene
 	private var ingredientObjects:Array<GameObject> = [];
 	
@@ -161,29 +159,29 @@ class Game extends Sprite {
 	private var cameraMovement:Vector2D;
 
 	// level map
-	private var map:Array<Array<Int>> = [	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
-											[1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 7, 7, 7, 7, 7, 7, 7, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 0,11,12, 0,13,14, 0, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 0,15,16, 0,17,18, 0, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 7,22, 7,24, 0, 7, 7, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 8, 8,10,10, 0, 6, 5, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 0, 7, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 0, 7, 2, 2, 2, 2 ],
-											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
-											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
-											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
-											[1, 1, 1, 2, 7, 7, 7,25,23, 7, 7, 7, 7, 2, 2, 2, 2 ],
-											[1, 1, 1, 2, 7, 8, 8, 0,21, 9, 7, 2, 2, 2, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 1, 1, 1 ],
-											[1, 1, 1, 2, 7, 7, 7, 7, 7, 7, 7, 2, 7, 1, 1, 1, 1 ],
-											[1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1 ],
-											[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]	];
+	private var map:Array<Array<Int>> = [	[2, 2, 1, 2, 2, 1, 2, 2, 1, 1, 2, 1, 2, 2, 2, 1, 2 ],
+											[2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2 ],
+											[2, 1, 2, 2, 7, 7, 7, 7, 7, 7, 7, 7, 7, 2, 2, 1, 2 ],
+											[2, 1, 1, 2, 7, 0,11,12, 0,13,14, 0, 7, 2, 2, 1, 2 ],
+											[2, 2, 1, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 1, 2, 2 ],
+											[2, 1, 2, 2, 7, 0,15,16, 0,17,18, 0, 7, 2, 2, 2, 2 ],
+											[2, 2, 1, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 1, 2, 2 ],
+											[2, 1, 2, 2, 7, 0, 0, 0, 0, 0, 0, 0, 7, 2, 2, 1, 2 ],
+											[2, 1, 1, 2, 7, 7,22, 7,24, 0, 7, 7, 7, 2, 2, 1, 2 ],
+											[2, 1, 1, 2, 7,26, 8,10,10, 0, 6, 5, 7, 2, 1, 1, 2 ],
+											[2, 1, 2, 2, 7, 8, 0, 0, 0, 0, 0, 0, 7, 2, 1, 2, 2 ],
+											[2, 1, 2, 2, 7,27, 0, 0, 0, 0, 0, 0, 7, 2, 2, 2, 2 ],
+											[2, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
+											[2, 1, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
+											[2, 2, 1, 2, 7, 8, 0, 0, 0, 0, 0, 8, 7, 3, 3, 3, 3 ],
+											[2, 1, 2, 2, 7, 7, 7,25,23, 7, 7, 7, 7, 2, 2, 2, 2 ],
+											[2, 1, 1, 2, 7, 8, 8, 0,21, 9, 7, 2, 2, 2, 1, 1, 2 ],
+											[2, 1, 2, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 1, 2, 2, 2 ],
+											[2, 1, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 2, 1, 1, 2, 2 ],
+											[2, 2, 1, 2, 7, 8, 0, 0, 0, 0, 7, 2, 1, 2, 2, 1, 2 ],
+											[2, 1, 1, 2, 7, 7, 7, 7, 7, 7, 7, 2, 2, 2, 1, 1, 2 ],
+											[2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2 ],
+											[2, 1, 1, 1, 2, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2 ]	];
 
 	private var ingredients:Array<Ingredient> = [
 
@@ -227,15 +225,38 @@ class Game extends Sprite {
 
 	private var confetti:Confetti;
 
-	public function new(mode:String = "default") {
+	public function new(mode:String = "new") {
 		
 		super();
 
 		isTutorial = Main.isTutorial;
 		Main.isTutorial = false;
 
-		// get game settings
-		gameMode = mode;
+		if (mode == "continue") {
+
+			var progress:String = Main.savedData.load("progress");
+			var progressArray:Array<String> = progress.split(",");
+			
+			currentDay = Std.parseInt(progressArray[0]);
+
+			for (i in 0...3) {
+
+				targetRecipe[i] = Std.parseInt(progressArray[1 + i]);
+				currentRecipe[i] = Std.parseInt(progressArray[4 + i]);
+			}
+		}
+		else {
+
+			// set the target and starting recipes
+			for (i in 0...3) {
+
+				// making it totally random for now
+				// ...but maybe that's not good enough?
+				targetRecipe[i] = Math.floor(Math.random() * 8) + 1;
+				currentRecipe[i] = Math.floor(Math.random() * 8) + 1;
+			}
+		}
+		
 		addEventListener(Event.ADDED_TO_STAGE, init);
 	}
 
@@ -245,15 +266,6 @@ class Game extends Sprite {
 		
 		isRunning = true;
 		isControlLocked = false;
-
-		// set the target and starting recipes
-		for (i in 0...3) {
-
-			// making it totally random for now
-			// ...but maybe that's not good enough?
-			targetRecipe[i] = Math.floor(Math.random() * 8) + 1;
-			currentRecipe[i] = Math.floor(Math.random() * 8) + 1;
-		}
 		
 		holder = new Sprite();
 		addChild(holder);
@@ -352,6 +364,8 @@ class Game extends Sprite {
 		assetLoaderContext.mapUrlToData("sign_1.png", Assets.getBitmapData("assets/sign_1.png"));
 		assetLoaderContext.mapUrlToData("sign_2.png", Assets.getBitmapData("assets/sign_2.png"));
 		assetLoaderContext.mapUrlToData("fruits.png", Assets.getBitmapData("assets/fruits.png"));
+		assetLoaderContext.mapUrlToData("burger.png", Assets.getBitmapData("assets/burger.png"));
+		assetLoaderContext.mapUrlToData("review_screen.png", Assets.getBitmapData("assets/review_screen.png"));
 
 		Asset3DLibrary.enableParser(DAEParser);
 		Asset3DLibrary.addEventListener(Asset3DEvent.ASSET_COMPLETE, onAssetComplete);
@@ -379,24 +393,35 @@ class Game extends Sprite {
 							"assets/models/ingredients/red.dae",
 							"assets/models/ingredients/orange.dae",
 							"assets/models/ingredients/green.dae",
-							"assets/models/ingredients/purple.dae"
+							"assets/models/ingredients/purple.dae",
+
+							"assets/models/sauce.dae",
+							"assets/models/pattys.dae",
+							"assets/models/buns.dae",
 						];
 
 		meshCounts = [	12, 4, 2, 1, 6, 8, 6, 9, 8, 9, 3, 3, 3,
-						1, 1, 1, 1, 1, 1, 1, 1	];
+						1, 1, 1, 1, 1, 1, 1, 1,
+						1, 10, 9
+					 ];
 
 		// some models shouldn't receive shadows
 		shadows = [ true, false, false, true, true, true, true, true, true, true, true, true, true,
-					true, true, true, true, true, true, true, true ];
+					true, true, true, true, true, true, true, true,
+					true, true, true];
 
 		currentModelLoading = -1;
 		loadNextModel();
 				
 		// create audio object
-		eventSFXAudio = new Audio("assets/audio/button" + "." + Main.audioFormat);
+		eventSFXAudio = new Audio("assets/audio/" + Main.audioFormat + "/button_2" + "." + Main.audioFormat);
+		eventSFXAudio.setVolume(Main.sfxVolume);
 
-		bgm1 = new Audio("assets/audio/not_holding" + "." + Main.audioFormat, -1);
-		bgm2 = new Audio("assets/audio/holding" + "." + Main.audioFormat, -1);
+		bgm1 = new Audio("assets/audio/" + Main.audioFormat + "/not_holding" + "." + Main.audioFormat, -1);
+		bgm1.setVolume(Main.musicVolume);
+
+		bgm2 = new Audio("assets/audio/" + Main.audioFormat + "/holding" + "." + Main.audioFormat, -1);
+		bgm2.setVolume(Main.musicVolume);
 		
 		// create confetti
 		confetti = new Confetti(50, Main.maxWidth, Main.maxHeight, 1);
@@ -457,6 +482,9 @@ class Game extends Sprite {
 		// level
 		level = new Level(world, loadedModels, skin, map);
 		level.createLevel();
+
+		// animate blocked entry indicator
+		Actuate.tween(world.wall.material, 1, { alpha: 0.25 }).repeat().reflect().ease(Linear.easeNone);
 		
 		players = new Array<Player>();
 		
@@ -612,9 +640,12 @@ class Game extends Sprite {
 
 	private function startNextDay():Void {
 
+		var progress:String = currentDay + "," + targetRecipe[0] + "," + targetRecipe[1] + "," + targetRecipe[2] + "," + currentRecipe[0] + "," + currentRecipe[1] + "," + currentRecipe[2];
+		Main.savedData.save("progress", progress);
+
 		reset();
 
-		bgm1.setVolume(1);
+		bgm1.setVolume(Main.musicVolume);
 		bgm2.setVolume(0);
 
 		currentDay++;
@@ -795,6 +826,9 @@ class Game extends Sprite {
 		isPotReady = false;
 		isIntro = true;
 
+		world.wall.visible = false;
+		world.sauce.visible = true;
+
 		p1.x = Main.TILE_SIZE * 9;
 		p1.z = Main.TILE_SIZE * -12;
 
@@ -814,6 +848,7 @@ class Game extends Sprite {
 
 		hud.hideSauceMadePanel(true);
 		hud.hideGameCompletePanel(true);
+		hud.enableButtons();
 	}
 
 	private function start():Void {
@@ -893,12 +928,15 @@ class Game extends Sprite {
 
 					p1.holding = ing;
 
+					eventSFXAudio.setSound("assets/audio/" + Main.audioFormat + "/pop1" + "." + Main.audioFormat);
+					eventSFXAudio.play();
+
 					// y is tweened to 10 x 1.1 because 1.1 is the scale of the player model
-					Actuate.tween(obj, 0.5, {x: p1.x, y: 10 * 1.1, z: p1.z, scaleX: 4, scaleY: 4, scaleZ: 4}).onComplete(function() {
+					Actuate.tween(obj, 0.25, {x: p1.x, y: 10 * 1.1, z: p1.z, scaleX: 4, scaleY: 4, scaleZ: 4}).onComplete(function() {
 					
 						p1.collectIngredient(ing, obj);
 						bgm1.setVolume(0);
-						bgm2.setVolume(1);
+						bgm2.setVolume(Main.musicVolume);
 
 						if (isTutorial) {
 						
@@ -925,14 +963,45 @@ class Game extends Sprite {
 						}
 					}
 
+					world.sauce.visible = false;
+
+					eventSFXAudio.setSound("assets/audio/" + Main.audioFormat + "/empty1" + "." + Main.audioFormat);
+					eventSFXAudio.play();
 					isPotReady = true;
 				}
 			}
 			// try to drop the thing being held
 			else {
 
-				// ingredients 1 - 10
-				if (currentHotspot > 10) {
+				// put it back (ingredients 1 - 10)
+				if (currentHotspot > 0 && currentHotspot <= 10) {
+
+					if (currentHotspot == p1.holding.id) {
+
+						world.level.addChild(p1.holdingObject);
+						p1.holdingObject.scaleX = 4;
+						p1.holdingObject.scaleY = 4;
+						p1.holdingObject.scaleZ = 4;
+						p1.holdingObject.x = p1.x;
+						p1.holdingObject.y = 10;
+						p1.holdingObject.z = p1.z;
+
+						var id:Int = p1.holding.id;
+						var obj:GameObject = p1.holdingObject;
+						p1.dropIngredient();
+
+						eventSFXAudio.setSound("assets/audio/" + Main.audioFormat + "/stash" + "." + Main.audioFormat);
+						eventSFXAudio.play();
+
+						Actuate.tween(obj, 0.25, {x: hotspotObject.x, y: 10, z: hotspotObject.z, scaleX: 1, scaleY: 1, scaleZ: 1}).onComplete(function() {
+
+							p1.holdingObject.visible = false;
+						});
+					}
+				}
+
+				// pot
+				else if (currentHotspot > 10) {
 
 					// can drop here?
 					// 11 is the pot (make sure pot is not full)
@@ -950,9 +1019,14 @@ class Game extends Sprite {
 						var obj:GameObject = p1.holdingObject;
 						p1.dropIngredient();
 
-						Actuate.tween(obj, 0.5, {x: hotspotObject.x, y: 10, z: hotspotObject.z, scaleX: 1, scaleY: 1, scaleZ: 1}).onComplete(function() {
-					
-							bgm1.setVolume(1);
+						eventSFXAudio.setSound("assets/audio/" + Main.audioFormat + "/drop3" + "." + Main.audioFormat);
+						eventSFXAudio.play();
+
+						Actuate.tween(obj, 0.25, {x: hotspotObject.x, y: 10, z: hotspotObject.z, scaleX: 1, scaleY: 1, scaleZ: 1}).onComplete(function() {
+
+							world.sauce.visible = true;
+
+							bgm1.setVolume(Main.musicVolume);
 							bgm2.setVolume(0);						
 
 							potContents.push(id);
@@ -980,6 +1054,9 @@ class Game extends Sprite {
 
 								// game complete
 								if (checkRecipesMatch() == true) {
+
+									// reset progress
+									Main.savedData.save("progress", "0");
 
 									hud.showGameCompletePanel();
 									confetti.start();
@@ -1236,7 +1313,7 @@ class Game extends Sprite {
 
 				if (enemy.alertCooldown <= 0) {
 				
-					eventSFXAudio.setSound("assets/audio/alert" + "." + Main.audioFormat);
+					eventSFXAudio.setSound("assets/audio/" + Main.audioFormat + "/alert" + "." + Main.audioFormat);
 					eventSFXAudio.play();
 
 					// turn on barriers
@@ -1245,6 +1322,7 @@ class Game extends Sprite {
 						if (object.objectID == 99) {
 
 							object.objectID = 98;
+							world.wall.visible = true;
 						}
 					}
 				}
@@ -1272,6 +1350,7 @@ class Game extends Sprite {
 							if (object.objectID == 98) {
 
 								object.objectID = 99;
+								world.wall.visible = false;
 							}
 						}
 					}

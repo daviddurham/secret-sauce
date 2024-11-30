@@ -35,6 +35,12 @@ class World {
 	
 	// prompts
 	public var prompts:Array<Mesh>;
+
+	// wall to pot room
+	public var wall:Mesh;
+
+	// sauce in pot (can be shown/hidden)
+	public var sauce:GameObject;
 	
 	// vfx
 	private var _shake:ScreenShake;
@@ -112,6 +118,22 @@ class World {
 		}
 	}
 	
+	public function addWall(w:Mesh):Void {
+
+		add(w);		
+
+		// there is only one wall
+		wall = w;
+	}
+
+	public function addSauce(s:GameObject):Void {
+
+		add(s);
+
+		// there is only one sauce
+		sauce = s;
+	}
+
 	public function addPrompt(prompt:Mesh, id:Int):Void {
 
 		add(prompt);		

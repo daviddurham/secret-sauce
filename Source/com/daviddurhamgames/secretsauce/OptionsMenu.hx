@@ -9,6 +9,8 @@ import openfl.events.MouseEvent;
 import openfl.Assets;
 
 import com.daviddurhamgames.secretsauce.BasicButton;
+
+import com.piratejuice.Audio;
 import com.piratejuice.BitmapText;
 
 class OptionsMenu extends Sprite {
@@ -27,7 +29,9 @@ class OptionsMenu extends Sprite {
     
     private var buttonList:Array<BasicButton>;
     private var currButton:Int;
-	
+
+    private var eventSFXAudio:Audio;
+    
 	public function new():Void {
 		
 		super();
@@ -39,13 +43,13 @@ class OptionsMenu extends Sprite {
         titleText.scaleX = titleText.scaleY = 0.75;
         addChild(titleText);
 
-        buttonFullscreen = createButton("assets/sfx_button.png", "assets/sfx_button_over.png", -150, -160, 0.75);
+        buttonFullscreen = createButton("assets/fullscreen_button.png", "assets/fullscreen_button_over.png", -150, -160, 0.75);
         buttonFullscreen.addEventListener(MouseEvent.CLICK, onFullscreenClicked);
         
         fullscreenOptions = [
             
-            addSetting("assets/option_0.png", buttonFullscreen),
-            addSetting("assets/option_100.png", buttonFullscreen)
+            addSetting("assets/option_off.png", buttonFullscreen),
+            addSetting("assets/option_on.png", buttonFullscreen)
         ];
 
         setFullscreen();
@@ -79,12 +83,16 @@ class OptionsMenu extends Sprite {
 
         setSFXVolume();
 
-        buttonBack = createButton("assets/back_button.png", "assets/back_button_over.png", 0, 250, 0.75);
+        buttonBack = createButton("assets/back_button.png", "assets/back_button_over.png", 0, 240, 0.75);
         buttonBack.addEventListener(MouseEvent.CLICK, onBackClicked);
 		
         //create button list
 		currButton = 0;
 		buttonList = [buttonFullscreen, buttonMusic, buttonSFX, buttonBack];
+
+        // create audio object
+		eventSFXAudio = new Audio("assets/audio/" + Main.audioFormat + "/button_2" + "." + Main.audioFormat);
+		eventSFXAudio.setVolume(Main.sfxVolume);
 
         visible = false;
 	}
@@ -103,7 +111,6 @@ class OptionsMenu extends Sprite {
     private function addSetting(image:String, button:BasicButton):Bitmap {
 
         var bitmap = new Bitmap(Assets.getBitmapData(image));
-        bitmap.scaleX = bitmap.scaleY = 2;
         bitmap.x = button.x + 200;
         bitmap.y = button.y - (bitmap.height / 2);
         addChild(bitmap);
@@ -124,9 +131,8 @@ class OptionsMenu extends Sprite {
     /* Button Handlers */
     
     private function onFullscreenClicked(event:MouseEvent = null):Void {
-        
-        // increment volume by 25%
-        Main.isFullscreen = !Main.isFullscreen;
+
+        eventSFXAudio.play();
 
         setFullscreen();		
 		//Main.savedData.save("fullscreen", Std.string(Main.isFullscreen));
@@ -135,6 +141,8 @@ class OptionsMenu extends Sprite {
 
     private function onMusicClicked(event:MouseEvent = null):Void {
         
+        eventSFXAudio.play();
+
         // increment volume by 25%
         Main.musicVolume += 0.25;
 
@@ -150,6 +158,8 @@ class OptionsMenu extends Sprite {
     
     private function onSFXClicked(event:MouseEvent = null):Void {
         
+        eventSFXAudio.play();
+
         // increment volume by 25%
         Main.sfxVolume += 0.25;
 
@@ -158,13 +168,16 @@ class OptionsMenu extends Sprite {
             Main.sfxVolume = 0;
         }
 
-        setSFXVolume();		
+        setSFXVolume();
 		Main.savedData.save("sfx_volume", Std.string(Main.sfxVolume));
+
+        eventSFXAudio.setVolume(Main.sfxVolume);
         dispatchEvent(new Event("sfx_volume"));
     }
 
     private function onBackClicked(event:MouseEvent = null):Void {
         
+        eventSFXAudio.play();
         dispatchEvent(new Event("back"));
     }
 

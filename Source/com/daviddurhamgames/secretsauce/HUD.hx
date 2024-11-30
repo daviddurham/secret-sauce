@@ -7,8 +7,6 @@ import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
-import openfl.text.TextField;
-import openfl.text.TextFormat;
 import openfl.Assets;
 
 import com.daviddurhamgames.secretsauce.PausePanel;
@@ -137,8 +135,8 @@ class HUD extends Sprite {
         
 
         // create audio object
-		eventSFXAudio = new Audio();
-		//eventSFXAudio.setVolume(Global.sfxVolume);
+		eventSFXAudio = new Audio("assets/audio/" + Main.audioFormat + "/button_2" + "." + Main.audioFormat);
+		eventSFXAudio.setVolume(Main.sfxVolume);
 
         // pause button invokes pause menu and suspends game
 		pauseButton = new BasicButton("assets/pause_button_idle.png", "assets/pause_button_over.png", "assets/pause_button_over.png");
@@ -189,7 +187,7 @@ class HUD extends Sprite {
     
     private function onPauseClicked(event:Event):Void {
         
-        eventSFXAudio.setSound("assets/audio/button" + "." + Main.audioFormat);
+        eventSFXAudio.setSound("assets/audio/" + Main.audioFormat + "/button_2" + "." + Main.audioFormat);
 		eventSFXAudio.play();
 
         disableButtons();
@@ -202,11 +200,17 @@ class HUD extends Sprite {
     
     private function quitConfirm(event:Event):Void {
         
+        eventSFXAudio.setSound("assets/audio/" + Main.audioFormat + "/button_2" + "." + Main.audioFormat);
+		eventSFXAudio.play();
+
         dispatchEvent(new Event("quit"));
     }
     
     private function quitCancel(event:Event):Void {
         
+        eventSFXAudio.setSound("assets/audio/" + Main.audioFormat + "/button_2" + "." + Main.audioFormat);
+		eventSFXAudio.play();
+
         enableButtons();
         
         pauseMenu.hide();

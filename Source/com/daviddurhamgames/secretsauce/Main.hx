@@ -52,8 +52,10 @@ class Main extends Sprite {
 	// global settings
 	public static var sfxVolume:Float = 1;
 	public static var musicVolume:Float = 1;
-	public static var audioFormat:String = "wav";
-	public static var mode:String = "";
+	public static var audioFormat:String = "mp3";
+	
+	// 'new' or 'continue'
+	public static var mode:String = "new";
 	
 	// save data
 	public static var savedData:SavedData;
@@ -106,20 +108,10 @@ class Main extends Sprite {
 		removeEventListener(Event.ADDED_TO_STAGE, init);
 		
 		#if windows
-		if (Main.isDebug) {
-			
-			fullscreenMode(false/*true*/);
-			onResize();
-		}
-		else {
-			
-			fullscreenMode(false/*true*/);
-		}
-		#else
-		fullscreenMode(false);
+		Main.audioFormat = "wav";	
 		#end
 
-		//fullscreenMode(true);
+		fullscreenMode(false);
 
 		// init save data
 		savedData = new SavedData();
@@ -152,10 +144,11 @@ class Main extends Sprite {
 			removeChild(_menu);
 			
 			_menu.removeEventListener("init_game", initGame);
+			_menu.removeEventListener("fullscreen", toggleFullscreen);
 			_menu = null;
 		}
 		
-		_game = new Game(mode);
+		_game = new Game(Main.mode);
 		_game.addEventListener("quit", initMenu);
 		addChild(_game);
 
@@ -163,6 +156,8 @@ class Main extends Sprite {
 			
 			Lib.current.addChild(_fps);
 		}
+
+		Main.mode = "new";
 	}
 	
 	private function initMenu(event:Event = null) {
@@ -193,6 +188,7 @@ class Main extends Sprite {
 		
 		_menu = new Home(animate);
 		_menu.addEventListener("init_game", initGame);
+		_menu.addEventListener("fullscreen", toggleFullscreen);
 		addChild(_menu);
 
 		if (_fps != null) {
@@ -219,6 +215,11 @@ class Main extends Sprite {
 	}
 	
 	/* Fullscreen */
+
+	private function toggleFullscreen(event:Event):Void {
+
+		fullscreenMode(!Main.isFullscreen);
+	}
 	
 	private function fullscreenMode(flag:Bool):Void {
 		

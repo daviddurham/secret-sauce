@@ -24,10 +24,6 @@ class SavedData {
 				
 				return object.data.pixel_filter;
 
-			case "screen_controls":
-				
-				return object.data.screen_controls;
-
 			case "sfx_volume":
 				
 				return object.data.sfx_volume;
@@ -42,7 +38,7 @@ class SavedData {
 				
 			case "progress":
 				
-				return object.data.progress_1;
+				return object.data.progress;
 		}
 		
 		return "";
@@ -54,11 +50,7 @@ class SavedData {
 			
 			case "pixel_filter":
 				
-				object.data.vintage_filter = value;
-
-			case "screen_controls":
-				
-				object.data.screen_controls = value;
+				object.data.pixel_filter = value;
 
 			case "sfx_volume":
 				
@@ -74,7 +66,7 @@ class SavedData {
 				
 			case "progress":
 				
-				object.data.progress_1 = value;
+				object.data.progress = value;
 		}
 		
 		object.flush();
@@ -95,11 +87,10 @@ class SavedData {
 		save("sfx_volume", "1");
 		save("music_volume", "1");
 		save("pixel_filter", "1");
-		save("screen_controls", "1");
 		
 		save("test", "default");
 		
 		// day, target, current
-		save("progress", "0,1,1,1,2,2,2");
+		save("progress", "0");//0,1,1,1,2,2,2
 	}
 }

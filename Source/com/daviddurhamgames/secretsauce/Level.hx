@@ -26,7 +26,7 @@ class Level {
 	
 	private var _tileData:Array<TileData> = [	new TileData(0, "kitchen_floor", 0, []),
 
-												new TileData(1, "tile_grass", 0, []),
+												new TileData(1, "tile_grass", 0, [new ObjectData(9, 0, 0)]),
 												new TileData(2, "tile_grass", 0, []),
 												new TileData(3, "straight_horizontal", 0, []),
 												
@@ -46,7 +46,7 @@ class Level {
 												new TileData(8, "kitchen_floor", 0, [new ObjectData(3, 0, 0)]),
 
 												// pot
-												new TileData(9, "kitchen_floor", 0, [new ObjectData(4, 0, 0), new ObjectData(10, 0, -4, 11)]),
+												new TileData(9, "kitchen_floor", 0, [new ObjectData(4, 0, 0), new ObjectData(10, 0, -4, 11), new ObjectData(17, 0, 0),]),
 
 												// grill
 												new TileData(10, "kitchen_floor", 0, [new ObjectData(5, 0, 0)]),
@@ -71,7 +71,11 @@ class Level {
 												new TileData(24, "", 0, [new ObjectData(13, 0, 0)]),
 
 												// barrier
-												new TileData(25, "kitchen_floor", 0, [new ObjectData(14, 0, 0)])
+												new TileData(25, "kitchen_floor", 0, [new ObjectData(14, 0, 0)]),
+
+												// buns and pattys
+												new TileData(26, "kitchen_floor", 0, [new ObjectData(15, 0, 0)]),
+												new TileData(27, "kitchen_floor", 0, [new ObjectData(16, 0, 0)])
 											];
 																	
 	// default level map data
@@ -160,30 +164,6 @@ class Level {
 					tile.z = -Main.TILE_SIZE * j;
 					_world.addTile(tile);
 				}
-				
-				// trees and stuff on blank tiles
-				/*
-				if (tileData.id == 1) {
-					
-					var treePattern:Int = Math.floor(Math.random() * trees.length);
-					var len:Int = trees[treePattern].length;
-
-					for (t in 0...len) {
-						
-						var tree:GameObject = new GameObject("", cast(_models[1].clone(), ObjectContainer3D));
-						tree.x = (Main.TILE_SIZE * i) - (0.5 * Main.TILE_SIZE) + (Main.TILE_SIZE * trees[treePattern][t][0]);
-						tree.z = (-Main.TILE_SIZE * j) - (0.5 * -Main.TILE_SIZE) + (-Main.TILE_SIZE * trees[treePattern][t][1]);
-
-						tree.rotationY = 360 * Math.random();
-						
-						var treeSize:Float = 2 + Math.floor(Math.random() * 2);
-						tree.scaleX = tree.scaleY = tree.scaleZ = treeSize;
-						tree.setCollisionType("circle", treeSize);
-						
-						_world.addObstacle(tree);
-					}
-				}
-				*/
 
 				for (obj in tileData.objects) {
 					
@@ -264,6 +244,18 @@ class Level {
 							
 							addCounterObject((Main.TILE_SIZE * i) + obj.pos.x, (-Main.TILE_SIZE * j) + obj.pos.y, "sink", 9);
 
+						// tree
+						case 9:
+
+							var tree:GameObject = new GameObject("", cast(_models[1].clone(), ObjectContainer3D));
+							tree.x = (Main.TILE_SIZE * i) + obj.pos.x;
+							tree.z = (-Main.TILE_SIZE * j) + obj.pos.y;
+							tree.rotationY = 360 * Math.random();
+						
+							var treeSize:Float = 2.5 + (Math.random() * 1.5);
+							tree.scaleX = tree.scaleY = tree.scaleZ = treeSize;
+							_world.add(tree);
+
 						// hotspot
 						case 10:
 							
@@ -292,6 +284,41 @@ class Level {
 							object.scaleX = object.scaleY = object.scaleZ = 4;
 							object.setCollisionType("aabb", Main.TILE_SIZE, Main.TILE_SIZE);
 							_world.addObstacle(object);
+
+							var material:TextureMaterial = new TextureMaterial(Cast.bitmapTexture("assets/wall.png"), false);
+							material.alphaThreshold = 1;
+							material.alpha = 0.5;
+							material.mipmap = false;
+							material.bothSides = true;
+
+							var wall = new Mesh(new PlaneGeometry(16, 16), material);
+							wall.castsShadows = false;
+							wall.x = (Main.TILE_SIZE * i) + obj.pos.x;
+							wall.y = 8;
+							wall.z = (-Main.TILE_SIZE * j) + obj.pos.y;
+							wall.rotationX = -90;
+							wall.visible = false;
+							_world.addWall(wall);
+
+						// buns and pattys
+						case 15:
+
+							addCounterObject((Main.TILE_SIZE * i) + obj.pos.x, (-Main.TILE_SIZE * j) + obj.pos.y, "pattys", 22);
+
+						case 16:
+
+							addCounterObject((Main.TILE_SIZE * i) + obj.pos.x, (-Main.TILE_SIZE * j) + obj.pos.y, "buns", 23);
+
+						// sauce in pot
+						case 17:
+							
+							var sauce:GameObject = new GameObject("sauce", cast(_models[21].clone(), ObjectContainer3D));
+							sauce.x = (Main.TILE_SIZE * i) + obj.pos.x;
+							sauce.y = 0;
+							sauce.z = (-Main.TILE_SIZE * j) + obj.pos.y;
+
+							sauce.scaleX = sauce.scaleY = sauce.scaleZ = 4;
+							_world.addSauce(sauce);							
 					}
 				}
 				
@@ -302,7 +329,7 @@ class Level {
 
 	private function addPrompt(px:Float, pz:Float, texture:String, id:Int) {
 		
-		trace(texture);
+		//trace(texture);
 		var material:TextureMaterial = new TextureMaterial(Cast.bitmapTexture(texture), false);
 		material.alphaThreshold = 1;
 		material.mipmap = false;
@@ -334,9 +361,9 @@ class Level {
 	private function addCounterObject(px:Float, pz:Float, name:String, modelId:Int):Void {
 
 		var object:GameObject = new GameObject(name, cast(_models[modelId].clone(), ObjectContainer3D));
-		object.x = px;//(Main.TILE_SIZE * tx) + obj.pos.x;
+		object.x = px;
 		object.y = 0;
-		object.z = pz;//(-Main.TILE_SIZE * ty) + obj.pos.y;
+		object.z = pz;
 
 		object.scaleX = object.scaleY = object.scaleZ = 4;
 
