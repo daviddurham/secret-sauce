@@ -52,7 +52,7 @@ class Main extends Sprite {
 	// global settings
 	public static var sfxVolume:Float = 1;
 	public static var musicVolume:Float = 1;
-	public static var audioFormat:String = "mp3";
+	public static var audioFormat:String = "wav";
 	
 	// 'new' or 'continue'
 	public static var mode:String = "new";
